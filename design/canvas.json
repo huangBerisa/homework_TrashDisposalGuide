@@ -1,0 +1,55 @@
+{
+  "artboards": [
+    {
+      "file": "Lang.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "① 言語選択"
+    },
+    {
+      "file": "Capture.dc.html",
+      "x": 502,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "② 撮影"
+    },
+    {
+      "file": "Main.dc.html",
+      "x": 1004,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "③ 分別結果とごみ箱"
+    },
+    {
+      "file": "Map.dc.html",
+      "x": 1506,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "④ 地図案内"
+    },
+    {
+      "file": "Empty.dc.html",
+      "x": 2008,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "⑤ 見つからない場合"
+    },
+    {
+      "file": "Error.dc.html",
+      "x": 2510,
+      "y": 0,
+      "w": 402,
+      "h": 874,
+      "title": "⑥ 確認できない場合"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

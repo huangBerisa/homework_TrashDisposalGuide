@@ -1,0 +1,334 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<style>
+
+    :root{
+      --color-primary:#55C900;
+      --color-primary-light:#E5FFC7;
+      --color-bg:#FFFFFF;
+      --color-surface:#F8F8F8;
+      --color-text:#303030;
+      --color-text-muted:#9A9A9A;
+      --color-alert:#FF4D4D;
+      --color-alert-light:#FFE7E7;
+      --color-warning:#FF9500;
+      --color-warning-light:#FFF1DC;
+      --color-divider:#E3E3E3;
+      --radius:8px;
+      --radius-card:16px;
+      --fs-1:28px;
+      --fs-2:20px;
+      --fs-3:16px;
+      --fs-4:14px;
+      --fs-5:12px;
+    }
+    *{box-sizing:border-box;}
+    html,body{margin:0;padding:0;height:100%;}
+    body{
+      background:var(--color-bg);
+      color:var(--color-text);
+      font-family:'Noto Sans JP', sans-serif;
+      -webkit-font-smoothing:antialiased;
+    }
+    a{color:var(--color-primary);}
+    a:hover{color:var(--color-primary);}
+    button{font-family:inherit;}
+
+    .screen-root{
+      width:402px; min-height:874px;
+      display:flex; flex-direction:column;
+      background:var(--color-bg);
+    }
+    .app-header{
+      position:relative;
+      flex:0 0 auto;
+      height:56px;
+      display:flex; align-items:center; justify-content:center;
+      border-bottom:1px solid var(--color-divider);
+      background:var(--color-bg);
+    }
+    .app-header span{font-size:var(--fs-3); font-weight:700; color:var(--color-text); letter-spacing:0.02em;}
+    .back-btn{
+      position:absolute; left:8px; top:50%; transform:translateY(-50%);
+      width:44px; height:44px;
+      display:flex; align-items:center; justify-content:center;
+      background:none; border:none; padding:0; color:var(--color-text);
+    }
+    .back-btn svg{width:22px; height:22px;}
+    .app-body{flex:1 1 auto; padding:16px;}
+
+    .title-1{font-size:var(--fs-1); font-weight:700; margin:0; color:var(--color-text); text-wrap:balance;}
+    .title-2{font-size:var(--fs-2); font-weight:700; margin:0; color:var(--color-text);}
+    .section-title{font-size:var(--fs-2); font-weight:600; margin:0; color:var(--color-text);}
+    .body-2{font-size:var(--fs-4); color:var(--color-text-muted); margin:0; line-height:1.6;}
+    .caption{font-size:var(--fs-5); color:var(--color-text-muted); margin:0;}
+
+    .section{margin-bottom:24px;}
+    .section:last-child{margin-bottom:0;}
+    .stack-8 > * + *{margin-top:8px;}
+    .stack-16 > * + *{margin-top:16px;}
+
+    .btn{
+      display:flex; align-items:center; justify-content:center; gap:8px;
+      width:100%; min-height:44px;
+      border-radius:var(--radius);
+      font-size:var(--fs-3); font-weight:700;
+      border:1px solid transparent;
+    }
+    .btn-primary{background:var(--color-primary); color:#FFFFFF;}
+    .btn-primary svg{width:16px; height:16px; flex:0 0 auto;}
+    .btn-secondary{background:var(--color-bg); color:var(--color-primary); border-color:var(--color-primary);}
+    .btn-small{width:auto; min-height:44px; padding:0 16px; font-size:var(--fs-4);}
+
+    .lang-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+    .lang-card{
+      display:flex; align-items:center; gap:8px;
+      width:100%; min-height:44px; padding:16px;
+      background:var(--color-surface);
+      border:1px solid transparent;
+      border-radius:var(--radius-card);
+      font-size:var(--fs-3); color:var(--color-text);
+      text-align:left;
+    }
+    .lang-card .flag{font-size:20px; line-height:1;}
+    .lang-card .name{flex:1;}
+    .lang-card .check{width:16px; height:16px; flex:0 0 auto; visibility:hidden;}
+    .lang-card.selected{background:var(--color-primary-light); border-color:var(--color-primary); font-weight:700;}
+    .lang-card.selected .check{visibility:visible;}
+
+    .viewfinder{
+      aspect-ratio:1/1;
+      background:var(--color-surface);
+      border-radius:var(--radius-card);
+      display:flex; align-items:center; justify-content:center;
+      position:relative;
+    }
+    .viewfinder svg{width:64px; height:64px;}
+    .viewfinder .corner{position:absolute; width:24px; height:24px; border:2px solid var(--color-text-muted);}
+    .viewfinder .tl{top:8px; left:8px; border-right:none; border-bottom:none;}
+    .viewfinder .tr{top:8px; right:8px; border-left:none; border-bottom:none;}
+    .viewfinder .bl{bottom:8px; left:8px; border-right:none; border-top:none;}
+    .viewfinder .br{bottom:8px; right:8px; border-left:none; border-top:none;}
+
+    .item-row{display:flex; align-items:center; gap:16px;}
+    .item-thumb{
+      width:64px; height:64px; flex:0 0 auto;
+      background:var(--color-primary);
+      border-radius:var(--radius);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .item-thumb svg{width:40px; height:40px;}
+
+    .result-card{background:var(--color-surface); border-radius:var(--radius-card); padding:16px;}
+
+    .caution{
+      display:flex; gap:8px; align-items:flex-start;
+      background:var(--color-alert-light);
+      border-radius:var(--radius);
+      padding:16px;
+      color:var(--color-alert);
+    }
+    .caution svg{width:16px; height:16px; flex:0 0 auto; margin-top:2px;}
+    .caution p{font-size:var(--fs-4); margin:0; line-height:1.6; color:var(--color-text);}
+
+    .howto-list{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px;}
+    .howto-list li{display:flex; gap:8px; align-items:flex-start; font-size:var(--fs-3); color:var(--color-text); line-height:1.6;}
+    .howto-list li svg{width:16px; height:16px; flex:0 0 auto; margin-top:3px; color:var(--color-primary);}
+
+    .bin-list{display:flex; flex-direction:column; gap:16px;}
+    .bin-card{border:1px solid var(--color-divider); border-radius:var(--radius-card); padding:16px;}
+    .bin-card-top{display:flex; gap:8px;}
+    .bin-icon{
+      width:40px; height:40px; flex:0 0 auto;
+      background:var(--color-primary-light);
+      border-radius:var(--radius);
+      display:flex; align-items:center; justify-content:center;
+    }
+    .bin-icon svg{width:22px; height:22px; color:var(--color-primary);}
+    .bin-main{flex:1; min-width:0;}
+    .bin-name{font-size:var(--fs-2); font-weight:700; color:var(--color-text); margin:0;}
+
+    .chip-row{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 0;}
+    .chip{
+      display:inline-flex; align-items:center;
+      padding:4px 12px;
+      border:1px solid var(--color-divider);
+      border-radius:999px;
+      font-size:var(--fs-5); font-weight:500;
+      color:var(--color-text-muted);
+      background:var(--color-bg);
+    }
+    .chip-match{background:var(--color-primary-light); border-color:var(--color-primary); color:var(--color-text); font-weight:700;}
+
+    .pill{display:inline-flex; align-items:center; gap:4px; padding:4px 12px; border-radius:999px; font-size:var(--fs-5); font-weight:700;}
+    .pill svg{width:12px; height:12px;}
+    .pill.positive{background:var(--color-primary-light); color:var(--color-text);}
+    .pill.almost-full{background:var(--color-warning-light); color:var(--color-warning);}
+    .pill.full{background:var(--color-alert-light); color:var(--color-alert);}
+
+    .bin-meta{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);}
+    .bin-distance{display:flex; align-items:center; gap:8px; font-size:var(--fs-3); color:var(--color-text); font-weight:500;}
+    .bin-distance svg{width:16px; height:16px; color:var(--color-text-muted);}
+    .bin-note{font-size:var(--fs-4); color:var(--color-text-muted); margin:8px 0 0;}
+    .bin-card .btn{margin-top:16px;}
+
+    .state-screen{
+      flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; gap:16px; padding:16px;
+    }
+    .state-icon{width:56px; height:56px; border-radius:50%; background:var(--color-surface); display:flex; align-items:center; justify-content:center;}
+    .state-icon svg{width:28px; height:28px; color:var(--color-text-muted);}
+    .state-icon.alert svg{color:var(--color-alert);}
+    .state-screen .btn{max-width:280px;}
+
+    .map-wrap{flex:1 1 auto; position:relative; background:var(--color-surface); overflow:hidden;}
+    .map-svg{display:block; width:100%; height:100%; font-family:'Noto Sans JP', sans-serif;}
+    .map-land{fill:var(--color-surface);}
+    .map-park{fill:var(--color-primary-light); stroke:var(--color-primary); stroke-width:1;}
+    .map-road{stroke:var(--color-bg); stroke-width:14; fill:none; stroke-linecap:round; stroke-linejoin:round;}
+    .map-road-line{stroke:var(--color-divider); stroke-width:1; stroke-dasharray:2 6; fill:none;}
+    .map-building{fill:var(--color-bg); stroke:var(--color-divider); stroke-width:1;}
+    .map-landmark{fill:var(--color-primary-light); stroke:var(--color-primary); stroke-width:1;}
+    .map-landmark-label{fill:var(--color-text); font-size:12px; font-weight:700; text-anchor:middle;}
+    .map-road-label{fill:var(--color-text-muted); font-size:9px; font-weight:600; letter-spacing:0.03em;}
+    .map-route{stroke:var(--color-primary); stroke-width:3.5; fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:2 9;}
+    .map-you-ring{fill:var(--color-bg); stroke:var(--color-primary); stroke-width:2;}
+    .map-you-dot{fill:var(--color-primary);}
+    .map-you-label{fill:var(--color-text); font-size:10px; font-weight:700; text-anchor:middle;}
+    .map-pin{fill:var(--color-primary);}
+    .map-pin-badge{fill:var(--color-bg);}
+    .map-pin-icon{stroke:var(--color-primary); stroke-width:1.6; fill:none;}
+
+    .map-info{flex:0 0 auto; padding:16px; border-top:1px solid var(--color-divider); background:var(--color-bg);}
+    .map-pager{display:flex; align-items:center; gap:8px;}
+    .map-pager-info{flex:1 1 auto; min-width:0;}
+    .pager-btn{
+      width:44px; height:44px; flex:0 0 auto;
+      display:flex; align-items:center; justify-content:center;
+      background:var(--color-surface); border:none; border-radius:var(--radius);
+      color:var(--color-text); padding:0;
+    }
+    .pager-btn svg{width:18px; height:18px;}
+    .map-meta{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:8px 0 0;}
+    .map-distance{display:flex; align-items:center; gap:8px; margin:0; font-size:var(--fs-3); color:var(--color-text); font-weight:500;}
+    .map-distance svg{width:16px; height:16px; color:var(--color-text-muted);}
+    .map-accepted{margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);}
+
+</style>
+</helmet>
+<div class="screen-root">
+  <header class="app-header">
+    <button class="back-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <span>ゴミナビ</span>
+  </header>
+  <div class="app-body">
+
+    <div class="section stack-16">
+      <div class="item-row">
+        <div class="item-thumb">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5">
+            <path d="M9 3h6v2.2l1.4 2.1c.4.5.6 1.2.6 1.8V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9.1c0-.6.2-1.3.6-1.8L9 5.2V3z"/>
+            <path d="M8.5 11h7" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div>
+          <p class="title-2">ペットボトル</p>
+          <p class="body-2">中身を空にして、キャップとラベルを外します。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section result-card stack-16">
+      <div class="stack-8">
+        <p class="caption">分類結果</p>
+        <p class="title-1">資源ごみ</p>
+        <p class="body-2">決められた回収日に、透明な袋に入れて出します。</p>
+      </div>
+      <div class="stack-8">
+        <p class="title-2" style="font-size:var(--fs-3);">捨て方</p>
+        <ul class="howto-list">
+          <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>キャップとラベルは外して「プラスチック」に分けます。</span></li>
+          <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>つぶしてから出すと、収集がスムーズです。</span></li>
+        </ul>
+      </div>
+      <div class="caution">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l7 12.5H1L8 1.5z" stroke-linejoin="round"/><path d="M8 6.5v3.5" stroke-linecap="round"/><circle cx="8" cy="11.7" r="0.9" fill="currentColor" stroke="none"/></svg>
+        <p>洗っていないペットボトルは収集されない場合があります。</p>
+      </div>
+    </div>
+
+    <div class="section stack-16">
+      <p class="section-title">周辺のごみ箱</p>
+      <div class="bin-list">
+        <div class="bin-card">
+  <div class="bin-card-top">
+    <div class="bin-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.2 12.2A2 2 0 0 1 15.8 21H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M3.5 7h17M9 4h6l1 3H8l1-3z" stroke-linejoin="round"/></svg></div>
+    <div class="bin-main">
+      <p class="bin-name">京都駅前 分別ステーション</p>
+      <div class="chip-row">
+        <span class="chip">ペットボトル</span>
+<span class="chip">缶</span>
+<span class="chip">びん</span>
+      </div>
+    </div>
+  </div>
+  <div class="bin-meta">
+    <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>150m</span>
+    <span class="pill positive"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L6.5 13L13 5" stroke-linecap="round" stroke-linejoin="round"/></svg><span>空きあり</span></span>
+  </div>
+  <p class="bin-note">ふたを閉めてから入れてください。</p>
+  <button class="btn btn-secondary btn-small">ここへ行く</button>
+</div>
+        <div class="bin-card">
+  <div class="bin-card-top">
+    <div class="bin-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.2 12.2A2 2 0 0 1 15.8 21H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M3.5 7h17M9 4h6l1 3H8l1-3z" stroke-linejoin="round"/></svg></div>
+    <div class="bin-main">
+      <p class="bin-name">四条通 ごみ箱</p>
+      <div class="chip-row">
+        <span class="chip">ペットボトル</span>
+<span class="chip">缶</span>
+      </div>
+    </div>
+  </div>
+  <div class="bin-meta">
+    <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>320m</span>
+    <span class="pill almost-full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span>満杯に近づいています</span></span>
+  </div>
+  <p class="bin-note">紙ごみは入れられません。</p>
+  <button class="btn btn-secondary btn-small">ここへ行く</button>
+</div>
+        <div class="bin-card">
+  <div class="bin-card-top">
+    <div class="bin-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.2 12.2A2 2 0 0 1 15.8 21H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M3.5 7h17M9 4h6l1 3H8l1-3z" stroke-linejoin="round"/></svg></div>
+    <div class="bin-main">
+      <p class="bin-name">河原町 リサイクルボックス</p>
+      <div class="chip-row">
+        <span class="chip">ペットボトル</span>
+<span class="chip">びん</span>
+<span class="chip">古紙</span>
+      </div>
+    </div>
+  </div>
+  <div class="bin-meta">
+    <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>480m</span>
+    <span class="pill full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span>満杯です</span></span>
+  </div>
+  <p class="bin-note">収集後に空きが戻る場合があります。</p>
+  <button class="btn btn-secondary btn-small">ここへ行く</button>
+</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

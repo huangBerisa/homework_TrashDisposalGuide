@@ -1,0 +1,1090 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ゴミナビ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap">
+<style>
+  :root{
+    --color-primary:#55C900;
+    --color-primary-light:#E5FFC7;
+    --color-bg:#FFFFFF;
+    --color-surface:#F8F8F8;
+    --color-text:#303030;
+    --color-text-muted:#9A9A9A;
+    --color-alert:#FF4D4D;
+    --color-alert-light:#FFE7E7;
+    --color-warning:#FF9500;
+    --color-warning-light:#FFF1DC;
+    --color-divider:#E3E3E3;
+    --radius:8px;
+    --radius-card:16px;
+    --fs-1:28px;
+    --fs-2:20px;
+    --fs-3:16px;
+    --fs-4:14px;
+    --fs-5:12px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--color-surface);
+    color:var(--color-text);
+    font-family:'Noto Sans JP', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  button{font-family:inherit;}
+  :focus-visible{outline:2px solid var(--color-primary); outline-offset:2px;}
+
+  /* ---------- presenter shell (outside the app itself) ---------- */
+  .page{
+    max-width:720px;
+    margin:0 auto;
+    padding:48px 16px;
+  }
+
+  .stage{
+    display:flex;
+    justify-content:center;
+  }
+
+  /* ---------- device frame (iPhone 17, 402x874pt) ---------- */
+  .device{
+    width:min(402px, 92vw);
+    aspect-ratio:402/874;
+    height:auto;
+    background:var(--color-bg);
+    border:1px solid var(--color-divider);
+    border-radius:44px;
+    padding:12px;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+  }
+  .screen{
+    display:none;
+    flex-direction:column;
+    height:100%;
+    background:var(--color-bg);
+    border-radius:24px;
+    overflow:hidden;
+  }
+  .screen.active{display:flex;}
+
+  .app-header{
+    position:relative;
+    flex:0 0 auto;
+    height:56px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-bottom:1px solid var(--color-divider);
+    background:var(--color-bg);
+  }
+  .app-header span{
+    font-size:var(--fs-3);
+    font-weight:700;
+    color:var(--color-text);
+    letter-spacing:0.02em;
+  }
+  .back-btn{
+    position:absolute;
+    left:8px;
+    top:50%;
+    transform:translateY(-50%);
+    width:44px;
+    height:44px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:none;
+    border:none;
+    padding:0;
+    color:var(--color-text);
+    cursor:pointer;
+  }
+  .back-btn svg{width:22px; height:22px;}
+
+  .app-body{
+    flex:1 1 auto;
+    overflow-y:auto;
+    padding:16px;
+  }
+
+  /* ---------- typography helpers ---------- */
+  .title-1{font-size:var(--fs-1); font-weight:700; margin:0; color:var(--color-text); text-wrap:balance;}
+  .title-2{font-size:var(--fs-2); font-weight:700; margin:0; color:var(--color-text);}
+  .section-title{font-size:var(--fs-2); font-weight:600; margin:0; color:var(--color-text);}
+  .body-1{font-size:var(--fs-3); color:var(--color-text); margin:0; line-height:1.6; font-weight:400;}
+  .body-2{font-size:var(--fs-4); color:var(--color-text-muted); margin:0; line-height:1.6;}
+  .caption{font-size:var(--fs-5); color:var(--color-text-muted); margin:0;}
+
+  .section{margin-bottom:24px;}
+  .section:last-child{margin-bottom:0;}
+  .stack-8 > * + *{margin-top:8px;}
+  .stack-16 > * + *{margin-top:16px;}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    width:100%;
+    min-height:44px;
+    border-radius:var(--radius);
+    font-size:var(--fs-3);
+    font-weight:700;
+    cursor:pointer;
+    border:1px solid transparent;
+  }
+  .btn-primary{
+    background:var(--color-primary);
+    color:#FFFFFF;
+  }
+  .btn-primary svg{width:16px; height:16px; flex:0 0 auto;}
+  .btn-secondary{
+    background:var(--color-bg);
+    color:var(--color-primary);
+    border-color:var(--color-primary);
+  }
+  .btn-small{
+    width:auto;
+    min-height:44px;
+    padding:0 16px;
+    font-size:var(--fs-4);
+  }
+
+  /* ---------- language picker ---------- */
+  .lang-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .lang-card{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    width:100%;
+    min-height:44px;
+    padding:16px;
+    background:var(--color-surface);
+    border:1px solid transparent;
+    border-radius:var(--radius-card);
+    font-size:var(--fs-3);
+    color:var(--color-text);
+    cursor:pointer;
+    text-align:left;
+  }
+  .lang-card .flag{font-size:20px; line-height:1;}
+  .lang-card .name{flex:1;}
+  .lang-card .check{
+    width:16px; height:16px; flex:0 0 auto;
+    visibility:hidden;
+  }
+  .lang-card.selected{
+    background:var(--color-primary-light);
+    border-color:var(--color-primary);
+    font-weight:700;
+  }
+  .lang-card.selected .check{visibility:visible;}
+
+  /* ---------- capture screen ---------- */
+  .viewfinder{
+    aspect-ratio:1/1;
+    background:var(--color-surface);
+    border-radius:var(--radius-card);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+  }
+  .viewfinder svg{width:64px; height:64px;}
+  .viewfinder .corner{
+    position:absolute;
+    width:24px; height:24px;
+    border:2px solid var(--color-text-muted);
+  }
+  .viewfinder .tl{top:8px; left:8px; border-right:none; border-bottom:none;}
+  .viewfinder .tr{top:8px; right:8px; border-left:none; border-bottom:none;}
+  .viewfinder .bl{bottom:8px; left:8px; border-right:none; border-top:none;}
+  .viewfinder .br{bottom:8px; right:8px; border-left:none; border-top:none;}
+
+  /* ---------- result item ---------- */
+  .item-row{display:flex; align-items:center; gap:16px;}
+  .item-thumb{
+    width:64px; height:64px; flex:0 0 auto;
+    background:var(--color-primary);
+    border-radius:var(--radius);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .item-thumb svg{width:40px; height:40px;}
+
+  .result-card{
+    background:var(--color-surface);
+    border-radius:var(--radius-card);
+    padding:16px;
+  }
+
+  .caution{
+    display:flex;
+    gap:8px;
+    align-items:flex-start;
+    background:var(--color-alert-light);
+    border-radius:var(--radius);
+    padding:16px;
+    color:var(--color-alert);
+  }
+  .caution svg{width:16px; height:16px; flex:0 0 auto; margin-top:2px;}
+  .caution p{font-size:var(--fs-4); margin:0; line-height:1.6; color:var(--color-text);}
+
+  .howto-list{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px;}
+  .howto-list li{
+    display:flex; gap:8px; align-items:flex-start;
+    font-size:var(--fs-3); color:var(--color-text); line-height:1.6;
+  }
+  .howto-list li svg{width:16px; height:16px; flex:0 0 auto; margin-top:3px; color:var(--color-primary);}
+
+  /* ---------- bin cards ---------- */
+  .bin-list{display:flex; flex-direction:column; gap:16px;}
+  .bin-card{
+    border:1px solid var(--color-divider);
+    border-radius:var(--radius-card);
+    padding:16px;
+  }
+  .bin-card-top{display:flex; gap:8px;}
+  .bin-icon{
+    width:40px; height:40px; flex:0 0 auto;
+    background:var(--color-primary-light);
+    border-radius:var(--radius);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .bin-icon svg{width:22px; height:22px; color:var(--color-primary);}
+  .bin-main{flex:1; min-width:0;}
+  .bin-name{font-size:var(--fs-2); font-weight:700; color:var(--color-text); margin:0;}
+
+  /* chip / tag */
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 0;}
+  .chip{
+    display:inline-flex; align-items:center;
+    padding:4px 12px;
+    border:1px solid var(--color-divider);
+    border-radius:999px;
+    font-size:var(--fs-5);
+    font-weight:500;
+    color:var(--color-text-muted);
+    background:var(--color-bg);
+  }
+
+  /* status pill */
+  .pill{
+    display:inline-flex; align-items:center; gap:4px;
+    padding:4px 12px;
+    border-radius:999px;
+    font-size:var(--fs-5);
+    font-weight:700;
+  }
+  .pill svg{width:12px; height:12px;}
+  .pill.positive{background:var(--color-primary-light); color:var(--color-text);}
+  .pill.almost-full{background:var(--color-warning-light); color:var(--color-warning);}
+  .pill.full{background:var(--color-alert-light); color:var(--color-alert);}
+
+  .bin-meta{
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap;
+    margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);
+  }
+  .bin-distance{
+    display:flex; align-items:center; gap:8px;
+    font-size:var(--fs-3); color:var(--color-text); font-weight:500;
+  }
+  .bin-distance svg{width:16px; height:16px; color:var(--color-text-muted);}
+  .bin-note{font-size:var(--fs-4); color:var(--color-text-muted); margin:8px 0 0;}
+  .bin-card .btn{margin-top:16px;}
+
+  /* ---------- empty / error states ---------- */
+  .state-screen{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    gap:16px;
+    padding:16px;
+  }
+  .state-icon{
+    width:56px; height:56px;
+    border-radius:50%;
+    background:var(--color-surface);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .state-icon svg{width:28px; height:28px; color:var(--color-text-muted);}
+  .state-icon.alert{background:var(--color-surface);}
+  .state-icon.alert svg{color:var(--color-alert);}
+  .state-screen .btn{max-width:280px;}
+
+  /* ---------- map guide ---------- */
+  .map-wrap{
+    flex:1 1 auto;
+    position:relative;
+    background:var(--color-surface);
+    overflow:hidden;
+  }
+  .map-svg{display:block; width:100%; height:100%; font-family:'Noto Sans JP', sans-serif; cursor:grab; touch-action:none; user-select:none;}
+  .map-svg:active{cursor:grabbing;}
+  .map-land{fill:var(--color-surface);}
+  .map-park{fill:var(--color-primary-light); stroke:var(--color-primary); stroke-width:1;}
+  .map-road{stroke:var(--color-bg); stroke-width:14; fill:none; stroke-linecap:round; stroke-linejoin:round;}
+  .map-road-line{stroke:var(--color-divider); stroke-width:1; stroke-dasharray:2 6; fill:none;}
+  .map-building{fill:var(--color-bg); stroke:var(--color-divider); stroke-width:1;}
+  .map-landmark{fill:var(--color-primary-light); stroke:var(--color-primary); stroke-width:1;}
+  .map-landmark-label{fill:var(--color-text); font-size:12px; font-weight:700; text-anchor:middle;}
+  .map-road-label{fill:var(--color-text-muted); font-size:9px; font-weight:600; letter-spacing:0.03em;}
+  .map-route-group{display:none;}
+  .map-route-group.active{display:inline;}
+  .map-route{stroke:var(--color-primary); stroke-width:3.5; fill:none; stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:2 9;}
+  .map-you-ring{fill:var(--color-bg); stroke:var(--color-primary); stroke-width:2;}
+  .map-you-dot{fill:var(--color-primary);}
+  .map-you-label{fill:var(--color-text); font-size:10px; font-weight:700; text-anchor:middle;}
+  .map-pin-group{display:none;}
+  .map-pin-group.active{display:inline;}
+  .map-pin{fill:var(--color-primary);}
+  .map-pin-badge{fill:var(--color-bg);}
+  .map-pin-icon{stroke:var(--color-primary); stroke-width:1.6; fill:none;}
+
+  .map-info{
+    flex:0 0 auto;
+    padding:16px;
+    border-top:1px solid var(--color-divider);
+    background:var(--color-bg);
+  }
+  .map-pager{display:flex; align-items:center; gap:8px;}
+  .map-pager-info{flex:1 1 auto; min-width:0;}
+  .pager-btn{
+    width:44px; height:44px; flex:0 0 auto;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--color-surface);
+    border:none;
+    border-radius:var(--radius);
+    color:var(--color-text);
+    cursor:pointer;
+    padding:0;
+  }
+  .pager-btn svg{width:18px; height:18px;}
+  .map-meta{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:8px 0 0;}
+  .map-distance{
+    display:flex; align-items:center; gap:8px; margin:0;
+    font-size:var(--fs-3); color:var(--color-text); font-weight:500;
+  }
+  .map-distance svg{width:16px; height:16px; color:var(--color-text-muted);}
+  .map-status-group{display:none;}
+  .map-status-group.active{display:inline-flex;}
+  .map-accepted{margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);}
+  .chip-match{background:var(--color-primary-light); border-color:var(--color-primary); color:var(--color-text); font-weight:700;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="stage">
+    <div class="device">
+
+      <!-- 1: 言語選択 -->
+      <section class="screen active" id="screen-lang">
+        <header class="app-header"><span>ゴミナビ</span></header>
+        <div class="app-body">
+          <div class="section stack-16">
+            <h2 class="title-1">言語を選択してください</h2>
+            <p class="body-2">読める言語をお選びください。</p>
+          </div>
+          <ul class="lang-list">
+            <li><button class="lang-card" data-lang="ja"><span class="flag">🇯🇵</span><span class="name">日本語</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+            <li><button class="lang-card" data-lang="en"><span class="flag">🇺🇸</span><span class="name">English</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+            <li><button class="lang-card" data-lang="zh-Hans"><span class="flag">🇨🇳</span><span class="name">中文（简体）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+            <li><button class="lang-card" data-lang="zh-Hant"><span class="flag">🇹🇼</span><span class="name">中文（繁體）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+            <li><button class="lang-card" data-lang="ko"><span class="flag">🇰🇷</span><span class="name">한국어</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 2: 撮影 -->
+      <section class="screen" id="screen-capture">
+        <header class="app-header">
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="lang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span>ゴミナビ</span>
+        </header>
+        <div class="app-body">
+          <div class="section stack-16">
+            <h2 class="title-1" data-i18n="capture_title">捨てたいごみを撮影してください</h2>
+            <p class="body-2" data-i18n="capture_subtitle">ごみ全体が写るように撮影してください。</p>
+          </div>
+          <div class="section">
+            <div class="viewfinder">
+              <span class="corner tl"></span><span class="corner tr"></span>
+              <span class="corner bl"></span><span class="corner br"></span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="1.5">
+                <path d="M4 8h2l1.5-2h9L18 8h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" stroke-linejoin="round"/>
+                <circle cx="12" cy="13" r="3.5"/>
+              </svg>
+            </div>
+          </div>
+          <div class="section stack-8">
+            <button class="btn btn-primary" id="btn-shoot"><span data-i18n="capture_shoot">撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="btn btn-secondary" data-i18n="capture_gallery">写真を選ぶ</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3: 分別結果 + 周辺ごみ箱（コア画面） -->
+      <section class="screen" id="screen-result">
+        <header class="app-header">
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span>ゴミナビ</span>
+        </header>
+        <div class="app-body">
+
+          <div class="section stack-16">
+            <div class="item-row">
+              <div class="item-thumb">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5">
+                  <path d="M9 3h6v2.2l1.4 2.1c.4.5.6 1.2.6 1.8V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9.1c0-.6.2-1.3.6-1.8L9 5.2V3z"/>
+                  <path d="M8.5 11h7" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div>
+                <p class="title-2" data-i18n="item_name">ペットボトル</p>
+                <p class="body-2" data-i18n="item_note">中身を空にして、キャップとラベルを外します。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="section result-card stack-16">
+            <div class="stack-8">
+              <p class="caption" data-i18n="class_label">分類結果</p>
+              <p class="title-1" data-i18n="class_name">資源ごみ</p>
+              <p class="body-2" data-i18n="class_note">決められた回収日に、透明な袋に入れて出します。</p>
+            </div>
+
+            <div class="stack-8">
+              <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_label">捨て方</p>
+              <ul class="howto-list">
+                <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto1">キャップとラベルは外して「プラスチック」に分けます。</span></li>
+                <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto2">つぶしてから出すと、収集がスムーズです。</span></li>
+              </ul>
+            </div>
+
+            <div class="caution">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l7 12.5H1L8 1.5z" stroke-linejoin="round"/><path d="M8 6.5v3.5" stroke-linecap="round"/><circle cx="8" cy="11.7" r="0.9" fill="currentColor" stroke="none"/></svg>
+              <p data-i18n="caution">洗っていないペットボトルは収集されない場合があります。</p>
+            </div>
+          </div>
+
+          <div class="section stack-16">
+            <p class="section-title" data-i18n="nearby_title">周辺のごみ箱</p>
+
+            <div class="bin-list">
+              <div class="bin-card">
+                <div class="bin-card-top">
+                  <div class="bin-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.2 12.2A2 2 0 0 1 15.8 21H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M3.5 7h17M9 4h6l1 3H8l1-3z" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="bin-main">
+                    <p class="bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
+                    <div class="chip-row">
+                      <span class="chip" data-i18n="chip_pet">ペットボトル</span>
+                      <span class="chip" data-i18n="chip_can">缶</span>
+                      <span class="chip" data-i18n="chip_bottle">びん</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="bin-meta">
+                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>150m</span>
+                  <span class="pill positive"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L6.5 13L13 5" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="status_available">空きあり</span></span>
+                </div>
+                <p class="bin-note" data-i18n="bin1_note">ふたを閉めてから入れてください。</p>
+                <button class="btn btn-secondary btn-small" data-i18n="bin_cta" data-bin-key="bin1">ここへ行く</button>
+              </div>
+
+              <div class="bin-card">
+                <div class="bin-card-top">
+                  <div class="bin-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.2 12.2A2 2 0 0 1 15.8 21H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M3.5 7h17M9 4h6l1 3H8l1-3z" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="bin-main">
+                    <p class="bin-name" data-i18n="bin2_name">四条通 ごみ箱</p>
+                    <div class="chip-row">
+                      <span class="chip" data-i18n="chip_pet">ペットボトル</span>
+                      <span class="chip" data-i18n="chip_can">缶</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="bin-meta">
+                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>320m</span>
+                  <span class="pill almost-full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_almost_full">満杯に近づいています</span></span>
+                </div>
+                <p class="bin-note" data-i18n="bin2_note">紙ごみは入れられません。</p>
+                <button class="btn btn-secondary btn-small" data-i18n="bin_cta" data-bin-key="bin2">ここへ行く</button>
+              </div>
+
+              <div class="bin-card">
+                <div class="bin-card-top">
+                  <div class="bin-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.2 12.2A2 2 0 0 1 15.8 21H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M3.5 7h17M9 4h6l1 3H8l1-3z" stroke-linejoin="round"/></svg>
+                  </div>
+                  <div class="bin-main">
+                    <p class="bin-name" data-i18n="bin3_name">河原町 リサイクルボックス</p>
+                    <div class="chip-row">
+                      <span class="chip" data-i18n="chip_pet">ペットボトル</span>
+                      <span class="chip" data-i18n="chip_bottle">びん</span>
+                      <span class="chip" data-i18n="chip_paper">古紙</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="bin-meta">
+                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>480m</span>
+                  <span class="pill full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_full">満杯です</span></span>
+                </div>
+                <p class="bin-note" data-i18n="bin3_note">収集後に空きが戻る場合があります。</p>
+                <button class="btn btn-secondary btn-small" data-i18n="bin_cta" data-bin-key="bin3">ここへ行く</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 4: 地図案内 -->
+      <section class="screen" id="screen-map">
+        <header class="app-header">
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="result"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span>ゴミナビ</span>
+        </header>
+        <div class="map-wrap">
+          <svg class="map-svg" id="map-svg" viewBox="-20 160 240 440" preserveAspectRatio="xMidYMid slice">
+            <rect class="map-land" x="-60" y="-60" width="480" height="680"/>
+
+            <!-- landmarks -->
+            <rect class="map-park" x="300" y="0" width="60" height="500"/>
+            <text class="map-landmark-label" x="330" y="250" transform="rotate(-90 330 250)" data-i18n="landmark_river">鴨川</text>
+            <rect class="map-landmark" x="6" y="392" width="88" height="100" rx="4"/>
+            <text class="map-landmark-label" x="50" y="446" style="font-size:11px;" data-i18n="landmark_station">京都駅</text>
+
+            <!-- generic city blocks -->
+            <rect class="map-building" x="130" y="15" width="70" height="95" rx="3"/>
+            <rect class="map-building" x="15" y="150" width="70" height="95" rx="3"/>
+            <rect class="map-building" x="130" y="150" width="70" height="95" rx="3"/>
+            <rect class="map-building" x="235" y="150" width="50" height="95" rx="3"/>
+            <rect class="map-building" x="130" y="280" width="70" height="85" rx="3"/>
+            <rect class="map-building" x="235" y="280" width="50" height="85" rx="3"/>
+
+            <!-- roads (grid) -->
+            <path class="map-road" d="M100 0v500"/>
+            <path class="map-road" d="M220 0v500"/>
+            <path class="map-road" d="M300 0v500"/>
+            <path class="map-road" d="M0 130h360"/>
+            <path class="map-road" d="M0 260h360"/>
+            <path class="map-road" d="M0 380h360"/>
+            <path class="map-road-line" d="M100 0v500"/>
+            <path class="map-road-line" d="M220 0v500"/>
+            <path class="map-road-line" d="M300 0v500"/>
+            <path class="map-road-line" d="M0 130h360"/>
+            <path class="map-road-line" d="M0 260h360"/>
+            <path class="map-road-line" d="M0 380h360"/>
+
+            <!-- street name labels (real Kyoto street names) -->
+            <text class="map-road-label" x="0" y="0" transform="translate(108 60) rotate(-90)" data-i18n="landmark_road1">烏丸通</text>
+            <text class="map-road-label" x="30" y="122" data-i18n="landmark_road2">四条通</text>
+            <text class="map-road-label" x="0" y="0" transform="translate(308 300) rotate(-90)" data-i18n="landmark_road3">河原町通</text>
+
+            <!-- walking routes (one active per selected bin) -->
+            <g class="map-route-group active" id="route-bin1">
+              <path class="map-route" d="M100 380 L100 260"/>
+            </g>
+            <g class="map-route-group" id="route-bin2">
+              <path class="map-route" d="M100 380 L100 130 L220 130"/>
+            </g>
+            <g class="map-route-group" id="route-bin3">
+              <path class="map-route" d="M100 380 L100 130 L300 130 L300 40"/>
+            </g>
+
+            <!-- current location -->
+            <circle class="map-you-ring" cx="100" cy="380" r="13"/>
+            <circle class="map-you-dot" cx="100" cy="380" r="5"/>
+            <text class="map-you-label" x="100" y="362" data-i18n="you_are_here">現在地</text>
+
+            <!-- destination pins (one active per selected bin) -->
+            <g class="map-pin-group active" id="pin-bin1">
+              <g transform="translate(100 260)">
+                <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
+                <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
+                <g class="map-pin-icon" transform="translate(-6 -12)">
+                  <path d="M1 5h10l-1 9A1.6 1.6 0 0 1 8.4 15.5H4.6A1.6 1.6 0 0 1 3 13.9L2 5z"/>
+                  <path d="M0.5 5h11M3.8 2.3h4.4l0.7 2h-5.8l0.7-2z" stroke-linejoin="round"/>
+                </g>
+              </g>
+            </g>
+            <g class="map-pin-group" id="pin-bin2">
+              <g transform="translate(220 130)">
+                <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
+                <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
+                <g class="map-pin-icon" transform="translate(-6 -12)">
+                  <path d="M1 5h10l-1 9A1.6 1.6 0 0 1 8.4 15.5H4.6A1.6 1.6 0 0 1 3 13.9L2 5z"/>
+                  <path d="M0.5 5h11M3.8 2.3h4.4l0.7 2h-5.8l0.7-2z" stroke-linejoin="round"/>
+                </g>
+              </g>
+            </g>
+            <g class="map-pin-group" id="pin-bin3">
+              <g transform="translate(300 40)">
+                <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
+                <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
+                <g class="map-pin-icon" transform="translate(-6 -12)">
+                  <path d="M1 5h10l-1 9A1.6 1.6 0 0 1 8.4 15.5H4.6A1.6 1.6 0 0 1 3 13.9L2 5z"/>
+                  <path d="M0.5 5h11M3.8 2.3h4.4l0.7 2h-5.8l0.7-2z" stroke-linejoin="round"/>
+                </g>
+              </g>
+            </g>
+          </svg>
+        </div>
+        <div class="map-info">
+          <div class="map-pager">
+            <button class="pager-btn" id="map-prev" data-i18n-aria="prev_bin" aria-label="前のごみ箱"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="map-pager-info">
+              <p class="title-2" id="map-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
+              <div class="map-meta">
+                <p class="map-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg><span id="map-distance-value">150m</span></p>
+                <span class="pill positive map-status-group active" id="status-bin1"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L6.5 13L13 5" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="status_available">空きあり</span></span>
+                <span class="pill almost-full map-status-group" id="status-bin2"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_almost_full">満杯に近づいています</span></span>
+                <span class="pill full map-status-group" id="status-bin3"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_full">満杯です</span></span>
+              </div>
+            </div>
+            <button class="pager-btn" id="map-next" data-i18n-aria="next_bin" aria-label="次のごみ箱"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+          <div class="map-accepted">
+            <p class="caption" data-i18n="accepted_label">対応ごみ</p>
+            <div class="chip-row" id="map-chip-row"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5: Empty State -->
+      <section class="screen" id="screen-empty">
+        <header class="app-header">
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span>ゴミナビ</span>
+        </header>
+        <div class="state-screen">
+          <div class="state-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21" stroke-linecap="round"/></svg>
+          </div>
+          <p class="title-2" data-i18n="empty_title">該当するごみが見つかりませんでした。</p>
+          <p class="body-2" data-i18n="empty_subtitle">ごみの名前を変えて、もう一度お調べください。</p>
+          <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry">もう一度調べる</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </section>
+
+      <!-- 6: Error State -->
+      <section class="screen" id="screen-error">
+        <header class="app-header">
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span>ゴミナビ</span>
+        </header>
+        <div class="state-screen">
+          <div class="state-icon alert">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5l10 17.5H2L12 2.5z" stroke-linejoin="round"/><path d="M12 9.5v5" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <p class="title-2" data-i18n="error_title">分類情報を取得できませんでした。</p>
+          <p class="body-2" data-i18n="error_subtitle">もう一度お試しください。</p>
+          <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry">もう一度調べる</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var currentLang = 'ja';
+
+  var translations = {
+    ja: {
+      back: '戻る',
+      capture_title: '捨てたいごみを撮影してください',
+      capture_subtitle: 'ごみ全体が写るように撮影してください。',
+      capture_shoot: '撮影する',
+      capture_gallery: '写真を選ぶ',
+      item_name: 'ペットボトル',
+      item_note: '中身を空にして、キャップとラベルを外します。',
+      class_label: '分類結果',
+      class_name: '資源ごみ',
+      class_note: '決められた回収日に、透明な袋に入れて出します。',
+      howto_label: '捨て方',
+      howto1: 'キャップとラベルは外して「プラスチック」に分けます。',
+      howto2: 'つぶしてから出すと、収集がスムーズです。',
+      caution: '洗っていないペットボトルは収集されない場合があります。',
+      nearby_title: '周辺のごみ箱',
+      bin1_name: '京都駅前 分別ステーション',
+      bin1_note: 'ふたを閉めてから入れてください。',
+      bin2_name: '四条通 ごみ箱',
+      bin2_note: '紙ごみは入れられません。',
+      bin3_name: '河原町 リサイクルボックス',
+      bin3_note: '収集後に空きが戻る場合があります。',
+      chip_pet: 'ペットボトル',
+      chip_can: '缶',
+      chip_bottle: 'びん',
+      chip_paper: '古紙',
+      status_available: '空きあり',
+      status_almost_full: '満杯に近づいています',
+      status_full: '満杯です',
+      bin_cta: 'ここへ行く',
+      accepted_label: '対応ごみ',
+      you_are_here: '現在地',
+      landmark_station: '京都駅',
+      landmark_river: '鴨川',
+      landmark_road1: '烏丸通',
+      landmark_road2: '四条通',
+      landmark_road3: '河原町通',
+      prev_bin: '前のごみ箱',
+      next_bin: '次のごみ箱',
+      empty_title: '該当するごみが見つかりませんでした。',
+      empty_subtitle: 'ごみの名前を変えて、もう一度お調べください。',
+      retry: 'もう一度調べる',
+      error_title: '分類情報を取得できませんでした。',
+      error_subtitle: 'もう一度お試しください。'
+    },
+    en: {
+      back: 'Back',
+      capture_title: 'Take a photo of the item you want to throw away',
+      capture_subtitle: 'Frame the whole item in the shot.',
+      capture_shoot: 'Take Photo',
+      capture_gallery: 'Choose from Gallery',
+      item_name: 'PET Bottle',
+      item_note: 'Empty the contents and remove the cap and label.',
+      class_label: 'Category',
+      class_name: 'Recyclable Waste',
+      class_note: 'Put it in a clear bag and place it out on your collection day.',
+      howto_label: 'How to Dispose',
+      howto1: 'Remove the cap and label and sort them as "plastic."',
+      howto2: 'Crushing the bottle makes collection smoother.',
+      caution: "Bottles that haven't been rinsed may not be collected.",
+      nearby_title: 'Nearby Bins',
+      bin1_name: 'Kyoto Station Sorting Station',
+      bin1_note: 'Please close the lid after use.',
+      bin2_name: 'Shijo-dori Bin',
+      bin2_note: 'Paper waste cannot be placed here.',
+      bin3_name: 'Kawaramachi Recycling Box',
+      bin3_note: 'Space may open up again after collection.',
+      chip_pet: 'PET Bottles',
+      chip_can: 'Cans',
+      chip_bottle: 'Glass Bottles',
+      chip_paper: 'Paper',
+      status_available: 'Available',
+      status_almost_full: 'Almost Full',
+      status_full: 'Full',
+      bin_cta: 'Get Directions',
+      accepted_label: 'Accepted Items',
+      you_are_here: 'You are here',
+      landmark_station: 'Kyoto Station',
+      landmark_river: 'Kamo River',
+      landmark_road1: 'Karasuma-dori',
+      landmark_road2: 'Shijo-dori',
+      landmark_road3: 'Kawaramachi-dori',
+      prev_bin: 'Previous bin',
+      next_bin: 'Next bin',
+      empty_title: 'No matching item was found.',
+      empty_subtitle: 'Try changing the item name and search again.',
+      retry: 'Search Again',
+      error_title: "Couldn't retrieve the category information.",
+      error_subtitle: 'Please try again.'
+    },
+    'zh-Hans': {
+      back: '返回',
+      capture_title: '请拍摄想丢弃的垃圾',
+      capture_subtitle: '请让垃圾完整入镜后拍摄。',
+      capture_shoot: '拍摄',
+      capture_gallery: '从相册选择',
+      item_name: '宝特瓶',
+      item_note: '请倒空瓶内液体，并取下瓶盖与标签。',
+      class_label: '分类结果',
+      class_name: '资源垃圾',
+      class_note: '请于规定回收日装入透明袋中丢弃。',
+      howto_label: '丢弃方法',
+      howto1: '取下瓶盖与标签，归类为「塑料」。',
+      howto2: '压扁后再丢弃，有助于回收作业顺畅进行。',
+      caution: '未清洗的宝特瓶可能不会被回收。',
+      nearby_title: '附近的垃圾桶',
+      bin1_name: '京都站前分类站',
+      bin1_note: '投入后请盖好盖子。',
+      bin2_name: '四条通垃圾桶',
+      bin2_note: '无法投入纸类垃圾。',
+      bin3_name: '河原町资源回收箱',
+      bin3_note: '收集后空间可能会恢复。',
+      chip_pet: '宝特瓶',
+      chip_can: '罐类',
+      chip_bottle: '玻璃瓶',
+      chip_paper: '废纸',
+      status_available: '有空位',
+      status_almost_full: '即将满出',
+      status_full: '已满',
+      bin_cta: '前往此处',
+      accepted_label: '可回收垃圾种类',
+      you_are_here: '目前位置',
+      landmark_station: '京都站',
+      landmark_river: '鸭川',
+      landmark_road1: '乌丸通',
+      landmark_road2: '四条通',
+      landmark_road3: '河原町通',
+      prev_bin: '上一个垃圾桶',
+      next_bin: '下一个垃圾桶',
+      empty_title: '未找到符合的垃圾项目。',
+      empty_subtitle: '请更换垃圾名称后再次查询。',
+      retry: '重新查询',
+      error_title: '无法取得分类信息。',
+      error_subtitle: '请再试一次。'
+    },
+    'zh-Hant': {
+      back: '返回',
+      capture_title: '請拍攝想丟棄的垃圾',
+      capture_subtitle: '請讓垃圾完整入鏡後拍攝。',
+      capture_shoot: '拍攝',
+      capture_gallery: '從相簿選擇',
+      item_name: '寶特瓶',
+      item_note: '請倒空瓶內液體，並取下瓶蓋與標籤。',
+      class_label: '分類結果',
+      class_name: '資源垃圾',
+      class_note: '請於規定回收日裝入透明袋中丟棄。',
+      howto_label: '丟棄方法',
+      howto1: '取下瓶蓋與標籤，歸類為「塑膠」。',
+      howto2: '壓扁後再丟棄，有助於收集作業更順暢。',
+      caution: '未清洗的寶特瓶可能不會被收集。',
+      nearby_title: '附近的垃圾桶',
+      bin1_name: '京都站前分類站',
+      bin1_note: '投入後請蓋好蓋子。',
+      bin2_name: '四条通垃圾桶',
+      bin2_note: '無法投入紙類垃圾。',
+      bin3_name: '河原町資源回收箱',
+      bin3_note: '收集後空間可能會恢復。',
+      chip_pet: '寶特瓶',
+      chip_can: '罐類',
+      chip_bottle: '玻璃瓶',
+      chip_paper: '廢紙',
+      status_available: '有空位',
+      status_almost_full: '即將滿出',
+      status_full: '已滿',
+      bin_cta: '前往此處',
+      accepted_label: '可回收垃圾種類',
+      you_are_here: '目前位置',
+      landmark_station: '京都車站',
+      landmark_river: '鴨川',
+      landmark_road1: '烏丸通',
+      landmark_road2: '四條通',
+      landmark_road3: '河原町通',
+      prev_bin: '上一個垃圾桶',
+      next_bin: '下一個垃圾桶',
+      empty_title: '未找到符合的垃圾項目。',
+      empty_subtitle: '請更換垃圾名稱後再次查詢。',
+      retry: '重新查詢',
+      error_title: '無法取得分類資訊。',
+      error_subtitle: '請再試一次。'
+    },
+    ko: {
+      back: '뒤로',
+      capture_title: '버리고 싶은 쓰레기를 촬영해 주세요',
+      capture_subtitle: '쓰레기 전체가 보이도록 촬영해 주세요.',
+      capture_shoot: '촬영하기',
+      capture_gallery: '갤러리에서 선택',
+      item_name: '페트병',
+      item_note: '내용물을 비우고 뚜껑과 라벨을 제거해 주세요.',
+      class_label: '분류 결과',
+      class_name: '자원 쓰레기',
+      class_note: '정해진 수거일에 투명 봉투에 담아 배출해 주세요.',
+      howto_label: '버리는 방법',
+      howto1: '뚜껑과 라벨을 제거하여 "플라스틱"으로 분류합니다.',
+      howto2: '찌그러뜨려서 배출하면 수거가 원활해집니다.',
+      caution: '세척하지 않은 페트병은 수거되지 않을 수 있습니다.',
+      nearby_title: '주변 쓰레기통',
+      bin1_name: '교토역 앞 분리수거 스테이션',
+      bin1_note: '넣은 후 뚜껑을 닫아 주세요.',
+      bin2_name: '시조도리 쓰레기통',
+      bin2_note: '종이 쓰레기는 넣을 수 없습니다.',
+      bin3_name: '가와라마치 재활용함',
+      bin3_note: '수거 후 다시 여유 공간이 생길 수 있습니다.',
+      chip_pet: '페트병',
+      chip_can: '캔',
+      chip_bottle: '유리병',
+      chip_paper: '폐지',
+      status_available: '여유 있음',
+      status_almost_full: '거의 가득 참',
+      status_full: '가득 참',
+      bin_cta: '길찾기',
+      accepted_label: '수거 가능 품목',
+      you_are_here: '현재 위치',
+      landmark_station: '교토역',
+      landmark_river: '가모가와',
+      landmark_road1: '가라스마도리',
+      landmark_road2: '시조도리',
+      landmark_road3: '가와라마치도리',
+      prev_bin: '이전 쓰레기통',
+      next_bin: '다음 쓰레기통',
+      empty_title: '해당하는 쓰레기를 찾을 수 없습니다.',
+      empty_subtitle: '쓰레기 이름을 바꿔서 다시 검색해 주세요.',
+      retry: '다시 검색하기',
+      error_title: '분류 정보를 가져올 수 없습니다.',
+      error_subtitle: '다시 시도해 주세요.'
+    }
+  };
+
+  function applyLanguage(lang){
+    currentLang = translations[lang] ? lang : 'ja';
+    var dict = translations[currentLang];
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if(dict[key]) el.textContent = dict[key];
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-aria');
+      if(dict[key]) el.setAttribute('aria-label', dict[key]);
+    });
+    document.documentElement.lang = currentLang;
+  }
+
+  function showScreen(key){
+    document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+    document.getElementById('screen-' + key).classList.add('active');
+  }
+
+  document.querySelectorAll('.lang-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      document.querySelectorAll('.lang-card').forEach(function(c){ c.classList.remove('selected'); });
+      card.classList.add('selected');
+      applyLanguage(card.getAttribute('data-lang'));
+      var delay = reduceMotion ? 0 : 350;
+      setTimeout(function(){ showScreen('capture'); }, delay);
+    });
+  });
+
+  var shootBtn = document.getElementById('btn-shoot');
+  if(shootBtn){
+    shootBtn.addEventListener('click', function(){ showScreen('result'); });
+  }
+
+  document.querySelectorAll('[data-goto]').forEach(function(btn){
+    btn.addEventListener('click', function(){ showScreen(btn.getAttribute('data-goto')); });
+  });
+
+  var binOrder = ['bin1', 'bin2', 'bin3'];
+  var binDistances = { bin1: '150m', bin2: '320m', bin3: '480m' };
+  var binAccepted = {
+    bin1: ['chip_pet', 'chip_can', 'chip_bottle'],
+    bin2: ['chip_pet', 'chip_can'],
+    bin3: ['chip_pet', 'chip_bottle', 'chip_paper']
+  };
+  var scannedChipKey = 'chip_pet';
+  var currentBinKey = 'bin1';
+
+  function renderBinChips(key){
+    var dict = translations[currentLang] || translations.ja;
+    var types = binAccepted[key].slice().sort(function(a, b){
+      if(a === scannedChipKey) return -1;
+      if(b === scannedChipKey) return 1;
+      return 0;
+    });
+    var row = document.getElementById('map-chip-row');
+    row.innerHTML = '';
+    types.forEach(function(t){
+      var chip = document.createElement('span');
+      chip.className = 'chip' + (t === scannedChipKey ? ' chip-match' : '');
+      chip.setAttribute('data-i18n', t);
+      chip.textContent = dict[t];
+      row.appendChild(chip);
+    });
+  }
+
+  function selectBin(key){
+    currentBinKey = key;
+    var dict = translations[currentLang] || translations.ja;
+    var nameEl = document.getElementById('map-bin-name');
+    nameEl.setAttribute('data-i18n', key + '_name');
+    nameEl.textContent = dict[key + '_name'];
+    document.getElementById('map-distance-value').textContent = binDistances[key];
+    renderBinChips(key);
+
+    document.querySelectorAll('.map-route-group').forEach(function(g){ g.classList.remove('active'); });
+    document.querySelectorAll('.map-pin-group').forEach(function(g){ g.classList.remove('active'); });
+    document.querySelectorAll('.map-status-group').forEach(function(g){ g.classList.remove('active'); });
+    var route = document.getElementById('route-' + key);
+    var pin = document.getElementById('pin-' + key);
+    var status = document.getElementById('status-' + key);
+    if(route) route.classList.add('active');
+    if(pin) pin.classList.add('active');
+    if(status) status.classList.add('active');
+
+    centerMap();
+  }
+
+  renderBinChips(currentBinKey);
+
+  document.querySelectorAll('[data-bin-key]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      selectBin(btn.getAttribute('data-bin-key'));
+      showScreen('map');
+    });
+  });
+
+  var mapPrevBtn = document.getElementById('map-prev');
+  var mapNextBtn = document.getElementById('map-next');
+  if(mapPrevBtn){
+    mapPrevBtn.addEventListener('click', function(){
+      var idx = binOrder.indexOf(currentBinKey);
+      selectBin(binOrder[(idx - 1 + binOrder.length) % binOrder.length]);
+    });
+  }
+  if(mapNextBtn){
+    mapNextBtn.addEventListener('click', function(){
+      var idx = binOrder.indexOf(currentBinKey);
+      selectBin(binOrder[(idx + 1) % binOrder.length]);
+    });
+  }
+
+  /* ---------- draggable map ---------- */
+  var mapSvg = document.getElementById('map-svg');
+  var mapView = { x:-20, y:160, w:240, h:440, minX:-60, maxX:180, minY:-60, maxY:180 };
+  var dragging = false;
+  var dragStartPointer = { x:0, y:0 };
+  var dragStartView = { x:0, y:0 };
+
+  function updateMapViewBox(){
+    mapSvg.setAttribute('viewBox', mapView.x + ' ' + mapView.y + ' ' + mapView.w + ' ' + mapView.h);
+  }
+
+  function centerMap(){
+    mapView.x = -20;
+    mapView.y = 160;
+    updateMapViewBox();
+  }
+
+  if(mapSvg){
+    mapSvg.addEventListener('pointerdown', function(e){
+      dragging = true;
+      mapSvg.setPointerCapture(e.pointerId);
+      dragStartPointer.x = e.clientX;
+      dragStartPointer.y = e.clientY;
+      dragStartView.x = mapView.x;
+      dragStartView.y = mapView.y;
+    });
+    mapSvg.addEventListener('pointermove', function(e){
+      if(!dragging) return;
+      var rect = mapSvg.getBoundingClientRect();
+      var scaleX = mapView.w / rect.width;
+      var scaleY = mapView.h / rect.height;
+      var dx = (e.clientX - dragStartPointer.x) * scaleX;
+      var dy = (e.clientY - dragStartPointer.y) * scaleY;
+      mapView.x = Math.min(mapView.maxX, Math.max(mapView.minX, dragStartView.x - dx));
+      mapView.y = Math.min(mapView.maxY, Math.max(mapView.minY, dragStartView.y - dy));
+      updateMapViewBox();
+    });
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function(evt){
+      mapSvg.addEventListener(evt, function(){ dragging = false; });
+    });
+  }
+</script>
+
+</body>
+</html>
