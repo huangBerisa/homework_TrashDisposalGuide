@@ -174,7 +174,8 @@
     cursor:pointer;
     text-align:left;
   }
-  .lang-card .flag{font-size:20px; line-height:1;}
+  .lang-card .flag{display:flex; align-items:center; flex:0 0 auto;}
+  .lang-card .flag svg{width:24px; height:18px; display:block; border-radius:2px;}
   .lang-card .name{flex:1;}
   .lang-card .check{
     width:16px; height:16px; flex:0 0 auto;
@@ -553,11 +554,11 @@
             <p class="body-2">読める言語をお選びください。</p>
           </div>
           <ul class="lang-list">
-            <li><button class="lang-card" data-lang="ja"><span class="flag">🇯🇵</span><span class="name">日本語</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
-            <li><button class="lang-card" data-lang="en"><span class="flag">🇺🇸</span><span class="name">English</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
-            <li><button class="lang-card" data-lang="zh-Hans"><span class="flag">🇨🇳</span><span class="name">中文（简体）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
-            <li><button class="lang-card" data-lang="zh-Hant"><span class="flag">🇹🇼</span><span class="name">中文（繁體）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
-            <li><button class="lang-card" data-lang="ko"><span class="flag">🇰🇷</span><span class="name">한국어</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+            <li><button class="lang-card" data-lang="ja"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#fff" stroke="#e3e3e3"/><circle cx="12" cy="9" r="5" fill="#BC002D"/></svg></span><span class="name">日本語</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+            <li><button class="lang-card" data-lang="en"><span class="flag"><svg viewBox="0 0 24 18"><clipPath id="cp-us"><rect width="24" height="18" rx="2"/></clipPath><g clip-path="url(#cp-us)"><rect width="24" height="18" fill="#B22234"/><g fill="#fff"><rect y="1.4" width="24" height="1.4"/><rect y="4.2" width="24" height="1.4"/><rect y="7" width="24" height="1.4"/><rect y="9.8" width="24" height="1.4"/><rect y="12.6" width="24" height="1.4"/><rect y="15.4" width="24" height="1.4"/></g><rect width="10" height="9.8" fill="#3C3B6E"/></g></svg></span><span class="name">English</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+            <li><button class="lang-card" data-lang="zh-Hans"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#DE2910"/><path d="M6 3.5l0.9 1.9 2 0.2-1.5 1.4 0.4 2-1.8-1-1.8 1 0.4-2-1.5-1.4 2-0.2z" fill="#FFDE00"/><circle cx="10.5" cy="3" r="0.6" fill="#FFDE00"/><circle cx="11.5" cy="5.5" r="0.6" fill="#FFDE00"/><circle cx="11" cy="8" r="0.6" fill="#FFDE00"/><circle cx="9.3" cy="9.3" r="0.6" fill="#FFDE00"/></svg></span><span class="name">中文（简体）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+            <li><button class="lang-card" data-lang="zh-Hant"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#FE0000"/><rect width="12" height="9" fill="#000095"/><circle cx="6" cy="4.5" r="2.6" fill="#fff"/></svg></span><span class="name">中文（繁體）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+            <li><button class="lang-card" data-lang="ko"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#fff" stroke="#e3e3e3"/><path d="M12 5a4 4 0 0 1 0 8 2 2 0 0 1 0-4 2 2 0 0 0 0-4z" fill="#CD2E3A"/><path d="M12 5a4 4 0 0 0 0 8 2 2 0 0 0 0-4 2 2 0 0 1 0-4z" fill="#0047A0"/></svg></span><span class="name">한국어</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
           </ul>
         </div>
       </section>
