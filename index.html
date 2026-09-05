@@ -319,6 +319,8 @@
   .state-icon svg{width:28px; height:28px; color:var(--color-text-muted);}
   .state-icon.alert{background:var(--color-surface);}
   .state-icon.alert svg{color:var(--color-alert);}
+  .state-icon.success{background:var(--color-primary-light);}
+  .state-icon.success svg{color:var(--color-primary);}
   .state-screen .btn{max-width:280px;}
 
   /* ---------- map guide ---------- */
@@ -379,6 +381,56 @@
   .map-status-group.active{display:inline-flex;}
   .map-accepted{margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);}
   .chip-match{background:var(--color-primary-light); border-color:var(--color-primary); color:var(--color-text); font-weight:700;}
+
+  /* ---------- external / source links ---------- */
+  .source-link{
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:var(--fs-4); color:var(--color-primary); font-weight:500;
+    text-decoration:none; margin-top:8px;
+  }
+  .source-link svg{width:14px; height:14px;}
+
+  /* ---------- multi-item detection ---------- */
+  .detect-list{display:flex; flex-direction:column; gap:8px; list-style:none; margin:0; padding:0;}
+  .detect-card{
+    display:flex; align-items:center; gap:12px;
+    width:100%; min-height:44px; padding:16px;
+    background:var(--color-surface);
+    border:1px solid transparent;
+    border-radius:var(--radius-card);
+    text-align:left;
+  }
+  .detect-card .item-thumb{width:48px; height:48px;}
+  .detect-card .item-thumb svg{width:28px; height:28px;}
+  .detect-card .name{flex:1; font-size:var(--fs-3); font-weight:700; color:var(--color-text);}
+  .detect-card .chevron{width:20px; height:20px; flex:0 0 auto; color:var(--color-text-muted);}
+
+  /* ---------- map primary action ---------- */
+  .map-action{margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);}
+  .map-action .btn{margin-bottom:8px;}
+
+  /* ---------- post-disposal / feedback ---------- */
+  .feedback-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
+  .feedback-btn{
+    min-height:44px; padding:0 16px;
+    border:1px solid var(--color-divider);
+    border-radius:var(--radius);
+    background:var(--color-bg);
+    font-size:var(--fs-4); color:var(--color-text);
+  }
+  .feedback-btn.selected{
+    background:var(--color-primary-light);
+    border-color:var(--color-primary);
+    font-weight:700;
+  }
+  .feedback-thanks{font-size:var(--fs-4); color:var(--color-primary); margin-top:8px; display:none;}
+  .feedback-thanks.visible{display:block;}
+
+  .review-list{display:flex; flex-direction:column; gap:12px; margin:8px 0 0; padding:0; list-style:none;}
+  .review-item{padding-bottom:12px; border-bottom:1px solid var(--color-divider);}
+  .review-item:last-child{border-bottom:none; padding-bottom:0;}
+  .review-meta{font-size:var(--fs-5); color:var(--color-text-muted); margin:0 0 4px;}
+  .review-text{font-size:var(--fs-4); color:var(--color-text); margin:0; line-height:1.6;}
 </style>
 </head>
 <body>
@@ -427,8 +479,64 @@
           </div>
           <div class="section stack-8">
             <button class="btn btn-primary" id="btn-shoot"><span data-i18n="capture_shoot">撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="btn btn-secondary" data-i18n="capture_gallery">写真を選ぶ</button>
+            <button class="btn btn-secondary" id="btn-gallery" data-i18n="capture_gallery">写真を選ぶ</button>
           </div>
+        </div>
+      </section>
+
+      <!-- 2b: 複数検出 -->
+      <section class="screen" id="screen-multi">
+        <header class="app-header">
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span>ゴミナビ</span>
+        </header>
+        <div class="app-body">
+          <div class="section stack-16">
+            <h2 class="title-1" data-i18n="multi_title">複数のごみを検出しました</h2>
+            <p class="body-2" data-i18n="multi_subtitle">分類したいものを1つ選んでください。</p>
+          </div>
+          <ul class="detect-list">
+            <li>
+              <button class="detect-card" data-item-key="pet">
+                <div class="item-thumb">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5">
+                    <path d="M9 3h6v2.2l1.4 2.1c.4.5.6 1.2.6 1.8V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9.1c0-.6.2-1.3.6-1.8L9 5.2V3z"/>
+                    <path d="M8.5 11h7" stroke-linecap="round"/>
+                  </svg>
+                </div>
+                <span class="name" data-i18n="pet_item_name">ペットボトル</span>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </li>
+            <li>
+              <button class="detect-card" data-item-key="can">
+                <div class="item-thumb">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5">
+                    <path d="M8 4h8l-0.6 2H8.6L8 4z" stroke-linejoin="round"/>
+                    <path d="M8.6 6h6.8l-0.7 13.2A2 2 0 0 1 12.7 21h-1.4a2 2 0 0 1-2-1.8L8.6 6z"/>
+                  </svg>
+                </div>
+                <span class="name" data-i18n="can_item_name">缶</span>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 2c: ごみが検出できない場合 -->
+      <section class="screen" id="screen-notrash">
+        <header class="app-header">
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span>ゴミナビ</span>
+        </header>
+        <div class="state-screen">
+          <div class="state-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M4 17l4.5-4.5 3 3 4-4L20 17" stroke-linejoin="round"/></svg>
+          </div>
+          <p class="title-2" data-i18n="notrash_title">ごみを検出できませんでした。</p>
+          <p class="body-2" data-i18n="notrash_subtitle">ごみが写るように、もう一度撮影してください。</p>
+          <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry_shoot">もう一度撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         </div>
       </section>
 
@@ -449,8 +557,8 @@
                 </svg>
               </div>
               <div>
-                <p class="title-2" data-i18n="item_name">ペットボトル</p>
-                <p class="body-2" data-i18n="item_note">中身を空にして、キャップとラベルを外します。</p>
+                <p class="title-2" id="item-name-el" data-i18n="pet_item_name">ペットボトル</p>
+                <p class="body-2" id="item-note-el" data-i18n="pet_item_note">中身を空にして、キャップとラベルを外します。</p>
               </div>
             </div>
           </div>
@@ -458,22 +566,27 @@
           <div class="section result-card stack-16">
             <div class="stack-8">
               <p class="caption" data-i18n="class_label">分類結果</p>
-              <p class="title-1" data-i18n="class_name">資源ごみ</p>
-              <p class="body-2" data-i18n="class_note">決められた回収日に、透明な袋に入れて出します。</p>
+              <p class="title-1" id="class-name-el" data-i18n="pet_class_name">資源ごみ</p>
+              <p class="body-2" id="class-note-el" data-i18n="pet_class_note">決められた回収日に、透明な袋に入れて出します。</p>
             </div>
 
             <div class="stack-8">
               <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_label">捨て方</p>
               <ul class="howto-list">
-                <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto1">キャップとラベルは外して「プラスチック」に分けます。</span></li>
-                <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto2">つぶしてから出すと、収集がスムーズです。</span></li>
+                <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="howto1-el" data-i18n="pet_howto1">キャップとラベルは外して「プラスチック」に分けます。</span></li>
+                <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="howto2-el" data-i18n="pet_howto2">つぶしてから出すと、収集がスムーズです。</span></li>
               </ul>
             </div>
 
             <div class="caution">
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l7 12.5H1L8 1.5z" stroke-linejoin="round"/><path d="M8 6.5v3.5" stroke-linecap="round"/><circle cx="8" cy="11.7" r="0.9" fill="currentColor" stroke="none"/></svg>
-              <p data-i18n="caution">洗っていないペットボトルは収集されない場合があります。</p>
+              <p id="caution-el" data-i18n="pet_caution">洗っていないペットボトルは収集されない場合があります。</p>
             </div>
+
+            <a class="source-link" id="source-link" href="https://www.google.com/search?q=%E3%81%94%E3%81%BF%E5%88%86%E5%88%A5%E3%80%80%E3%83%9A%E3%83%83%E3%83%88%E3%83%9C%E3%83%88%E3%83%AB" target="_blank" rel="noopener noreferrer">
+              <span data-i18n="source_link_label">分別情報の出典を見る</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 9.5L14 2M9 2h5v5M13 8.5V13a1.5 1.5 0 0 1-1.5 1.5H3.5A1.5 1.5 0 0 1 2 13V5.5A1.5 1.5 0 0 1 3.5 4H8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
           </div>
 
           <div class="section stack-16">
@@ -660,6 +773,45 @@
             <p class="caption" data-i18n="accepted_label">対応ごみ</p>
             <div class="chip-row" id="map-chip-row"></div>
           </div>
+          <div class="map-action">
+            <button class="btn btn-primary" id="btn-disposed"><span data-i18n="disposed_cta">ここに捨てました</span></button>
+            <a class="source-link" id="gmaps-link" href="#" target="_blank" rel="noopener noreferrer">
+              <span data-i18n="gmaps_label">Google マップで経路を開く</span>
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 9.5L14 2M9 2h5v5M13 8.5V13a1.5 1.5 0 0 1-1.5 1.5H3.5A1.5 1.5 0 0 1 2 13V5.5A1.5 1.5 0 0 1 3.5 4H8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4b: 捨てた後 -->
+      <section class="screen" id="screen-disposed">
+        <header class="app-header">
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <span>ゴミナビ</span>
+        </header>
+        <div class="app-body">
+          <div class="section stack-16" style="text-align:center;">
+            <div class="state-icon success" style="margin:0 auto;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 12.5L9.5 17.5L19.5 6.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <p class="title-2" data-i18n="disposed_title">お疲れ様でした！</p>
+            <p class="body-2" data-i18n="disposed_subtitle">ごみを正しく捨てることができました。</p>
+          </div>
+
+          <div class="section">
+            <p class="caption" data-i18n="feedback_label">このごみ箱はどうでしたか？</p>
+            <div class="feedback-row">
+              <button class="feedback-btn" data-feedback="available" data-i18n="feedback_available">空いていた</button>
+              <button class="feedback-btn" data-feedback="normal" data-i18n="feedback_normal">ふつう</button>
+              <button class="feedback-btn" data-feedback="crowded" data-i18n="feedback_crowded">混んでいた</button>
+            </div>
+            <p class="feedback-thanks" id="feedback-thanks" data-i18n="feedback_thanks">ご協力ありがとうございます。</p>
+          </div>
+
+          <div class="section">
+            <p class="section-title" data-i18n="reviews_title">みんなのクチコミ</p>
+            <ul class="review-list" id="review-list"></ul>
+          </div>
         </div>
       </section>
 
@@ -710,15 +862,28 @@
       capture_subtitle: 'ごみ全体が写るように撮影してください。',
       capture_shoot: '撮影する',
       capture_gallery: '写真を選ぶ',
-      item_name: 'ペットボトル',
-      item_note: '中身を空にして、キャップとラベルを外します。',
+      multi_title: '複数のごみを検出しました',
+      multi_subtitle: '分類したいものを1つ選んでください。',
+      notrash_title: 'ごみを検出できませんでした。',
+      notrash_subtitle: 'ごみが写るように、もう一度撮影してください。',
+      retry_shoot: 'もう一度撮影する',
+      pet_item_name: 'ペットボトル',
+      pet_item_note: '中身を空にして、キャップとラベルを外します。',
+      pet_class_name: '資源ごみ',
+      pet_class_note: '決められた回収日に、透明な袋に入れて出します。',
+      pet_howto1: 'キャップとラベルは外して「プラスチック」に分けます。',
+      pet_howto2: 'つぶしてから出すと、収集がスムーズです。',
+      pet_caution: '洗っていないペットボトルは収集されない場合があります。',
+      can_item_name: '缶',
+      can_item_note: '中身をすすいで、乾かしてから出します。',
+      can_class_name: '資源ごみ',
+      can_class_note: '決められた回収日に、つぶしてネットに入れて出します。',
+      can_howto1: '飲み口の部分は特に注意して洗います。',
+      can_howto2: 'つぶすと収集がスムーズです。',
+      can_caution: '中身が残ったままの缶は収集されない場合があります。',
       class_label: '分類結果',
-      class_name: '資源ごみ',
-      class_note: '決められた回収日に、透明な袋に入れて出します。',
       howto_label: '捨て方',
-      howto1: 'キャップとラベルは外して「プラスチック」に分けます。',
-      howto2: 'つぶしてから出すと、収集がスムーズです。',
-      caution: '洗っていないペットボトルは収集されない場合があります。',
+      source_link_label: '分別情報の出典を見る',
       nearby_title: '周辺のごみ箱',
       bin1_name: '京都駅前 分別ステーション',
       bin1_note: 'ふたを閉めてから入れてください。',
@@ -735,6 +900,28 @@
       status_full: '満杯です',
       bin_cta: 'ここへ行く',
       accepted_label: '対応ごみ',
+      disposed_cta: 'ここに捨てました',
+      gmaps_label: 'Google マップで経路を開く',
+      disposed_title: 'お疲れ様でした！',
+      disposed_subtitle: 'ごみを正しく捨てることができました。',
+      feedback_label: 'このごみ箱はどうでしたか？',
+      feedback_available: '空いていた',
+      feedback_normal: 'ふつう',
+      feedback_crowded: '混んでいた',
+      feedback_thanks: 'ご協力ありがとうございます。',
+      reviews_title: 'みんなのクチコミ',
+      review_bin1_1_meta: '観光客A・2日前',
+      review_bin1_1_text: '分かりやすい場所でした。',
+      review_bin1_2_meta: '地元の方・1週間前',
+      review_bin1_2_text: '京都駅からすぐで便利です。',
+      review_bin2_1_meta: '観光客B・3日前',
+      review_bin2_1_text: '少し混んでいましたが捨てられました。',
+      review_bin2_2_meta: '観光客C・5日前',
+      review_bin2_2_text: '缶はいっぱいでした。',
+      review_bin3_1_meta: '観光客D・1日前',
+      review_bin3_1_text: '満杯で入れられませんでした。',
+      review_bin3_2_meta: '地元の方・4日前',
+      review_bin3_2_text: '河原町周辺は利用者が多いです。',
       you_are_here: '現在地',
       landmark_station: '京都駅',
       landmark_river: '鴨川',
@@ -755,15 +942,28 @@
       capture_subtitle: 'Frame the whole item in the shot.',
       capture_shoot: 'Take Photo',
       capture_gallery: 'Choose from Gallery',
-      item_name: 'PET Bottle',
-      item_note: 'Empty the contents and remove the cap and label.',
+      multi_title: 'Multiple items detected',
+      multi_subtitle: 'Select one item to check its sorting.',
+      notrash_title: 'No item was detected.',
+      notrash_subtitle: 'Please retake the photo so the item is clearly visible.',
+      retry_shoot: 'Take Photo Again',
+      pet_item_name: 'PET Bottle',
+      pet_item_note: 'Empty the contents and remove the cap and label.',
+      pet_class_name: 'Recyclable Waste',
+      pet_class_note: 'Put it in a clear bag and place it out on your collection day.',
+      pet_howto1: 'Remove the cap and label and sort them as "plastic."',
+      pet_howto2: 'Crushing the bottle makes collection smoother.',
+      pet_caution: "Bottles that haven't been rinsed may not be collected.",
+      can_item_name: 'Can',
+      can_item_note: 'Rinse it out and let it dry before disposal.',
+      can_class_name: 'Recyclable Waste',
+      can_class_note: 'Crush it and put it in the net bag on your collection day.',
+      can_howto1: 'Wash the opening carefully.',
+      can_howto2: 'Crushing it makes collection smoother.',
+      can_caution: 'Cans with leftover contents may not be collected.',
       class_label: 'Category',
-      class_name: 'Recyclable Waste',
-      class_note: 'Put it in a clear bag and place it out on your collection day.',
       howto_label: 'How to Dispose',
-      howto1: 'Remove the cap and label and sort them as "plastic."',
-      howto2: 'Crushing the bottle makes collection smoother.',
-      caution: "Bottles that haven't been rinsed may not be collected.",
+      source_link_label: 'View sorting info source',
       nearby_title: 'Nearby Bins',
       bin1_name: 'Kyoto Station Sorting Station',
       bin1_note: 'Please close the lid after use.',
@@ -780,6 +980,28 @@
       status_full: 'Full',
       bin_cta: 'Get Directions',
       accepted_label: 'Accepted Items',
+      disposed_cta: 'I disposed here',
+      gmaps_label: 'Open in Google Maps',
+      disposed_title: 'Well done!',
+      disposed_subtitle: 'You disposed of it correctly.',
+      feedback_label: 'How was this bin?',
+      feedback_available: 'Not crowded',
+      feedback_normal: 'Normal',
+      feedback_crowded: 'Crowded',
+      feedback_thanks: 'Thanks for your feedback!',
+      reviews_title: 'Reviews from others',
+      review_bin1_1_meta: 'Tourist A · 2 days ago',
+      review_bin1_1_text: 'It was an easy place to find.',
+      review_bin1_2_meta: 'Local resident · 1 week ago',
+      review_bin1_2_text: 'Very convenient, right by Kyoto Station.',
+      review_bin2_1_meta: 'Tourist B · 3 days ago',
+      review_bin2_1_text: 'A bit crowded, but I managed to throw it away.',
+      review_bin2_2_meta: 'Tourist C · 5 days ago',
+      review_bin2_2_text: 'The can section was full.',
+      review_bin3_1_meta: 'Tourist D · 1 day ago',
+      review_bin3_1_text: "It was full and I couldn't use it.",
+      review_bin3_2_meta: 'Local resident · 4 days ago',
+      review_bin3_2_text: 'This area near Kawaramachi gets a lot of use.',
       you_are_here: 'You are here',
       landmark_station: 'Kyoto Station',
       landmark_river: 'Kamo River',
@@ -800,15 +1022,28 @@
       capture_subtitle: '请让垃圾完整入镜后拍摄。',
       capture_shoot: '拍摄',
       capture_gallery: '从相册选择',
-      item_name: '宝特瓶',
-      item_note: '请倒空瓶内液体，并取下瓶盖与标签。',
+      multi_title: '检测到多个垃圾项目',
+      multi_subtitle: '请选择一个想要查询分类的项目。',
+      notrash_title: '未检测到垃圾。',
+      notrash_subtitle: '请让物品清楚入镜后重新拍摄。',
+      retry_shoot: '重新拍摄',
+      pet_item_name: '宝特瓶',
+      pet_item_note: '请倒空瓶内液体，并取下瓶盖与标签。',
+      pet_class_name: '资源垃圾',
+      pet_class_note: '请于规定回收日装入透明袋中丢弃。',
+      pet_howto1: '取下瓶盖与标签，归类为「塑料」。',
+      pet_howto2: '压扁后再丢弃，有助于回收作业顺畅进行。',
+      pet_caution: '未清洗的宝特瓶可能不会被回收。',
+      can_item_name: '罐类',
+      can_item_note: '请冲洗干净并晾干后再丢弃。',
+      can_class_name: '资源垃圾',
+      can_class_note: '请于规定回收日压扁后放入网袋中丢弃。',
+      can_howto1: '请特别清洗瓶口部分。',
+      can_howto2: '压扁后有助于收集顺畅进行。',
+      can_caution: '残留内容物的罐类可能不会被回收。',
       class_label: '分类结果',
-      class_name: '资源垃圾',
-      class_note: '请于规定回收日装入透明袋中丢弃。',
       howto_label: '丢弃方法',
-      howto1: '取下瓶盖与标签，归类为「塑料」。',
-      howto2: '压扁后再丢弃，有助于回收作业顺畅进行。',
-      caution: '未清洗的宝特瓶可能不会被回收。',
+      source_link_label: '查看分类信息来源',
       nearby_title: '附近的垃圾桶',
       bin1_name: '京都站前分类站',
       bin1_note: '投入后请盖好盖子。',
@@ -825,6 +1060,28 @@
       status_full: '已满',
       bin_cta: '前往此处',
       accepted_label: '可回收垃圾种类',
+      disposed_cta: '我已丢弃在这里',
+      gmaps_label: '在 Google 地图中打开',
+      disposed_title: '辛苦了！',
+      disposed_subtitle: '您已正确丢弃垃圾。',
+      feedback_label: '这个垃圾桶怎么样？',
+      feedback_available: '空闲',
+      feedback_normal: '一般',
+      feedback_crowded: '拥挤',
+      feedback_thanks: '感谢您的反馈。',
+      reviews_title: '大家的评价',
+      review_bin1_1_meta: '游客A・2天前',
+      review_bin1_1_text: '地点很好找。',
+      review_bin1_2_meta: '当地居民・1周前',
+      review_bin1_2_text: '就在京都站附近，很方便。',
+      review_bin2_1_meta: '游客B・3天前',
+      review_bin2_1_text: '有点拥挤，但还是丢进去了。',
+      review_bin2_2_meta: '游客C・5天前',
+      review_bin2_2_text: '罐类已经满了。',
+      review_bin3_1_meta: '游客D・1天前',
+      review_bin3_1_text: '已经满了，没办法丢。',
+      review_bin3_2_meta: '当地居民・4天前',
+      review_bin3_2_text: '河原町附近使用的人很多。',
       you_are_here: '目前位置',
       landmark_station: '京都站',
       landmark_river: '鸭川',
@@ -845,15 +1102,28 @@
       capture_subtitle: '請讓垃圾完整入鏡後拍攝。',
       capture_shoot: '拍攝',
       capture_gallery: '從相簿選擇',
-      item_name: '寶特瓶',
-      item_note: '請倒空瓶內液體，並取下瓶蓋與標籤。',
+      multi_title: '偵測到多個垃圾項目',
+      multi_subtitle: '請選擇一個想要查詢分類的項目。',
+      notrash_title: '未偵測到垃圾。',
+      notrash_subtitle: '請讓物品清楚入鏡後重新拍攝。',
+      retry_shoot: '重新拍攝',
+      pet_item_name: '寶特瓶',
+      pet_item_note: '請倒空瓶內液體，並取下瓶蓋與標籤。',
+      pet_class_name: '資源垃圾',
+      pet_class_note: '請於規定回收日裝入透明袋中丟棄。',
+      pet_howto1: '取下瓶蓋與標籤，歸類為「塑膠」。',
+      pet_howto2: '壓扁後再丟棄，有助於收集作業更順暢。',
+      pet_caution: '未清洗的寶特瓶可能不會被收集。',
+      can_item_name: '罐類',
+      can_item_note: '請沖洗乾淨並晾乾後再丟棄。',
+      can_class_name: '資源垃圾',
+      can_class_note: '請於規定回收日壓扁後放入網袋中丟棄。',
+      can_howto1: '請特別清洗瓶口部分。',
+      can_howto2: '壓扁後有助於收集作業更順暢。',
+      can_caution: '殘留內容物的罐類可能不會被收集。',
       class_label: '分類結果',
-      class_name: '資源垃圾',
-      class_note: '請於規定回收日裝入透明袋中丟棄。',
       howto_label: '丟棄方法',
-      howto1: '取下瓶蓋與標籤，歸類為「塑膠」。',
-      howto2: '壓扁後再丟棄，有助於收集作業更順暢。',
-      caution: '未清洗的寶特瓶可能不會被收集。',
+      source_link_label: '查看分類資訊來源',
       nearby_title: '附近的垃圾桶',
       bin1_name: '京都站前分類站',
       bin1_note: '投入後請蓋好蓋子。',
@@ -870,6 +1140,28 @@
       status_full: '已滿',
       bin_cta: '前往此處',
       accepted_label: '可回收垃圾種類',
+      disposed_cta: '我已丟棄在這裡',
+      gmaps_label: '在 Google 地圖中開啟',
+      disposed_title: '辛苦了！',
+      disposed_subtitle: '您已正確丟棄垃圾。',
+      feedback_label: '這個垃圾桶怎麼樣？',
+      feedback_available: '空閒',
+      feedback_normal: '一般',
+      feedback_crowded: '擁擠',
+      feedback_thanks: '感謝您的回饋。',
+      reviews_title: '大家的評價',
+      review_bin1_1_meta: '遊客A・2天前',
+      review_bin1_1_text: '地點很好找。',
+      review_bin1_2_meta: '當地居民・1週前',
+      review_bin1_2_text: '就在京都站附近，很方便。',
+      review_bin2_1_meta: '遊客B・3天前',
+      review_bin2_1_text: '有點擁擠，但還是丟進去了。',
+      review_bin2_2_meta: '遊客C・5天前',
+      review_bin2_2_text: '罐類已經滿了。',
+      review_bin3_1_meta: '遊客D・1天前',
+      review_bin3_1_text: '已經滿了，沒辦法丟。',
+      review_bin3_2_meta: '當地居民・4天前',
+      review_bin3_2_text: '河原町附近使用的人很多。',
       you_are_here: '目前位置',
       landmark_station: '京都車站',
       landmark_river: '鴨川',
@@ -890,15 +1182,28 @@
       capture_subtitle: '쓰레기 전체가 보이도록 촬영해 주세요.',
       capture_shoot: '촬영하기',
       capture_gallery: '갤러리에서 선택',
-      item_name: '페트병',
-      item_note: '내용물을 비우고 뚜껑과 라벨을 제거해 주세요.',
+      multi_title: '여러 개의 쓰레기가 감지되었습니다',
+      multi_subtitle: '분류를 확인할 항목을 하나 선택해 주세요.',
+      notrash_title: '쓰레기를 인식하지 못했습니다.',
+      notrash_subtitle: '물건이 잘 보이도록 다시 촬영해 주세요.',
+      retry_shoot: '다시 촬영하기',
+      pet_item_name: '페트병',
+      pet_item_note: '내용물을 비우고 뚜껑과 라벨을 제거해 주세요.',
+      pet_class_name: '자원 쓰레기',
+      pet_class_note: '정해진 수거일에 투명 봉투에 담아 배출해 주세요.',
+      pet_howto1: '뚜껑과 라벨을 제거하여 "플라스틱"으로 분류합니다.',
+      pet_howto2: '찌그러뜨려서 배출하면 수거가 원활해집니다.',
+      pet_caution: '세척하지 않은 페트병은 수거되지 않을 수 있습니다.',
+      can_item_name: '캔',
+      can_item_note: '내용물을 헹구고 말린 후 배출해 주세요.',
+      can_class_name: '자원 쓰레기',
+      can_class_note: '정해진 수거일에 찌그러뜨려 그물망에 담아 배출해 주세요.',
+      can_howto1: '입구 부분을 특히 꼼꼼히 씻어 주세요.',
+      can_howto2: '찌그러뜨리면 수거가 원활해집니다.',
+      can_caution: '내용물이 남아 있는 캔은 수거되지 않을 수 있습니다.',
       class_label: '분류 결과',
-      class_name: '자원 쓰레기',
-      class_note: '정해진 수거일에 투명 봉투에 담아 배출해 주세요.',
       howto_label: '버리는 방법',
-      howto1: '뚜껑과 라벨을 제거하여 "플라스틱"으로 분류합니다.',
-      howto2: '찌그러뜨려서 배출하면 수거가 원활해집니다.',
-      caution: '세척하지 않은 페트병은 수거되지 않을 수 있습니다.',
+      source_link_label: '분리배출 정보 출처 보기',
       nearby_title: '주변 쓰레기통',
       bin1_name: '교토역 앞 분리수거 스테이션',
       bin1_note: '넣은 후 뚜껑을 닫아 주세요.',
@@ -915,6 +1220,28 @@
       status_full: '가득 참',
       bin_cta: '길찾기',
       accepted_label: '수거 가능 품목',
+      disposed_cta: '여기에 버렸어요',
+      gmaps_label: 'Google 지도에서 열기',
+      disposed_title: '수고하셨습니다!',
+      disposed_subtitle: '쓰레기를 올바르게 버리셨습니다.',
+      feedback_label: '이 쓰레기통은 어땠나요?',
+      feedback_available: '여유 있음',
+      feedback_normal: '보통',
+      feedback_crowded: '혼잡함',
+      feedback_thanks: '소중한 의견 감사합니다.',
+      reviews_title: '다른 이용자 후기',
+      review_bin1_1_meta: '관광객 A · 2일 전',
+      review_bin1_1_text: '찾기 쉬운 장소였어요.',
+      review_bin1_2_meta: '현지 주민 · 1주 전',
+      review_bin1_2_text: '교토역 바로 근처라 편리해요.',
+      review_bin2_1_meta: '관광객 B · 3일 전',
+      review_bin2_1_text: '조금 붐볐지만 버릴 수 있었어요.',
+      review_bin2_2_meta: '관광객 C · 5일 전',
+      review_bin2_2_text: '캔 칸은 가득 차 있었어요.',
+      review_bin3_1_meta: '관광객 D · 1일 전',
+      review_bin3_1_text: '가득 차서 사용할 수 없었어요.',
+      review_bin3_2_meta: '현지 주민 · 4일 전',
+      review_bin3_2_text: '가와라마치 주변은 이용자가 많아요.',
       you_are_here: '현재 위치',
       landmark_station: '교토역',
       landmark_river: '가모가와',
@@ -962,12 +1289,53 @@
 
   var shootBtn = document.getElementById('btn-shoot');
   if(shootBtn){
-    shootBtn.addEventListener('click', function(){ showScreen('result'); });
+    shootBtn.addEventListener('click', function(){ showScreen('multi'); });
+  }
+
+  var galleryBtn = document.getElementById('btn-gallery');
+  if(galleryBtn){
+    galleryBtn.addEventListener('click', function(){ showScreen('notrash'); });
   }
 
   document.querySelectorAll('[data-goto]').forEach(function(btn){
     btn.addEventListener('click', function(){ showScreen(btn.getAttribute('data-goto')); });
   });
+
+  var currentItemKey = 'pet';
+  var itemSourceQuery = { pet: 'ごみ分別　ペットボトル', can: 'ごみ分別　缶' };
+
+  function selectItem(key){
+    currentItemKey = key;
+    var dict = translations[currentLang] || translations.ja;
+    ['item-name-el', 'item-note-el', 'class-name-el', 'class-note-el', 'howto1-el', 'howto2-el', 'caution-el'].forEach(function(id, i){
+      var field = ['item_name', 'item_note', 'class_name', 'class_note', 'howto1', 'howto2', 'caution'][i];
+      var el = document.getElementById(id);
+      var i18nKey = key + '_' + field;
+      el.setAttribute('data-i18n', i18nKey);
+      el.textContent = dict[i18nKey];
+    });
+    var sourceLink = document.getElementById('source-link');
+    if(sourceLink){
+      sourceLink.href = 'https://www.google.com/search?q=' + encodeURIComponent(itemSourceQuery[key]);
+    }
+    updateBinChipHighlights();
+  }
+
+  function updateBinChipHighlights(){
+    var matchKey = 'chip_' + currentItemKey;
+    document.querySelectorAll('.bin-card .chip').forEach(function(c){
+      c.classList.toggle('chip-match', c.getAttribute('data-i18n') === matchKey);
+    });
+  }
+
+  document.querySelectorAll('.detect-card').forEach(function(card){
+    card.addEventListener('click', function(){
+      selectItem(card.getAttribute('data-item-key'));
+      showScreen('result');
+    });
+  });
+
+  updateBinChipHighlights();
 
   var binOrder = ['bin1', 'bin2', 'bin3'];
   var binDistances = { bin1: '150m', bin2: '320m', bin3: '480m' };
@@ -976,11 +1344,11 @@
     bin2: ['chip_pet', 'chip_can'],
     bin3: ['chip_pet', 'chip_bottle', 'chip_paper']
   };
-  var scannedChipKey = 'chip_pet';
   var currentBinKey = 'bin1';
 
   function renderBinChips(key){
     var dict = translations[currentLang] || translations.ja;
+    var scannedChipKey = 'chip_' + currentItemKey;
     var types = binAccepted[key].slice().sort(function(a, b){
       if(a === scannedChipKey) return -1;
       if(b === scannedChipKey) return 1;
@@ -997,6 +1365,34 @@
     });
   }
 
+  var reviewsData = {
+    bin1: ['review_bin1_1', 'review_bin1_2'],
+    bin2: ['review_bin2_1', 'review_bin2_2'],
+    bin3: ['review_bin3_1', 'review_bin3_2']
+  };
+
+  function renderReviews(key){
+    var dict = translations[currentLang] || translations.ja;
+    var list = document.getElementById('review-list');
+    if(!list) return;
+    list.innerHTML = '';
+    reviewsData[key].forEach(function(prefix){
+      var li = document.createElement('li');
+      li.className = 'review-item';
+      var meta = document.createElement('p');
+      meta.className = 'review-meta';
+      meta.setAttribute('data-i18n', prefix + '_meta');
+      meta.textContent = dict[prefix + '_meta'];
+      var text = document.createElement('p');
+      text.className = 'review-text';
+      text.setAttribute('data-i18n', prefix + '_text');
+      text.textContent = dict[prefix + '_text'];
+      li.appendChild(meta);
+      li.appendChild(text);
+      list.appendChild(li);
+    });
+  }
+
   function selectBin(key){
     currentBinKey = key;
     var dict = translations[currentLang] || translations.ja;
@@ -1005,6 +1401,15 @@
     nameEl.textContent = dict[key + '_name'];
     document.getElementById('map-distance-value').textContent = binDistances[key];
     renderBinChips(key);
+    renderReviews(key);
+
+    var gmapsLink = document.getElementById('gmaps-link');
+    if(gmapsLink){
+      gmapsLink.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(dict[key + '_name']);
+    }
+    document.querySelectorAll('.feedback-btn').forEach(function(b){ b.classList.remove('selected'); });
+    var thanks = document.getElementById('feedback-thanks');
+    if(thanks) thanks.classList.remove('visible');
 
     document.querySelectorAll('.map-route-group').forEach(function(g){ g.classList.remove('active'); });
     document.querySelectorAll('.map-pin-group').forEach(function(g){ g.classList.remove('active'); });
@@ -1020,6 +1425,28 @@
   }
 
   renderBinChips(currentBinKey);
+  renderReviews(currentBinKey);
+  (function(){
+    var gmapsLink = document.getElementById('gmaps-link');
+    if(gmapsLink){
+      var dict = translations[currentLang] || translations.ja;
+      gmapsLink.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(dict[currentBinKey + '_name']);
+    }
+  })();
+
+  var disposedBtn = document.getElementById('btn-disposed');
+  if(disposedBtn){
+    disposedBtn.addEventListener('click', function(){ showScreen('disposed'); });
+  }
+
+  document.querySelectorAll('.feedback-btn').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.feedback-btn').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      var thanks = document.getElementById('feedback-thanks');
+      if(thanks) thanks.classList.add('visible');
+    });
+  });
 
   document.querySelectorAll('[data-bin-key]').forEach(function(btn){
     btn.addEventListener('click', function(){
