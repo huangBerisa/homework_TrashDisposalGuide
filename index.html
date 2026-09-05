@@ -105,7 +105,7 @@
     color:var(--color-primary);
     cursor:pointer;
   }
-  .back-btn svg{width:28px; height:28px;}
+  .back-btn img{width:28px; height:28px; display:block;}
 
   .app-body{
     flex:1 1 auto;
@@ -442,7 +442,7 @@
     width:28px; height:28px; display:flex; align-items:center; justify-content:center;
     color:var(--color-primary);
   }
-  .next-btn svg{width:28px; height:28px;}
+  .next-btn img{width:28px; height:28px; display:block;}
 
   /* ---------- onboarding ---------- */
   .onboarding-screen{
@@ -544,9 +544,9 @@
       <!-- 1: 言語選択 -->
       <section class="screen" id="screen-lang">
         <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="onboarding3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="onboarding3"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
           <div class="section stack-16">
@@ -566,9 +566,9 @@
       <!-- 2: 撮影 -->
       <section class="screen" id="screen-capture">
         <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="lang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="lang"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
           <div class="section stack-16">
@@ -595,9 +595,9 @@
       <!-- 2b: 複数検出 -->
       <section class="screen" id="screen-multi">
         <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
           <div class="section stack-16">
@@ -636,9 +636,9 @@
       <!-- 2c: ごみが検出できない場合 -->
       <section class="screen" id="screen-notrash">
         <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="state-screen">
           <div class="state-icon">
@@ -653,9 +653,9 @@
       <!-- 3: 分別結果 + 周辺ごみ箱（コア画面） -->
       <section class="screen" id="screen-result">
         <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
 
@@ -777,9 +777,9 @@
       <!-- 4: 地図案内 -->
       <section class="screen" id="screen-map">
         <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="result"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="result"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="map-wrap">
           <svg class="map-svg" id="map-svg" viewBox="-20 160 240 440" preserveAspectRatio="xMidYMid slice">
@@ -869,7 +869,7 @@
         </div>
         <div class="map-info">
           <div class="map-pager">
-            <button class="pager-btn" id="map-prev" data-i18n-aria="prev_bin" aria-label="前のごみ箱"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="pager-btn" id="map-prev" data-i18n-aria="prev_bin" aria-label="前のごみ箱"><img src="assets/left.png" alt=""></button>
             <div class="map-pager-info">
               <p class="title-2" id="map-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
               <div class="map-meta">
@@ -879,7 +879,7 @@
                 <span class="pill full map-status-group" id="status-bin3"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_full">満杯です</span></span>
               </div>
             </div>
-            <button class="pager-btn" id="map-next" data-i18n-aria="next_bin" aria-label="次のごみ箱"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="pager-btn" id="map-next" data-i18n-aria="next_bin" aria-label="次のごみ箱"><img src="assets/right.png" alt=""></button>
           </div>
           <div class="map-accepted">
             <p class="caption" data-i18n="accepted_label">対応ごみ</p>
@@ -898,9 +898,9 @@
       <!-- 4b: 捨てた後 -->
       <section class="screen" id="screen-disposed">
         <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="map"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="map"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
           <div class="section stack-16" style="text-align:center;">
@@ -931,9 +931,9 @@
       <!-- 5: Empty State -->
       <section class="screen" id="screen-empty">
         <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="state-screen">
           <div class="state-icon">
@@ -948,9 +948,9 @@
       <!-- 6: Error State -->
       <section class="screen" id="screen-error">
         <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="state-screen">
           <div class="state-icon alert">
