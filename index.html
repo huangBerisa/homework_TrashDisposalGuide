@@ -91,21 +91,21 @@
   }
   .back-btn{
     position:absolute;
-    left:8px;
+    left:0;
     top:50%;
     transform:translateY(-50%);
-    width:44px;
-    height:44px;
+    width:28px;
+    height:28px;
     display:flex;
     align-items:center;
     justify-content:center;
     background:none;
     border:none;
     padding:0;
-    color:var(--color-text);
+    color:var(--color-primary);
     cursor:pointer;
   }
-  .back-btn svg{width:22px; height:22px;}
+  .back-btn svg{width:28px; height:28px;}
 
   .app-body{
     flex:1 1 auto;
@@ -433,20 +433,22 @@
   .review-text{font-size:var(--fs-4); color:var(--color-text); margin:0; line-height:1.6;}
 
   /* ---------- header title group (icon + right chevron) ---------- */
-  .header-title{display:flex; align-items:center; gap:6px;}
-  .header-icon{width:18px; height:18px; flex:0 0 auto;}
+  .header-title{display:flex; align-items:center; gap:0;}
+  .header-title span{font-family:'Noto Sans JP', sans-serif; font-weight:700; font-size:24px; color:var(--color-primary); line-height:normal;}
+  .header-icon{width:28px; height:28px; flex:0 0 auto;}
   .next-btn{
-    position:absolute; right:8px; top:50%; transform:translateY(-50%);
-    width:44px; height:44px; display:flex; align-items:center; justify-content:center;
-    color:var(--color-text-muted);
+    position:absolute; right:0; top:50%; transform:translateY(-50%);
+    width:28px; height:28px; display:flex; align-items:center; justify-content:center;
+    color:var(--color-primary);
   }
-  .next-btn svg{width:22px; height:22px;}
+  .next-btn svg{width:28px; height:28px;}
 
   /* ---------- onboarding ---------- */
   .onboarding-screen{
     flex:1; display:flex; flex-direction:column;
     padding:32px 16px 24px;
     position:relative;
+    cursor:pointer;
   }
   .onboarding-illustration{
     position:relative;
@@ -468,12 +470,6 @@
     background:var(--color-divider); cursor:pointer;
   }
   .onboarding-dots button.active{width:10px; height:10px; background:var(--color-primary);}
-  .onboarding-skip{
-    display:inline-flex; align-items:center; gap:4px; margin-left:auto;
-    font-size:var(--fs-4); font-weight:500; color:var(--color-primary);
-    background:none; border:none; cursor:pointer; padding:8px 0;
-  }
-  .onboarding-skip svg{width:16px; height:16px;}
   .onboarding-footer{display:flex; align-items:center; flex:0 0 auto;}
   .onboarding-tap-hint{
     text-align:center; font-size:var(--fs-5); color:var(--color-text-muted); margin:4px 0 0;
@@ -500,9 +496,7 @@
             <button data-onboarding-dot="2" aria-label="2"></button>
             <button data-onboarding-dot="3" aria-label="3"></button>
           </div>
-          <div class="onboarding-footer">
-            <button class="onboarding-skip" data-goto="lang">スキップ<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          </div>
+          <p class="onboarding-tap-hint">画面をタップして次へ</p>
         </div>
       </section>
 
@@ -521,9 +515,7 @@
             <button class="active" data-onboarding-dot="2" aria-label="2"></button>
             <button data-onboarding-dot="3" aria-label="3"></button>
           </div>
-          <div class="onboarding-footer">
-            <button class="onboarding-skip" data-goto="lang">スキップ<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          </div>
+          <p class="onboarding-tap-hint">画面をタップして次へ</p>
         </div>
       </section>
 
@@ -1424,7 +1416,18 @@
   });
 
   document.querySelectorAll('[data-onboarding-dot]').forEach(function(dot){
-    dot.addEventListener('click', function(){ showScreen('onboarding' + dot.getAttribute('data-onboarding-dot')); });
+    dot.addEventListener('click', function(e){
+      e.stopPropagation();
+      showScreen('onboarding' + dot.getAttribute('data-onboarding-dot'));
+    });
+  });
+
+  document.querySelectorAll('.onboarding-screen').forEach(function(el){
+    el.addEventListener('click', function(e){
+      if(e.target.closest('[data-goto]')) return;
+      var num = parseInt(el.closest('.screen').id.replace('screen-onboarding', ''), 10);
+      showScreen(num < 3 ? 'onboarding' + (num + 1) : 'lang');
+    });
   });
 
   var currentItemKey = 'pet';
