@@ -222,6 +222,8 @@
     display:flex; align-items:center; justify-content:center;
   }
   .item-thumb svg{width:40px; height:40px;}
+  .item-thumb.icon-image{background:none;}
+  .item-thumb img{width:100%; height:100%; object-fit:contain;}
 
   .result-card{
     background:var(--color-surface);
@@ -612,11 +614,8 @@
           <ul class="detect-list">
             <li>
               <button class="detect-card" data-item-key="pet">
-                <div class="item-thumb">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5">
-                    <path d="M9 3h6v2.2l1.4 2.1c.4.5.6 1.2.6 1.8V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9.1c0-.6.2-1.3.6-1.8L9 5.2V3z"/>
-                    <path d="M8.5 11h7" stroke-linecap="round"/>
-                  </svg>
+                <div class="item-thumb icon-image">
+                  <img src="assets/Bottle_Icon_7.png" alt="">
                 </div>
                 <span class="name" data-i18n="pet_item_name">ペットボトル</span>
                 <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -624,11 +623,8 @@
             </li>
             <li>
               <button class="detect-card" data-item-key="can">
-                <div class="item-thumb">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5">
-                    <path d="M8 4h8l-0.6 2H8.6L8 4z" stroke-linejoin="round"/>
-                    <path d="M8.6 6h6.8l-0.7 13.2A2 2 0 0 1 12.7 21h-1.4a2 2 0 0 1-2-1.8L8.6 6z"/>
-                  </svg>
+                <div class="item-thumb icon-image">
+                  <img src="assets/Can_Icon_4.png" alt="">
                 </div>
                 <span class="name" data-i18n="can_item_name">缶</span>
                 <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -666,11 +662,8 @@
 
           <div class="section stack-16">
             <div class="item-row">
-              <div class="item-thumb">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.5">
-                  <path d="M9 3h6v2.2l1.4 2.1c.4.5.6 1.2.6 1.8V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V9.1c0-.6.2-1.3.6-1.8L9 5.2V3z"/>
-                  <path d="M8.5 11h7" stroke-linecap="round"/>
-                </svg>
+              <div class="item-thumb icon-image">
+                <img id="item-icon-el" src="assets/Bottle_Icon_7.png" alt="">
               </div>
               <div>
                 <p class="title-2" id="item-name-el" data-i18n="pet_item_name">ペットボトル</p>
@@ -1448,6 +1441,7 @@
 
   var currentItemKey = 'pet';
   var itemSourceQuery = { pet: 'ごみ分別　ペットボトル', can: 'ごみ分別　缶' };
+  var itemIcons = { pet: 'assets/Bottle_Icon_7.png', can: 'assets/Can_Icon_4.png' };
 
   function selectItem(key){
     currentItemKey = key;
@@ -1459,6 +1453,8 @@
       el.setAttribute('data-i18n', i18nKey);
       el.textContent = dict[i18nKey];
     });
+    var iconEl = document.getElementById('item-icon-el');
+    if(iconEl && itemIcons[key]) iconEl.src = itemIcons[key];
     var sourceLink = document.getElementById('source-link');
     if(sourceLink){
       sourceLink.href = 'https://www.google.com/search?q=' + encodeURIComponent(itemSourceQuery[key]);
