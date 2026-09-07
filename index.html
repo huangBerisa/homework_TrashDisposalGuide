@@ -250,6 +250,13 @@
   }
   .howto-list li svg{width:16px; height:16px; flex:0 0 auto; margin-top:3px; color:var(--color-primary);}
 
+  .dont-list{margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px;}
+  .dont-list li{
+    display:flex; gap:8px; align-items:flex-start;
+    font-size:var(--fs-3); color:var(--color-text); line-height:1.6;
+  }
+  .dont-list li svg{width:16px; height:16px; flex:0 0 auto; margin-top:3px; color:var(--color-alert);}
+
   /* ---------- bin cards ---------- */
   .bin-list{display:flex; flex-direction:column; gap:16px;}
   .bin-card{
@@ -595,6 +602,8 @@
           <div class="section stack-8">
             <button class="btn btn-primary" id="btn-shoot"><span data-i18n="capture_shoot">撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             <button class="btn btn-secondary" id="btn-gallery" data-i18n="capture_gallery">写真を選ぶ</button>
+            <input type="file" accept="image/*" capture="environment" id="camera-input" style="display:none;">
+            <input type="file" accept="image/*" id="gallery-input" style="display:none;">
           </div>
         </div>
       </section>
@@ -646,8 +655,43 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M4 17l4.5-4.5 3 3 4-4L20 17" stroke-linejoin="round"/></svg>
           </div>
           <p class="title-2" data-i18n="notrash_title">ごみを検出できませんでした。</p>
-          <p class="body-2" data-i18n="notrash_subtitle">ごみが写るように、もう一度撮影してください。</p>
+          <p class="body-2" data-i18n="notrash_subtitle">人物が写っている、ピントが合っていないなど、判別できない写真の可能性があります。</p>
           <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry_shoot">もう一度撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn btn-secondary" data-goto="howto" data-i18n="howto_link">正しい撮影方法を見る</button>
+        </div>
+      </section>
+
+      <!-- 2d: 撮影のコツ -->
+      <section class="screen" id="screen-howto">
+        <header class="app-header">
+          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="notrash"><img src="assets/left.png" alt=""></button>
+          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
+        </header>
+        <div class="app-body">
+          <div class="section stack-16">
+            <h2 class="title-1" data-i18n="howto_shoot_title">正しい撮影方法</h2>
+            <p class="body-2" data-i18n="howto_shoot_subtitle">以下のポイントを確認して、もう一度撮影してください。</p>
+          </div>
+          <div class="section stack-8">
+            <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_do_label">撮影のポイント</p>
+            <ul class="howto-list">
+              <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do1">ごみ全体が画面いっぱいに写るようにしてください</span></li>
+              <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do2">明るい場所で、影ができないように撮影してください</span></li>
+              <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do3">なるべく無地の背景の上に置いて撮影してください</span></li>
+            </ul>
+          </div>
+          <div class="section stack-8">
+            <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_dont_label">こんな写真はNG</p>
+            <ul class="dont-list">
+              <li><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="howto_dont1">人物や顔が写り込んでいる</span></li>
+              <li><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="howto_dont2">ピントがぼやけている</span></li>
+              <li><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="howto_dont3">遠すぎる、または暗すぎる</span></li>
+            </ul>
+          </div>
+          <div class="section stack-8">
+            <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry_shoot">もう一度撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
         </div>
       </section>
 
@@ -979,8 +1023,19 @@
       multi_title: '複数のごみを検出しました',
       multi_subtitle: '分類したいものを1つ選んでください。',
       notrash_title: 'ごみを検出できませんでした。',
-      notrash_subtitle: 'ごみが写るように、もう一度撮影してください。',
+      notrash_subtitle: '人物が写っている、ピントが合っていないなど、判別できない写真の可能性があります。',
       retry_shoot: 'もう一度撮影する',
+      howto_link: '正しい撮影方法を見る',
+      howto_shoot_title: '正しい撮影方法',
+      howto_shoot_subtitle: '以下のポイントを確認して、もう一度撮影してください。',
+      howto_do_label: '撮影のポイント',
+      howto_do1: 'ごみ全体が画面いっぱいに写るようにしてください',
+      howto_do2: '明るい場所で、影ができないように撮影してください',
+      howto_do3: 'なるべく無地の背景の上に置いて撮影してください',
+      howto_dont_label: 'こんな写真はNG',
+      howto_dont1: '人物や顔が写り込んでいる',
+      howto_dont2: 'ピントがぼやけている',
+      howto_dont3: '遠すぎる、または暗すぎる',
       pet_item_name: 'ペットボトル',
       pet_item_note: '中身を空にして、キャップとラベルを外します。',
       pet_class_name: '資源ごみ',
@@ -1060,8 +1115,19 @@
       multi_title: 'Multiple items detected',
       multi_subtitle: 'Select one item to check its sorting.',
       notrash_title: 'No item was detected.',
-      notrash_subtitle: 'Please retake the photo so the item is clearly visible.',
+      notrash_subtitle: 'The photo may include a person, be out of focus, or otherwise be unrecognizable.',
       retry_shoot: 'Take Photo Again',
+      howto_link: 'See the correct way to take a photo',
+      howto_shoot_title: 'How to Take a Good Photo',
+      howto_shoot_subtitle: 'Check the points below and take the photo again.',
+      howto_do_label: 'Tips for a good photo',
+      howto_do1: 'Fill the frame with the whole item',
+      howto_do2: 'Shoot in a well-lit place without shadows',
+      howto_do3: 'Place it on a plain background if possible',
+      howto_dont_label: 'Avoid photos like these',
+      howto_dont1: 'A person or face is in the shot',
+      howto_dont2: 'The photo is out of focus',
+      howto_dont3: 'Too far away or too dark',
       pet_item_name: 'PET Bottle',
       pet_item_note: 'Empty the contents and remove the cap and label.',
       pet_class_name: 'Recyclable Waste',
@@ -1141,8 +1207,19 @@
       multi_title: '检测到多个垃圾项目',
       multi_subtitle: '请选择一个想要查询分类的项目。',
       notrash_title: '未检测到垃圾。',
-      notrash_subtitle: '请让物品清楚入镜后重新拍摄。',
+      notrash_subtitle: '照片中可能有人物、对焦不清晰，或其他无法辨识的情况。',
       retry_shoot: '重新拍摄',
+      howto_link: '查看正确拍摄方法',
+      howto_shoot_title: '正确的拍摄方法',
+      howto_shoot_subtitle: '请确认以下要点后重新拍摄。',
+      howto_do_label: '拍摄要点',
+      howto_do1: '请让垃圾完整占满画面',
+      howto_do2: '请在光线充足、无阴影处拍摄',
+      howto_do3: '请尽量放在纯色背景上拍摄',
+      howto_dont_label: '请避免以下情况',
+      howto_dont1: '画面中出现人物或脸部',
+      howto_dont2: '对焦模糊不清',
+      howto_dont3: '距离太远或太暗',
       pet_item_name: '宝特瓶',
       pet_item_note: '请倒空瓶内液体，并取下瓶盖与标签。',
       pet_class_name: '资源垃圾',
@@ -1222,8 +1299,19 @@
       multi_title: '偵測到多個垃圾項目',
       multi_subtitle: '請選擇一個想要查詢分類的項目。',
       notrash_title: '未偵測到垃圾。',
-      notrash_subtitle: '請讓物品清楚入鏡後重新拍攝。',
+      notrash_subtitle: '照片中可能有人物、對焦不清晰，或其他無法辨識的情況。',
       retry_shoot: '重新拍攝',
+      howto_link: '查看正確拍攝方法',
+      howto_shoot_title: '正確的拍攝方法',
+      howto_shoot_subtitle: '請確認以下要點後重新拍攝。',
+      howto_do_label: '拍攝要點',
+      howto_do1: '請讓垃圾完整佔滿畫面',
+      howto_do2: '請在光線充足、無陰影處拍攝',
+      howto_do3: '請盡量放在純色背景上拍攝',
+      howto_dont_label: '請避免以下情況',
+      howto_dont1: '畫面中出現人物或臉部',
+      howto_dont2: '對焦模糊不清',
+      howto_dont3: '距離太遠或太暗',
       pet_item_name: '寶特瓶',
       pet_item_note: '請倒空瓶內液體，並取下瓶蓋與標籤。',
       pet_class_name: '資源垃圾',
@@ -1303,8 +1391,19 @@
       multi_title: '여러 개의 쓰레기가 감지되었습니다',
       multi_subtitle: '분류를 확인할 항목을 하나 선택해 주세요.',
       notrash_title: '쓰레기를 인식하지 못했습니다.',
-      notrash_subtitle: '물건이 잘 보이도록 다시 촬영해 주세요.',
+      notrash_subtitle: '사진에 사람이 나오거나 초점이 맞지 않는 등 인식할 수 없는 경우일 수 있습니다.',
       retry_shoot: '다시 촬영하기',
+      howto_link: '올바른 촬영 방법 보기',
+      howto_shoot_title: '올바른 촬영 방법',
+      howto_shoot_subtitle: '아래 항목을 확인하고 다시 촬영해 주세요.',
+      howto_do_label: '촬영 요령',
+      howto_do1: '쓰레기 전체가 화면에 가득 차도록 촬영해 주세요',
+      howto_do2: '밝은 곳에서 그림자가 생기지 않도록 촬영해 주세요',
+      howto_do3: '가능하면 무늬 없는 배경 위에 놓고 촬영해 주세요',
+      howto_dont_label: '이런 사진은 피해주세요',
+      howto_dont1: '사람이나 얼굴이 함께 촬영됨',
+      howto_dont2: '초점이 흐릿함',
+      howto_dont3: '너무 멀거나 너무 어두움',
       pet_item_name: '페트병',
       pet_item_note: '내용물을 비우고 뚜껑과 라벨을 제거해 주세요.',
       pet_class_name: '자원 쓰레기',
@@ -1411,13 +1510,27 @@
   }
 
   var shootBtn = document.getElementById('btn-shoot');
-  if(shootBtn){
-    shootBtn.addEventListener('click', function(){ showScreen('multi'); });
+  var cameraInput = document.getElementById('camera-input');
+  if(shootBtn && cameraInput){
+    shootBtn.addEventListener('click', function(){ cameraInput.click(); });
+    cameraInput.addEventListener('change', function(){
+      if(cameraInput.files && cameraInput.files.length > 0){
+        showScreen('multi');
+      }
+      cameraInput.value = '';
+    });
   }
 
   var galleryBtn = document.getElementById('btn-gallery');
-  if(galleryBtn){
-    galleryBtn.addEventListener('click', function(){ showScreen('notrash'); });
+  var galleryInput = document.getElementById('gallery-input');
+  if(galleryBtn && galleryInput){
+    galleryBtn.addEventListener('click', function(){ galleryInput.click(); });
+    galleryInput.addEventListener('change', function(){
+      if(galleryInput.files && galleryInput.files.length > 0){
+        showScreen('notrash');
+      }
+      galleryInput.value = '';
+    });
   }
 
   document.querySelectorAll('[data-goto]').forEach(function(btn){
