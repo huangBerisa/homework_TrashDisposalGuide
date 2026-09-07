@@ -187,6 +187,10 @@
     font-weight:700;
   }
   .lang-card.selected .check{visibility:visible;}
+  .lang-select-body{display:flex; flex-direction:column; height:100%;}
+  .lang-select-body .lang-list{flex:0 0 auto;}
+  .lang-confirm{margin-top:auto;}
+  .btn:disabled{opacity:0.4; cursor:not-allowed;}
 
   /* ---------- capture screen ---------- */
   .viewfinder{
@@ -548,7 +552,7 @@
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
           <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
-        <div class="app-body">
+        <div class="app-body lang-select-body">
           <div class="section stack-16">
             <h2 class="title-1">言語を選択してください</h2>
             <p class="body-2">読める言語をお選びください。</p>
@@ -560,6 +564,7 @@
             <li><button class="lang-card" data-lang="zh-Hant"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#FE0000"/><rect width="12" height="9" fill="#000095"/><circle cx="6" cy="4.5" r="2.6" fill="#fff"/></svg></span><span class="name">中文（繁體）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
             <li><button class="lang-card" data-lang="ko"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#fff" stroke="#e3e3e3"/><path d="M12 5a4 4 0 0 1 0 8 2 2 0 0 1 0-4 2 2 0 0 0 0-4z" fill="#CD2E3A"/><path d="M12 5a4 4 0 0 0 0 8 2 2 0 0 0 0-4 2 2 0 0 1 0-4z" fill="#0047A0"/></svg></span><span class="name">한국어</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
           </ul>
+          <button class="btn btn-primary lang-confirm" id="btn-lang-confirm" data-i18n="lang_confirm" disabled>決定</button>
         </div>
       </section>
 
@@ -973,6 +978,7 @@
   var translations = {
     ja: {
       back: '戻る',
+      lang_confirm: '決定',
       capture_title: '捨てたいごみを撮影してください',
       capture_subtitle: 'ごみ全体が写るように撮影してください。',
       capture_shoot: '撮影する',
@@ -1053,6 +1059,7 @@
     },
     en: {
       back: 'Back',
+      lang_confirm: 'Confirm',
       capture_title: 'Take a photo of the item you want to throw away',
       capture_subtitle: 'Frame the whole item in the shot.',
       capture_shoot: 'Take Photo',
@@ -1133,6 +1140,7 @@
     },
     'zh-Hans': {
       back: '返回',
+      lang_confirm: '确定',
       capture_title: '请拍摄想丢弃的垃圾',
       capture_subtitle: '请让垃圾完整入镜后拍摄。',
       capture_shoot: '拍摄',
@@ -1213,6 +1221,7 @@
     },
     'zh-Hant': {
       back: '返回',
+      lang_confirm: '確定',
       capture_title: '請拍攝想丟棄的垃圾',
       capture_subtitle: '請讓垃圾完整入鏡後拍攝。',
       capture_shoot: '拍攝',
@@ -1293,6 +1302,7 @@
     },
     ko: {
       back: '뒤로',
+      lang_confirm: '확인',
       capture_title: '버리고 싶은 쓰레기를 촬영해 주세요',
       capture_subtitle: '쓰레기 전체가 보이도록 촬영해 주세요.',
       capture_shoot: '촬영하기',
@@ -1397,10 +1407,15 @@
       document.querySelectorAll('.lang-card').forEach(function(c){ c.classList.remove('selected'); });
       card.classList.add('selected');
       applyLanguage(card.getAttribute('data-lang'));
-      var delay = reduceMotion ? 0 : 350;
-      setTimeout(function(){ showScreen('capture'); }, delay);
+      var confirmBtn = document.getElementById('btn-lang-confirm');
+      if(confirmBtn) confirmBtn.disabled = false;
     });
   });
+
+  var langConfirmBtn = document.getElementById('btn-lang-confirm');
+  if(langConfirmBtn){
+    langConfirmBtn.addEventListener('click', function(){ showScreen('capture'); });
+  }
 
   var shootBtn = document.getElementById('btn-shoot');
   if(shootBtn){
