@@ -762,14 +762,14 @@
               <div class="bin-card">
                 <div class="bin-card-top">
                   <div class="bin-icon icon-image">
-                    <img src="assets/Recycle_Icon_2.png" alt="">
+                    <img src="assets/TrashBin.png" alt="">
                   </div>
                   <div class="bin-main">
                     <p class="bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
                     <div class="chip-row">
-                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_7.png" alt=""></span>
-                      <span class="chip" data-chip-key="chip_can"><span class="chip-text" data-i18n="chip_can">缶</span><img class="chip-icon" src="assets/Can_Icon_4.png" alt=""></span>
-                      <span class="chip" data-chip-key="chip_bottle"><span class="chip-text" data-i18n="chip_bottle">びん</span><img class="chip-icon" src="assets/Broken_Glass_Icon_1.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_s.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_can"><span class="chip-text" data-i18n="chip_can">缶</span><img class="chip-icon" src="assets/Can_Icon_s.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_bottle"><span class="chip-text" data-i18n="chip_bottle">びん</span><img class="chip-icon" src="assets/Recyclables_Icon_s.png" alt=""></span>
                     </div>
                   </div>
                 </div>
@@ -784,13 +784,13 @@
               <div class="bin-card">
                 <div class="bin-card-top">
                   <div class="bin-icon icon-image">
-                    <img src="assets/Recycle_Icon_2.png" alt="">
+                    <img src="assets/TrashBin.png" alt="">
                   </div>
                   <div class="bin-main">
                     <p class="bin-name" data-i18n="bin2_name">四条通 ごみ箱</p>
                     <div class="chip-row">
-                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_7.png" alt=""></span>
-                      <span class="chip" data-chip-key="chip_can"><span class="chip-text" data-i18n="chip_can">缶</span><img class="chip-icon" src="assets/Can_Icon_4.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_s.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_can"><span class="chip-text" data-i18n="chip_can">缶</span><img class="chip-icon" src="assets/Can_Icon_s.png" alt=""></span>
                     </div>
                   </div>
                 </div>
@@ -805,13 +805,13 @@
               <div class="bin-card">
                 <div class="bin-card-top">
                   <div class="bin-icon icon-image">
-                    <img src="assets/Recycle_Icon_2.png" alt="">
+                    <img src="assets/TrashBin.png" alt="">
                   </div>
                   <div class="bin-main">
                     <p class="bin-name" data-i18n="bin3_name">河原町 リサイクルボックス</p>
                     <div class="chip-row">
-                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_7.png" alt=""></span>
-                      <span class="chip" data-chip-key="chip_bottle"><span class="chip-text" data-i18n="chip_bottle">びん</span><img class="chip-icon" src="assets/Broken_Glass_Icon_1.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_s.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_bottle"><span class="chip-text" data-i18n="chip_bottle">びん</span><img class="chip-icon" src="assets/Recyclables_Icon_s.png" alt=""></span>
                       <span class="chip" data-chip-key="chip_paper"><span class="chip-text" data-i18n="chip_paper">古紙</span><img class="chip-icon" src="assets/Paper_Icon_3.png" alt=""></span>
                     </div>
                   </div>
@@ -1683,7 +1683,7 @@
     bin3: ['chip_pet', 'chip_bottle', 'chip_paper']
   };
   var currentBinKey = 'bin1';
-  var chipIcons = { chip_pet: 'assets/Bottle_Icon_7.png', chip_can: 'assets/Can_Icon_4.png', chip_bottle: 'assets/Broken_Glass_Icon_1.png', chip_paper: 'assets/Paper_Icon_3.png' };
+  var chipIcons = { chip_pet: 'assets/Bottle_Icon_s.png', chip_can: 'assets/Can_Icon_s.png', chip_bottle: 'assets/Recyclables_Icon_s.png', chip_paper: 'assets/Paper_Icon_3.png' };
 
   function renderBinChips(key){
     var dict = translations[currentLang] || translations.ja;
