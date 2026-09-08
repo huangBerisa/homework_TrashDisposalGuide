@@ -229,7 +229,7 @@
     display:flex; align-items:center; justify-content:center;
   }
   .item-thumb svg{width:40px; height:40px;}
-  .item-thumb.icon-image{background:none;}
+  .item-thumb.icon-image{width:74px; height:70px; background:none;}
   .item-thumb img{width:100%; height:100%; object-fit:contain;}
 
   .result-card{
@@ -265,7 +265,7 @@
   .dont-list li svg{width:16px; height:16px; flex:0 0 auto; margin-top:3px; color:var(--color-alert);}
 
   /* ---------- bin cards ---------- */
-  .bin-list{display:flex; flex-direction:column; gap:16px;}
+  .bin-list{display:flex; flex-direction:column; gap:16px; margin-top:24px;}
   .bin-card{
     border:1px solid var(--color-divider);
     border-radius:var(--radius-card);
@@ -279,31 +279,15 @@
     display:flex; align-items:center; justify-content:center;
   }
   .bin-icon svg{width:22px; height:22px; color:var(--color-primary);}
-  .bin-icon.icon-image{background:none;}
+  .bin-icon.icon-image{width:65px; height:68px; background:none;}
   .bin-icon img{width:100%; height:100%; object-fit:contain;}
   .bin-main{flex:1; min-width:0;}
   .bin-name{font-size:var(--fs-2); font-weight:700; color:var(--color-text); margin:0;}
 
   /* chip / tag */
-  .chip-row{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:8px 0 0;}
-  .chip{
-    display:inline-flex; align-items:center; justify-content:center;
-    padding:4px 12px;
-    border:1px solid var(--color-divider);
-    border-radius:999px;
-    font-size:var(--fs-5);
-    font-weight:500;
-    color:var(--color-text-muted);
-    background:var(--color-bg);
-  }
-  .chip-icon{display:none; width:16px; height:16px; object-fit:contain;}
-  .chip:not(.chip-match){
-    padding:4px;
-    width:28px; height:28px;
-    border-radius:8px;
-  }
-  .chip:not(.chip-match) .chip-text{display:none;}
-  .chip:not(.chip-match) .chip-icon{display:block;}
+  .chip-row{display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin:8px 0 0;}
+  .chip{display:inline-flex; width:32px; height:32px; flex:0 0 auto;}
+  .chip-icon{display:block; width:100%; height:100%; object-fit:contain;}
 
   /* status pill */
   .pill{
@@ -327,7 +311,7 @@
     font-size:var(--fs-3); color:var(--color-text); font-weight:500;
   }
   .bin-distance svg{width:16px; height:16px; color:var(--color-text-muted);}
-  .bin-note{font-size:var(--fs-4); color:var(--color-text-muted); margin:8px 0 0;}
+  .bin-note{font-size:var(--fs-4); color:var(--color-text-muted); margin:16px 0 0;}
   .bin-card .btn{margin-top:16px;}
 
   /* ---------- empty / error states ---------- */
@@ -411,7 +395,6 @@
   .map-status-group{display:none;}
   .map-status-group.active{display:inline-flex;}
   .map-accepted{margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);}
-  .chip-match{background:var(--color-primary-light); border-color:var(--color-primary); color:var(--color-text); font-weight:700;}
 
   /* ---------- external / source links ---------- */
   .source-link{
@@ -767,9 +750,9 @@
                   <div class="bin-main">
                     <p class="bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
                     <div class="chip-row">
-                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_s.png" alt=""></span>
-                      <span class="chip" data-chip-key="chip_can"><span class="chip-text" data-i18n="chip_can">缶</span><img class="chip-icon" src="assets/Can_Icon_s.png" alt=""></span>
-                      <span class="chip" data-chip-key="chip_bottle"><span class="chip-text" data-i18n="chip_bottle">びん</span><img class="chip-icon" src="assets/Recyclables_Icon_s.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
+                      <span class="chip" data-chip-key="chip_can"><img class="chip-icon" src="assets/Can_Icon_s.png" data-i18n-aria="chip_can" alt="缶"></span>
+                      <span class="chip" data-chip-key="chip_bottle"><img class="chip-icon" src="assets/Recyclables_Icon_s.png" data-i18n-aria="chip_bottle" alt="びん"></span>
                     </div>
                   </div>
                 </div>
@@ -789,8 +772,8 @@
                   <div class="bin-main">
                     <p class="bin-name" data-i18n="bin2_name">四条通 ごみ箱</p>
                     <div class="chip-row">
-                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_s.png" alt=""></span>
-                      <span class="chip" data-chip-key="chip_can"><span class="chip-text" data-i18n="chip_can">缶</span><img class="chip-icon" src="assets/Can_Icon_s.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
+                      <span class="chip" data-chip-key="chip_can"><img class="chip-icon" src="assets/Can_Icon_s.png" data-i18n-aria="chip_can" alt="缶"></span>
                     </div>
                   </div>
                 </div>
@@ -810,9 +793,9 @@
                   <div class="bin-main">
                     <p class="bin-name" data-i18n="bin3_name">河原町 リサイクルボックス</p>
                     <div class="chip-row">
-                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_s.png" alt=""></span>
-                      <span class="chip" data-chip-key="chip_bottle"><span class="chip-text" data-i18n="chip_bottle">びん</span><img class="chip-icon" src="assets/Recyclables_Icon_s.png" alt=""></span>
-                      <span class="chip" data-chip-key="chip_paper"><span class="chip-text" data-i18n="chip_paper">古紙</span><img class="chip-icon" src="assets/Paper_Icon_3.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
+                      <span class="chip" data-chip-key="chip_bottle"><img class="chip-icon" src="assets/Recyclables_Icon_s.png" data-i18n-aria="chip_bottle" alt="びん"></span>
+                      <span class="chip" data-chip-key="chip_paper"><img class="chip-icon" src="assets/Paper_Icon_3.png" data-i18n-aria="chip_paper" alt="古紙"></span>
                     </div>
                   </div>
                 </div>
@@ -1699,15 +1682,11 @@
       var chip = document.createElement('span');
       chip.className = 'chip' + (t === scannedChipKey ? ' chip-match' : '');
       chip.setAttribute('data-chip-key', t);
-      var text = document.createElement('span');
-      text.className = 'chip-text';
-      text.setAttribute('data-i18n', t);
-      text.textContent = dict[t];
       var icon = document.createElement('img');
       icon.className = 'chip-icon';
       icon.src = chipIcons[t];
-      icon.alt = '';
-      chip.appendChild(text);
+      icon.setAttribute('data-i18n-aria', t);
+      icon.alt = dict[t];
       chip.appendChild(icon);
       row.appendChild(chip);
     });
