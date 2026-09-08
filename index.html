@@ -154,9 +154,10 @@
     border-color:var(--color-primary);
   }
   .btn-small{
-    width:auto;
-    min-height:44px;
-    padding:0 16px;
+    width:338px;
+    max-width:100%;
+    min-height:auto;
+    padding:12px 16px;
     font-size:var(--fs-4);
   }
 
@@ -714,15 +715,13 @@
                 <img id="item-icon-el" src="assets/Bottle_Icon_7.png" alt="">
               </div>
               <div>
-                <p class="title-2" id="item-name-el" data-i18n="pet_item_name">ペットボトル</p>
-                <p class="body-2" id="item-note-el" data-i18n="pet_item_note">中身を空にして、キャップとラベルを外します。</p>
+                <p class="title-1" id="item-name-el" data-i18n="pet_item_name">ペットボトル</p>
               </div>
             </div>
           </div>
 
           <div class="section result-card stack-16">
             <div class="stack-8">
-              <p class="caption" data-i18n="class_label">分類結果</p>
               <p class="title-1" id="class-name-el" data-i18n="pet_class_name">資源ごみ</p>
               <p class="body-2" id="class-note-el" data-i18n="pet_class_note">決められた回収日に、透明な袋に入れて出します。</p>
             </div>
@@ -1633,8 +1632,8 @@
   function selectItem(key){
     currentItemKey = key;
     var dict = translations[currentLang] || translations.ja;
-    ['item-name-el', 'item-note-el', 'class-name-el', 'class-note-el', 'howto1-el', 'howto2-el', 'caution-el'].forEach(function(id, i){
-      var field = ['item_name', 'item_note', 'class_name', 'class_note', 'howto1', 'howto2', 'caution'][i];
+    ['item-name-el', 'class-name-el', 'class-note-el', 'howto1-el', 'howto2-el', 'caution-el'].forEach(function(id, i){
+      var field = ['item_name', 'class_name', 'class_note', 'howto1', 'howto2', 'caution'][i];
       var el = document.getElementById(id);
       var i18nKey = key + '_' + field;
       el.setAttribute('data-i18n', i18nKey);
