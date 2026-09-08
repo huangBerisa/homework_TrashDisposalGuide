@@ -279,13 +279,15 @@
     display:flex; align-items:center; justify-content:center;
   }
   .bin-icon svg{width:22px; height:22px; color:var(--color-primary);}
+  .bin-icon.icon-image{background:none;}
+  .bin-icon img{width:100%; height:100%; object-fit:contain;}
   .bin-main{flex:1; min-width:0;}
   .bin-name{font-size:var(--fs-2); font-weight:700; color:var(--color-text); margin:0;}
 
   /* chip / tag */
-  .chip-row{display:flex; flex-wrap:wrap; gap:8px; margin:8px 0 0;}
+  .chip-row{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:8px 0 0;}
   .chip{
-    display:inline-flex; align-items:center;
+    display:inline-flex; align-items:center; justify-content:center;
     padding:4px 12px;
     border:1px solid var(--color-divider);
     border-radius:999px;
@@ -294,6 +296,14 @@
     color:var(--color-text-muted);
     background:var(--color-bg);
   }
+  .chip-icon{display:none; width:16px; height:16px; object-fit:contain;}
+  .chip:not(.chip-match){
+    padding:4px;
+    width:28px; height:28px;
+    border-radius:8px;
+  }
+  .chip:not(.chip-match) .chip-text{display:none;}
+  .chip:not(.chip-match) .chip-icon{display:block;}
 
   /* status pill */
   .pill{
@@ -743,11 +753,6 @@
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l7 12.5H1L8 1.5z" stroke-linejoin="round"/><path d="M8 6.5v3.5" stroke-linecap="round"/><circle cx="8" cy="11.7" r="0.9" fill="currentColor" stroke="none"/></svg>
               <p id="caution-el" data-i18n="pet_caution">洗っていないペットボトルは収集されない場合があります。</p>
             </div>
-
-            <a class="source-link" id="source-link" href="https://www.google.com/search?q=%E3%81%94%E3%81%BF%E5%88%86%E5%88%A5%E3%80%80%E3%83%9A%E3%83%83%E3%83%88%E3%83%9C%E3%83%88%E3%83%AB" target="_blank" rel="noopener noreferrer">
-              <span data-i18n="source_link_label">分別情報の出典を見る</span>
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 9.5L14 2M9 2h5v5M13 8.5V13a1.5 1.5 0 0 1-1.5 1.5H3.5A1.5 1.5 0 0 1 2 13V5.5A1.5 1.5 0 0 1 3.5 4H8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
           </div>
 
           <div class="section stack-16">
@@ -756,15 +761,15 @@
             <div class="bin-list">
               <div class="bin-card">
                 <div class="bin-card-top">
-                  <div class="bin-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.2 12.2A2 2 0 0 1 15.8 21H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M3.5 7h17M9 4h6l1 3H8l1-3z" stroke-linejoin="round"/></svg>
+                  <div class="bin-icon icon-image">
+                    <img src="assets/Recycle_Icon_2.png" alt="">
                   </div>
                   <div class="bin-main">
                     <p class="bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
                     <div class="chip-row">
-                      <span class="chip" data-i18n="chip_pet">ペットボトル</span>
-                      <span class="chip" data-i18n="chip_can">缶</span>
-                      <span class="chip" data-i18n="chip_bottle">びん</span>
+                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_7.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_can"><span class="chip-text" data-i18n="chip_can">缶</span><img class="chip-icon" src="assets/Can_Icon_4.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_bottle"><span class="chip-text" data-i18n="chip_bottle">びん</span><img class="chip-icon" src="assets/Broken_Glass_Icon_1.png" alt=""></span>
                     </div>
                   </div>
                 </div>
@@ -778,14 +783,14 @@
 
               <div class="bin-card">
                 <div class="bin-card-top">
-                  <div class="bin-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.2 12.2A2 2 0 0 1 15.8 21H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M3.5 7h17M9 4h6l1 3H8l1-3z" stroke-linejoin="round"/></svg>
+                  <div class="bin-icon icon-image">
+                    <img src="assets/Recycle_Icon_2.png" alt="">
                   </div>
                   <div class="bin-main">
                     <p class="bin-name" data-i18n="bin2_name">四条通 ごみ箱</p>
                     <div class="chip-row">
-                      <span class="chip" data-i18n="chip_pet">ペットボトル</span>
-                      <span class="chip" data-i18n="chip_can">缶</span>
+                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_7.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_can"><span class="chip-text" data-i18n="chip_can">缶</span><img class="chip-icon" src="assets/Can_Icon_4.png" alt=""></span>
                     </div>
                   </div>
                 </div>
@@ -799,15 +804,15 @@
 
               <div class="bin-card">
                 <div class="bin-card-top">
-                  <div class="bin-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 7h14l-1.2 12.2A2 2 0 0 1 15.8 21H8.2a2 2 0 0 1-2-1.8L5 7z"/><path d="M3.5 7h17M9 4h6l1 3H8l1-3z" stroke-linejoin="round"/></svg>
+                  <div class="bin-icon icon-image">
+                    <img src="assets/Recycle_Icon_2.png" alt="">
                   </div>
                   <div class="bin-main">
                     <p class="bin-name" data-i18n="bin3_name">河原町 リサイクルボックス</p>
                     <div class="chip-row">
-                      <span class="chip" data-i18n="chip_pet">ペットボトル</span>
-                      <span class="chip" data-i18n="chip_bottle">びん</span>
-                      <span class="chip" data-i18n="chip_paper">古紙</span>
+                      <span class="chip" data-chip-key="chip_pet"><span class="chip-text" data-i18n="chip_pet">ペットボトル</span><img class="chip-icon" src="assets/Bottle_Icon_7.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_bottle"><span class="chip-text" data-i18n="chip_bottle">びん</span><img class="chip-icon" src="assets/Broken_Glass_Icon_1.png" alt=""></span>
+                      <span class="chip" data-chip-key="chip_paper"><span class="chip-text" data-i18n="chip_paper">古紙</span><img class="chip-icon" src="assets/Paper_Icon_3.png" alt=""></span>
                     </div>
                   </div>
                 </div>
@@ -1062,7 +1067,6 @@
       can_caution: '中身が残ったままの缶は収集されない場合があります。',
       class_label: '分類結果',
       howto_label: '捨て方',
-      source_link_label: '分別情報の出典を見る',
       nearby_title: '周辺のごみ箱',
       bin1_name: '京都駅前 分別ステーション',
       bin1_note: 'ふたを閉めてから入れてください。',
@@ -1154,7 +1158,6 @@
       can_caution: 'Cans with leftover contents may not be collected.',
       class_label: 'Category',
       howto_label: 'How to Dispose',
-      source_link_label: 'View sorting info source',
       nearby_title: 'Nearby Bins',
       bin1_name: 'Kyoto Station Sorting Station',
       bin1_note: 'Please close the lid after use.',
@@ -1246,7 +1249,6 @@
       can_caution: '残留内容物的罐类可能不会被回收。',
       class_label: '分类结果',
       howto_label: '丢弃方法',
-      source_link_label: '查看分类信息来源',
       nearby_title: '附近的垃圾桶',
       bin1_name: '京都站前分类站',
       bin1_note: '投入后请盖好盖子。',
@@ -1338,7 +1340,6 @@
       can_caution: '殘留內容物的罐類可能不會被收集。',
       class_label: '分類結果',
       howto_label: '丟棄方法',
-      source_link_label: '查看分類資訊來源',
       nearby_title: '附近的垃圾桶',
       bin1_name: '京都站前分類站',
       bin1_note: '投入後請蓋好蓋子。',
@@ -1430,7 +1431,6 @@
       can_caution: '내용물이 남아 있는 캔은 수거되지 않을 수 있습니다.',
       class_label: '분류 결과',
       howto_label: '버리는 방법',
-      source_link_label: '분리배출 정보 출처 보기',
       nearby_title: '주변 쓰레기통',
       bin1_name: '교토역 앞 분리수거 스테이션',
       bin1_note: '넣은 후 뚜껑을 닫아 주세요.',
@@ -1642,7 +1642,6 @@
   });
 
   var currentItemKey = 'pet';
-  var itemSourceQuery = { pet: 'ごみ分別　ペットボトル', can: 'ごみ分別　缶' };
   var itemIcons = { pet: 'assets/Bottle_Icon_7.png', can: 'assets/Can_Icon_4.png' };
 
   function selectItem(key){
@@ -1657,17 +1656,13 @@
     });
     var iconEl = document.getElementById('item-icon-el');
     if(iconEl && itemIcons[key]) iconEl.src = itemIcons[key];
-    var sourceLink = document.getElementById('source-link');
-    if(sourceLink){
-      sourceLink.href = 'https://www.google.com/search?q=' + encodeURIComponent(itemSourceQuery[key]);
-    }
     updateBinChipHighlights();
   }
 
   function updateBinChipHighlights(){
     var matchKey = 'chip_' + currentItemKey;
     document.querySelectorAll('.bin-card .chip').forEach(function(c){
-      c.classList.toggle('chip-match', c.getAttribute('data-i18n') === matchKey);
+      c.classList.toggle('chip-match', c.getAttribute('data-chip-key') === matchKey);
     });
   }
 
@@ -1688,6 +1683,7 @@
     bin3: ['chip_pet', 'chip_bottle', 'chip_paper']
   };
   var currentBinKey = 'bin1';
+  var chipIcons = { chip_pet: 'assets/Bottle_Icon_7.png', chip_can: 'assets/Can_Icon_4.png', chip_bottle: 'assets/Broken_Glass_Icon_1.png', chip_paper: 'assets/Paper_Icon_3.png' };
 
   function renderBinChips(key){
     var dict = translations[currentLang] || translations.ja;
@@ -1702,8 +1698,17 @@
     types.forEach(function(t){
       var chip = document.createElement('span');
       chip.className = 'chip' + (t === scannedChipKey ? ' chip-match' : '');
-      chip.setAttribute('data-i18n', t);
-      chip.textContent = dict[t];
+      chip.setAttribute('data-chip-key', t);
+      var text = document.createElement('span');
+      text.className = 'chip-text';
+      text.setAttribute('data-i18n', t);
+      text.textContent = dict[t];
+      var icon = document.createElement('img');
+      icon.className = 'chip-icon';
+      icon.src = chipIcons[t];
+      icon.alt = '';
+      chip.appendChild(text);
+      chip.appendChild(icon);
       row.appendChild(chip);
     });
   }
