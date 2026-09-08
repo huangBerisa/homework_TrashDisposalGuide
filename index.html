@@ -201,8 +201,15 @@
     align-items:center;
     justify-content:center;
     position:relative;
+    overflow:hidden;
   }
-  .viewfinder svg{width:64px; height:64px;}
+  .viewfinder svg{width:64px; height:64px; position:relative; z-index:1;}
+  .viewfinder video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    display:none;
+  }
   .viewfinder .corner{
     position:absolute;
     width:24px; height:24px;
@@ -593,7 +600,8 @@
             <div class="viewfinder">
               <span class="corner tl"></span><span class="corner tr"></span>
               <span class="corner bl"></span><span class="corner br"></span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="1.5">
+              <video id="camera-video" autoplay playsinline muted></video>
+              <svg id="camera-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="1.5">
                 <path d="M4 8h2l1.5-2h9L18 8h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" stroke-linejoin="round"/>
                 <circle cx="12" cy="13" r="3.5"/>
               </svg>
@@ -1492,6 +1500,41 @@
   function showScreen(key){
     document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
     document.getElementById('screen-' + key).classList.add('active');
+    if(key === 'capture'){ startCamera(); } else { stopCamera(); }
+  }
+
+  var cameraVideoEl = document.getElementById('camera-video');
+  var cameraPlaceholderIcon = document.getElementById('camera-placeholder-icon');
+  var cameraStream = null;
+  var cameraStarting = false;
+
+  function startCamera(){
+    if(cameraStream || cameraStarting) return;
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
+    cameraStarting = true;
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then(function(stream){
+      cameraStarting = false;
+      cameraStream = stream;
+      if(cameraVideoEl){
+        cameraVideoEl.srcObject = stream;
+        cameraVideoEl.style.display = 'block';
+      }
+      if(cameraPlaceholderIcon) cameraPlaceholderIcon.style.display = 'none';
+    }).catch(function(){
+      cameraStarting = false;
+    });
+  }
+
+  function stopCamera(){
+    if(cameraStream){
+      cameraStream.getTracks().forEach(function(track){ track.stop(); });
+      cameraStream = null;
+    }
+    if(cameraVideoEl){
+      cameraVideoEl.srcObject = null;
+      cameraVideoEl.style.display = 'none';
+    }
+    if(cameraPlaceholderIcon) cameraPlaceholderIcon.style.display = '';
   }
 
   document.querySelectorAll('.lang-card').forEach(function(card){
@@ -1511,8 +1554,20 @@
 
   var shootBtn = document.getElementById('btn-shoot');
   var cameraInput = document.getElementById('camera-input');
-  if(shootBtn && cameraInput){
-    shootBtn.addEventListener('click', function(){ cameraInput.click(); });
+  if(shootBtn){
+    shootBtn.addEventListener('click', function(){
+      if(cameraStream && cameraVideoEl && cameraVideoEl.videoWidth){
+        var canvas = document.createElement('canvas');
+        canvas.width = cameraVideoEl.videoWidth;
+        canvas.height = cameraVideoEl.videoHeight;
+        canvas.getContext('2d').drawImage(cameraVideoEl, 0, 0, canvas.width, canvas.height);
+        showScreen('multi');
+      } else if(cameraInput){
+        cameraInput.click();
+      }
+    });
+  }
+  if(cameraInput){
     cameraInput.addEventListener('change', function(){
       if(cameraInput.files && cameraInput.files.length > 0){
         showScreen('multi');
