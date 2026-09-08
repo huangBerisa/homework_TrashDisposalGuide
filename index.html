@@ -1016,6 +1016,8 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface@0.1.0/dist/blazeface.min.js"></script>
 <script>
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var currentLang = 'ja';
@@ -1509,6 +1511,7 @@
   var cameraStarting = false;
 
   function startCamera(){
+    loadFaceModel();
     if(cameraStream || cameraStarting) return;
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
     cameraStarting = true;
@@ -1522,6 +1525,33 @@
       if(cameraPlaceholderIcon) cameraPlaceholderIcon.style.display = 'none';
     }).catch(function(){
       cameraStarting = false;
+    });
+  }
+
+  var faceModel = null;
+  var faceModelLoading = null;
+
+  function loadFaceModel(){
+    if(faceModel) return Promise.resolve(faceModel);
+    if(faceModelLoading) return faceModelLoading;
+    if(typeof blazeface === 'undefined') return Promise.resolve(null);
+    faceModelLoading = blazeface.load().then(function(model){
+      faceModel = model;
+      return model;
+    }).catch(function(){
+      return null;
+    });
+    return faceModelLoading;
+  }
+
+  function photoHasFace(canvas){
+    return loadFaceModel().then(function(model){
+      if(!model) return false;
+      return model.estimateFaces(canvas, false).then(function(faces){
+        return !!(faces && faces.length > 0);
+      }).catch(function(){
+        return false;
+      });
     });
   }
 
@@ -1561,7 +1591,11 @@
         canvas.width = cameraVideoEl.videoWidth;
         canvas.height = cameraVideoEl.videoHeight;
         canvas.getContext('2d').drawImage(cameraVideoEl, 0, 0, canvas.width, canvas.height);
-        showScreen('multi');
+        shootBtn.disabled = true;
+        photoHasFace(canvas).then(function(isPerson){
+          shootBtn.disabled = false;
+          showScreen(isPerson ? 'notrash' : 'multi');
+        });
       } else if(cameraInput){
         cameraInput.click();
       }
