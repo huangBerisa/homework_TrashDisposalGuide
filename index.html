@@ -468,7 +468,7 @@
 
   /* ---------- post-disposal / feedback ---------- */
   .disposed-bin{display:flex; align-items:center; gap:8px;}
-  .disposed-bin .bin-thumb{width:48px; height:48px; flex:0 0 auto; object-fit:contain;}
+  .disposed-bin .bin-thumb{width:65px; height:68px; flex:0 0 auto; object-fit:contain;}
   .disposed-bin-main{flex:1 1 auto; min-width:0;}
 
   .feedback-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
@@ -491,11 +491,6 @@
   .feedback-thanks{font-size:var(--fs-4); color:var(--color-primary); margin-top:8px; display:none;}
   .feedback-thanks.visible{display:block;}
 
-  .review-list{display:flex; flex-direction:column; gap:12px; margin:8px 0 0; padding:0; list-style:none;}
-  .review-item{padding-bottom:12px; border-bottom:1px solid var(--color-divider);}
-  .review-item:last-child{border-bottom:none; padding-bottom:0;}
-  .review-meta{font-size:var(--fs-5); color:var(--color-text-muted); margin:0 0 4px;}
-  .review-text{font-size:var(--fs-4); color:var(--color-text); margin:0; line-height:1.6;}
 
   /* ---------- header title group (icon + right chevron) ---------- */
   .header-title{display:flex; align-items:center; gap:0;}
@@ -1031,11 +1026,6 @@
             </div>
             <p class="feedback-thanks" id="feedback-thanks" data-i18n="feedback_thanks">ご協力ありがとうございます。</p>
           </div>
-
-          <div class="section">
-            <p class="section-title" data-i18n="reviews_title">みんなのクチコミ</p>
-            <ul class="review-list" id="review-list"></ul>
-          </div>
         </div>
       </section>
 
@@ -1158,19 +1148,6 @@
       feedback_crowded: '多い',
       feedback_full: '満杯',
       feedback_thanks: 'ご協力ありがとうございます。',
-      reviews_title: 'みんなのクチコミ',
-      review_bin1_1_meta: '観光客A・2日前',
-      review_bin1_1_text: '分かりやすい場所でした。',
-      review_bin1_2_meta: '地元の方・1週間前',
-      review_bin1_2_text: '京都駅からすぐで便利です。',
-      review_bin2_1_meta: '観光客B・3日前',
-      review_bin2_1_text: '少し混んでいましたが捨てられました。',
-      review_bin2_2_meta: '観光客C・5日前',
-      review_bin2_2_text: '缶はいっぱいでした。',
-      review_bin3_1_meta: '観光客D・1日前',
-      review_bin3_1_text: '満杯で入れられませんでした。',
-      review_bin3_2_meta: '地元の方・4日前',
-      review_bin3_2_text: '河原町周辺は利用者が多いです。',
       you_are_here: '現在地',
       landmark_station: '京都駅',
       landmark_river: '鴨川',
@@ -1259,19 +1236,6 @@
       feedback_crowded: 'Nearly Full',
       feedback_full: 'Full',
       feedback_thanks: 'Thanks for your feedback!',
-      reviews_title: 'Reviews from others',
-      review_bin1_1_meta: 'Tourist A · 2 days ago',
-      review_bin1_1_text: 'It was an easy place to find.',
-      review_bin1_2_meta: 'Local resident · 1 week ago',
-      review_bin1_2_text: 'Very convenient, right by Kyoto Station.',
-      review_bin2_1_meta: 'Tourist B · 3 days ago',
-      review_bin2_1_text: 'A bit crowded, but I managed to throw it away.',
-      review_bin2_2_meta: 'Tourist C · 5 days ago',
-      review_bin2_2_text: 'The can section was full.',
-      review_bin3_1_meta: 'Tourist D · 1 day ago',
-      review_bin3_1_text: "It was full and I couldn't use it.",
-      review_bin3_2_meta: 'Local resident · 4 days ago',
-      review_bin3_2_text: 'This area near Kawaramachi gets a lot of use.',
       you_are_here: 'You are here',
       landmark_station: 'Kyoto Station',
       landmark_river: 'Kamo River',
@@ -1360,19 +1324,6 @@
       feedback_crowded: '很多',
       feedback_full: '已满',
       feedback_thanks: '感谢您的反馈。',
-      reviews_title: '大家的评价',
-      review_bin1_1_meta: '游客A・2天前',
-      review_bin1_1_text: '地点很好找。',
-      review_bin1_2_meta: '当地居民・1周前',
-      review_bin1_2_text: '就在京都站附近，很方便。',
-      review_bin2_1_meta: '游客B・3天前',
-      review_bin2_1_text: '有点拥挤，但还是丢进去了。',
-      review_bin2_2_meta: '游客C・5天前',
-      review_bin2_2_text: '罐类已经满了。',
-      review_bin3_1_meta: '游客D・1天前',
-      review_bin3_1_text: '已经满了，没办法丢。',
-      review_bin3_2_meta: '当地居民・4天前',
-      review_bin3_2_text: '河原町附近使用的人很多。',
       you_are_here: '目前位置',
       landmark_station: '京都站',
       landmark_river: '鸭川',
@@ -1461,19 +1412,6 @@
       feedback_crowded: '很多',
       feedback_full: '已滿',
       feedback_thanks: '感謝您的回饋。',
-      reviews_title: '大家的評價',
-      review_bin1_1_meta: '遊客A・2天前',
-      review_bin1_1_text: '地點很好找。',
-      review_bin1_2_meta: '當地居民・1週前',
-      review_bin1_2_text: '就在京都站附近，很方便。',
-      review_bin2_1_meta: '遊客B・3天前',
-      review_bin2_1_text: '有點擁擠，但還是丟進去了。',
-      review_bin2_2_meta: '遊客C・5天前',
-      review_bin2_2_text: '罐類已經滿了。',
-      review_bin3_1_meta: '遊客D・1天前',
-      review_bin3_1_text: '已經滿了，沒辦法丟。',
-      review_bin3_2_meta: '當地居民・4天前',
-      review_bin3_2_text: '河原町附近使用的人很多。',
       you_are_here: '目前位置',
       landmark_station: '京都車站',
       landmark_river: '鴨川',
@@ -1562,19 +1500,6 @@
       feedback_crowded: '많음',
       feedback_full: '가득 참',
       feedback_thanks: '소중한 의견 감사합니다.',
-      reviews_title: '다른 이용자 후기',
-      review_bin1_1_meta: '관광객 A · 2일 전',
-      review_bin1_1_text: '찾기 쉬운 장소였어요.',
-      review_bin1_2_meta: '현지 주민 · 1주 전',
-      review_bin1_2_text: '교토역 바로 근처라 편리해요.',
-      review_bin2_1_meta: '관광객 B · 3일 전',
-      review_bin2_1_text: '조금 붐볐지만 버릴 수 있었어요.',
-      review_bin2_2_meta: '관광객 C · 5일 전',
-      review_bin2_2_text: '캔 칸은 가득 차 있었어요.',
-      review_bin3_1_meta: '관광객 D · 1일 전',
-      review_bin3_1_text: '가득 차서 사용할 수 없었어요.',
-      review_bin3_2_meta: '현지 주민 · 4일 전',
-      review_bin3_2_text: '가와라마치 주변은 이용자가 많아요.',
       you_are_here: '현재 위치',
       landmark_station: '교토역',
       landmark_river: '가모가와',
@@ -1883,33 +1808,6 @@
     });
   }
 
-  var reviewsData = {
-    bin1: ['review_bin1_1', 'review_bin1_2'],
-    bin2: ['review_bin2_1', 'review_bin2_2'],
-    bin3: ['review_bin3_1', 'review_bin3_2']
-  };
-
-  function renderReviews(key){
-    var dict = translations[currentLang] || translations.ja;
-    var list = document.getElementById('review-list');
-    if(!list) return;
-    list.innerHTML = '';
-    reviewsData[key].forEach(function(prefix){
-      var li = document.createElement('li');
-      li.className = 'review-item';
-      var meta = document.createElement('p');
-      meta.className = 'review-meta';
-      meta.setAttribute('data-i18n', prefix + '_meta');
-      meta.textContent = dict[prefix + '_meta'];
-      var text = document.createElement('p');
-      text.className = 'review-text';
-      text.setAttribute('data-i18n', prefix + '_text');
-      text.textContent = dict[prefix + '_text'];
-      li.appendChild(meta);
-      li.appendChild(text);
-      list.appendChild(li);
-    });
-  }
 
   function renderVoteChart(key){
     var dict = translations[currentLang] || translations.ja;
@@ -2066,7 +1964,6 @@
     if(statusLabel) statusLabel.textContent = dict['status_level_' + level];
 
     renderBinChips(key);
-    renderReviews(key);
     renderVoteChart(key);
 
     var chart = document.getElementById('vote-chart');
