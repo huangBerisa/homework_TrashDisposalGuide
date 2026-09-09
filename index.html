@@ -72,6 +72,7 @@
     overflow:hidden;
   }
   .screen.active{display:flex;}
+  #screen-map{position:relative;}
 
   .app-header{
     position:relative;
@@ -311,10 +312,11 @@
     margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);
   }
   .bin-distance{
-    display:flex; align-items:center; gap:8px;
+    display:flex; align-items:center; gap:6px;
     font-size:var(--fs-3); color:var(--color-text); font-weight:500;
   }
-  .bin-distance svg{width:16px; height:16px; color:var(--color-text-muted);}
+  .bin-distance svg{width:16px; height:16px; color:var(--color-text-muted); flex:0 0 auto;}
+  .bin-distance .dot{color:var(--color-text-muted);}
   .bin-note{font-size:var(--fs-4); color:var(--color-text-muted); margin:16px 0 0;}
   .bin-card .btn{margin-top:16px;}
 
@@ -365,7 +367,7 @@
   .map-you-ring{fill:var(--color-bg); stroke:var(--color-primary); stroke-width:2;}
   .map-you-dot{fill:var(--color-primary);}
   .map-you-label{fill:var(--color-text); font-size:10px; font-weight:700; text-anchor:middle;}
-  .map-pin-group{opacity:0.4;}
+  .map-pin-group{opacity:0.45; cursor:pointer;}
   .map-pin-group.active{opacity:1;}
   .map-pin{fill:var(--color-primary);}
   .map-pin-badge{fill:var(--color-primary-light);}
@@ -373,10 +375,19 @@
   .map-pin-icon{stroke:var(--color-primary); stroke-width:1.6; fill:none;}
 
   .map-info{
-    flex:0 0 auto;
-    padding:16px;
-    border-top:1px solid var(--color-divider);
+    position:absolute;
+    left:0; right:0; bottom:0;
+    padding:8px 16px 16px;
     background:var(--color-bg);
+    border-radius:var(--radius-card) var(--radius-card) 0 0;
+    transform:translateY(100%);
+    transition:transform 0.28s ease-out;
+  }
+  .map-info.open{transform:translateY(0);}
+  .sheet-handle{
+    width:40px; height:4px; margin:0 auto 8px;
+    border-radius:999px;
+    background:var(--color-divider);
   }
   .map-eta{
     display:flex; align-items:center; gap:6px; margin:8px 0 0;
@@ -733,7 +744,7 @@
                   </div>
                 </div>
                 <div class="bin-meta">
-                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>150m</span>
+                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>150m<span class="dot">・</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-bin-eta="bin1">徒歩2分</span></span>
                   <span class="pill positive"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L6.5 13L13 5" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="status_available">空きあり</span></span>
                 </div>
                 <p class="bin-note" data-i18n="bin1_note">ふたを閉めてから入れてください。</p>
@@ -754,7 +765,7 @@
                   </div>
                 </div>
                 <div class="bin-meta">
-                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>320m</span>
+                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>320m<span class="dot">・</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-bin-eta="bin2">徒歩4分</span></span>
                   <span class="pill almost-full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_almost_full">満杯に近づいています</span></span>
                 </div>
                 <p class="bin-note" data-i18n="bin2_note">紙ごみは入れられません。</p>
@@ -776,7 +787,7 @@
                   </div>
                 </div>
                 <div class="bin-meta">
-                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>480m</span>
+                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>480m<span class="dot">・</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-bin-eta="bin3">徒歩6分</span></span>
                   <span class="pill full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_full">満杯です</span></span>
                 </div>
                 <p class="bin-note" data-i18n="bin3_note">収集後に空きが戻る場合があります。</p>
@@ -890,6 +901,7 @@
           </svg>
         </div>
         <div class="map-info">
+          <div class="sheet-handle" aria-hidden="true"></div>
           <p class="title-2" id="map-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
           <p class="map-eta">
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>
@@ -1493,12 +1505,21 @@
       if(dict[key]) el.setAttribute('aria-label', dict[key]);
     });
     document.documentElement.lang = currentLang;
+    if(typeof renderBinCardEtas === 'function') renderBinCardEtas();
   }
 
   function showScreen(key){
     document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
     document.getElementById('screen-' + key).classList.add('active');
     if(key === 'capture'){ startCamera(); } else { stopCamera(); }
+    var sheet = document.querySelector('#screen-map .map-info');
+    if(sheet){
+      if(key === 'map'){
+        requestAnimationFrame(function(){ sheet.classList.add('open'); });
+      } else {
+        sheet.classList.remove('open');
+      }
+    }
   }
 
   var cameraVideoEl = document.getElementById('camera-video');
@@ -1697,6 +1718,14 @@
     return Math.max(1, Math.round(meters / 80));
   }
 
+  function renderBinCardEtas(){
+    var dict = translations[currentLang] || translations.ja;
+    document.querySelectorAll('[data-bin-eta]').forEach(function(el){
+      var key = el.getAttribute('data-bin-eta');
+      el.textContent = (dict.map_eta_template || '{min}min').replace('{min}', walkMinutes(binDistanceMeters[key]));
+    });
+  }
+
   function nearbyBinKeys(){
     return binOrder.filter(function(k){
       return walkMinutes(binDistanceMeters[k]) <= nearbyWalkLimitMinutes;
@@ -1844,15 +1873,28 @@
 
   document.querySelectorAll('[data-bin-key]').forEach(function(btn){
     btn.addEventListener('click', function(){
-      selectBin(btn.getAttribute('data-bin-key'));
       showScreen('map');
+      selectBin(btn.getAttribute('data-bin-key'));
+    });
+  });
+
+  binOrder.forEach(function(key){
+    var group = document.getElementById('pin-' + key);
+    if(!group) return;
+    group.setAttribute('role', 'button');
+    group.setAttribute('data-i18n-aria', key + '_name');
+    group.addEventListener('click', function(){
+      if(dragMoved) return;
+      selectBin(key);
     });
   });
 
   /* ---------- draggable map ---------- */
   var mapSvg = document.getElementById('map-svg');
   var mapView = { x:-20, y:160, w:240, h:440, minX:-400, maxX:600, minY:-400, maxY:800 };
+  var pointerDown = false;
   var dragging = false;
+  var dragMoved = false;
   var dragStartPointer = { x:0, y:0 };
   var dragStartView = { x:0, y:0 };
 
@@ -1875,6 +1917,14 @@
       halfW = Math.max(halfW, Math.abs(p.x - target.x) + marginX);
       halfH = Math.max(halfH, Math.abs(p.y - target.y) + marginY);
     });
+
+    // The sheet covers the lower part of the map, so fit the markers into
+    // the strip that stays visible above it and keep the target centered there.
+    var wrapH = wrap ? wrap.clientHeight : 0;
+    var sheet = document.querySelector('#screen-map .map-info');
+    var sheetH = sheet ? sheet.offsetHeight : 0;
+    var visibleRatio = (wrapH && sheetH && sheetH < wrapH) ? (wrapH - sheetH) / wrapH : 1;
+    halfH = halfH / visibleRatio;
     if(halfW / halfH > ratio){
       halfH = halfW / ratio;
     } else {
@@ -1883,7 +1933,7 @@
     mapView.w = halfW * 2;
     mapView.h = halfH * 2;
     mapView.x = target.x - halfW;
-    mapView.y = target.y - halfH;
+    mapView.y = target.y - halfH + (wrapH ? (sheetH / 2) * (mapView.h / wrapH) : 0);
     updateMapViewBox();
   }
 
@@ -1891,26 +1941,36 @@
 
   if(mapSvg){
     mapSvg.addEventListener('pointerdown', function(e){
-      dragging = true;
-      mapSvg.setPointerCapture(e.pointerId);
+      pointerDown = true;
+      dragging = false;
+      dragMoved = false;
       dragStartPointer.x = e.clientX;
       dragStartPointer.y = e.clientY;
       dragStartView.x = mapView.x;
       dragStartView.y = mapView.y;
     });
     mapSvg.addEventListener('pointermove', function(e){
-      if(!dragging) return;
+      if(!pointerDown) return;
+      var movedX = e.clientX - dragStartPointer.x;
+      var movedY = e.clientY - dragStartPointer.y;
+      if(!dragging){
+        if(Math.abs(movedX) < 5 && Math.abs(movedY) < 5) return;
+        dragging = true;
+        dragMoved = true;
+        mapSvg.setPointerCapture(e.pointerId);
+      }
       var rect = mapSvg.getBoundingClientRect();
-      var scaleX = mapView.w / rect.width;
-      var scaleY = mapView.h / rect.height;
-      var dx = (e.clientX - dragStartPointer.x) * scaleX;
-      var dy = (e.clientY - dragStartPointer.y) * scaleY;
+      var dx = movedX * (mapView.w / rect.width);
+      var dy = movedY * (mapView.h / rect.height);
       mapView.x = Math.min(mapView.maxX, Math.max(mapView.minX, dragStartView.x - dx));
       mapView.y = Math.min(mapView.maxY, Math.max(mapView.minY, dragStartView.y - dy));
       updateMapViewBox();
     });
     ['pointerup', 'pointercancel', 'pointerleave'].forEach(function(evt){
-      mapSvg.addEventListener(evt, function(){ dragging = false; });
+      mapSvg.addEventListener(evt, function(){
+        pointerDown = false;
+        dragging = false;
+      });
     });
   }
 </script>
