@@ -368,7 +368,8 @@
   .map-pin-group{display:none;}
   .map-pin-group.active{display:inline;}
   .map-pin{fill:var(--color-primary);}
-  .map-pin-badge{fill:var(--color-bg);}
+  .map-pin-badge{fill:var(--color-primary-light);}
+  .map-pin-badge-icon{color:var(--color-primary);}
   .map-pin-icon{stroke:var(--color-primary); stroke-width:1.6; fill:none;}
 
   .map-info{
@@ -390,14 +391,29 @@
     padding:0;
   }
   .pager-btn svg{width:18px; height:18px;}
-  .map-meta{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:8px 0 0;}
-  .map-distance{
-    display:flex; align-items:center; gap:8px; margin:0;
+  .map-eta{
+    display:flex; align-items:center; gap:6px; margin:8px 0 0;
     font-size:var(--fs-3); color:var(--color-text); font-weight:500;
   }
-  .map-distance svg{width:16px; height:16px; color:var(--color-text-muted);}
-  .map-status-group{display:none;}
-  .map-status-group.active{display:inline-flex;}
+  .map-eta svg{width:16px; height:16px; color:var(--color-text-muted); flex:0 0 auto;}
+  .map-eta .dot{color:var(--color-text-muted);}
+  .map-activity{font-size:var(--fs-5); color:var(--color-text-muted); margin:4px 0 0;}
+  .map-status-visual{
+    display:flex; align-items:center; gap:8px;
+    margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);
+  }
+  .map-status-icon{
+    width:32px; height:32px; flex:0 0 auto; border-radius:var(--radius);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .map-status-icon svg{width:18px; height:18px;}
+  .map-status-icon.level-empty{background:var(--color-primary-light); color:var(--color-primary);}
+  .map-status-icon.level-somewhat{background:#DCEEFB; color:#2B6CB0;}
+  .map-status-icon.level-much{background:var(--color-warning-light); color:var(--color-warning);}
+  .map-status-icon.level-full{background:var(--color-alert-light); color:var(--color-alert);}
+  .map-status-text{display:flex; flex-direction:column; gap:2px;}
+  .map-status-text .label{font-size:var(--fs-3); font-weight:700; color:var(--color-text);}
+  .map-status-text .note{font-size:var(--fs-5); color:var(--color-text-muted);}
   .map-accepted{margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);}
 
   /* ---------- external / source links ---------- */
@@ -823,7 +839,7 @@
         </header>
         <div class="map-wrap">
           <svg class="map-svg" id="map-svg" viewBox="-20 160 240 440" preserveAspectRatio="xMidYMid slice">
-            <rect class="map-land" x="-60" y="-60" width="480" height="680"/>
+            <rect class="map-land" x="-400" y="-400" width="1200" height="1400"/>
 
             <!-- landmarks -->
             <rect class="map-park" x="300" y="0" width="60" height="500"/>
@@ -879,30 +895,21 @@
               <g transform="translate(100 260)">
                 <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
                 <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
-                <g class="map-pin-icon" transform="translate(-6 -12)">
-                  <path d="M1 5h10l-1 9A1.6 1.6 0 0 1 8.4 15.5H4.6A1.6 1.6 0 0 1 3 13.9L2 5z"/>
-                  <path d="M0.5 5h11M3.8 2.3h4.4l0.7 2h-5.8l0.7-2z" stroke-linejoin="round"/>
-                </g>
+                <image href="assets/TrashBin.png" x="-8" y="-14" width="16" height="16"/>
               </g>
             </g>
             <g class="map-pin-group" id="pin-bin2">
               <g transform="translate(220 130)">
                 <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
                 <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
-                <g class="map-pin-icon" transform="translate(-6 -12)">
-                  <path d="M1 5h10l-1 9A1.6 1.6 0 0 1 8.4 15.5H4.6A1.6 1.6 0 0 1 3 13.9L2 5z"/>
-                  <path d="M0.5 5h11M3.8 2.3h4.4l0.7 2h-5.8l0.7-2z" stroke-linejoin="round"/>
-                </g>
+                <image href="assets/TrashBin.png" x="-8" y="-14" width="16" height="16"/>
               </g>
             </g>
             <g class="map-pin-group" id="pin-bin3">
               <g transform="translate(300 40)">
                 <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
                 <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
-                <g class="map-pin-icon" transform="translate(-6 -12)">
-                  <path d="M1 5h10l-1 9A1.6 1.6 0 0 1 8.4 15.5H4.6A1.6 1.6 0 0 1 3 13.9L2 5z"/>
-                  <path d="M0.5 5h11M3.8 2.3h4.4l0.7 2h-5.8l0.7-2z" stroke-linejoin="round"/>
-                </g>
+                <image href="assets/TrashBin.png" x="-8" y="-14" width="16" height="16"/>
               </g>
             </g>
           </svg>
@@ -912,21 +919,35 @@
             <button class="pager-btn" id="map-prev" data-i18n-aria="prev_bin" aria-label="前のごみ箱"><img src="assets/left.png" alt=""></button>
             <div class="map-pager-info">
               <p class="title-2" id="map-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
-              <div class="map-meta">
-                <p class="map-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg><span id="map-distance-value">150m</span></p>
-                <span class="pill positive map-status-group active" id="status-bin1"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L6.5 13L13 5" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="status_available">空きあり</span></span>
-                <span class="pill almost-full map-status-group" id="status-bin2"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_almost_full">満杯に近づいています</span></span>
-                <span class="pill full map-status-group" id="status-bin3"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_full">満杯です</span></span>
-              </div>
+              <p class="map-eta">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>
+                <span id="map-distance-value">150m</span>
+                <span class="dot">・</span>
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span id="map-eta-value">徒歩2分</span>
+              </p>
+              <p class="map-activity" id="map-activity-text">5分前に8人が利用しました</p>
             </div>
             <button class="pager-btn" id="map-next" data-i18n-aria="next_bin" aria-label="次のごみ箱"><img src="assets/right.png" alt=""></button>
           </div>
+
+          <div class="map-status-visual">
+            <span class="map-status-icon level-empty" id="map-status-icon">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 4.5h10M6 4.5V3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5M4.5 4.5l.6 8.2A1.3 1.3 0 0 0 6.4 14h3.2a1.3 1.3 0 0 0 1.3-1.3l.6-8.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="map-status-text">
+              <span class="label" id="map-status-label">空き</span>
+              <span class="note" data-i18n="status_note_label">みんなの投稿による現在の状況</span>
+            </span>
+          </div>
+
           <div class="map-accepted">
             <p class="caption" data-i18n="accepted_label">対応ごみ</p>
             <div class="chip-row" id="map-chip-row"></div>
           </div>
           <div class="map-action">
-            <button class="btn btn-primary" id="btn-disposed"><span data-i18n="disposed_cta">ここに捨てました</span></button>
+            <button class="btn btn-primary" id="btn-navigate"><span data-i18n="nav_cta">ここまで道案内する</span></button>
+            <button class="btn btn-primary" id="btn-disposed" style="display:none;"><span data-i18n="disposed_cta">ここに捨てました</span></button>
             <a class="source-link" id="gmaps-link" href="#" target="_blank" rel="noopener noreferrer">
               <span data-i18n="gmaps_label">Google マップで経路を開く</span>
               <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 9.5L14 2M9 2h5v5M13 8.5V13a1.5 1.5 0 0 1-1.5 1.5H3.5A1.5 1.5 0 0 1 2 13V5.5A1.5 1.5 0 0 1 3.5 4H8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -947,16 +968,17 @@
             <div class="state-icon success" style="margin:0 auto;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 12.5L9.5 17.5L19.5 6.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <p class="title-2" data-i18n="disposed_title">お疲れ様でした！</p>
-            <p class="body-2" data-i18n="disposed_subtitle">ごみを正しく捨てることができました。</p>
+            <p class="title-2" data-i18n="disposed_title">ご協力ありがとうございます！</p>
+            <p class="body-2" data-i18n="disposed_subtitle">みんなで街をきれいに保つ取り組みに、ご協力いただきありがとうございます。</p>
           </div>
 
           <div class="section">
             <p class="caption" data-i18n="feedback_label">このごみ箱はどうでしたか？</p>
             <div class="feedback-row">
-              <button class="feedback-btn" data-feedback="available" data-i18n="feedback_available">空いていた</button>
-              <button class="feedback-btn" data-feedback="normal" data-i18n="feedback_normal">ふつう</button>
-              <button class="feedback-btn" data-feedback="crowded" data-i18n="feedback_crowded">混んでいた</button>
+              <button class="feedback-btn" data-feedback="empty" data-i18n="feedback_available">空き</button>
+              <button class="feedback-btn" data-feedback="somewhat" data-i18n="feedback_normal">やや多い</button>
+              <button class="feedback-btn" data-feedback="much" data-i18n="feedback_crowded">多い</button>
+              <button class="feedback-btn" data-feedback="full" data-i18n="feedback_full">満杯</button>
             </div>
             <p class="feedback-thanks" id="feedback-thanks" data-i18n="feedback_thanks">ご協力ありがとうございます。</p>
           </div>
@@ -1068,14 +1090,24 @@
       status_full: '満杯です',
       bin_cta: 'ここへ行く',
       accepted_label: '対応ごみ',
+      nav_cta: 'ここまで道案内する',
+      nav_in_progress: 'ナビ中…',
       disposed_cta: 'ここに捨てました',
       gmaps_label: 'Google マップで経路を開く',
-      disposed_title: 'お疲れ様でした！',
-      disposed_subtitle: 'ごみを正しく捨てることができました。',
+      map_eta_template: '徒歩{min}分',
+      map_activity_template: '{min}分前に{count}人が利用しました',
+      status_note_label: 'みんなの投稿による現在の状況',
+      status_level_empty: '空き',
+      status_level_somewhat: 'やや多い',
+      status_level_much: '多い',
+      status_level_full: '満杯',
+      disposed_title: 'ご協力ありがとうございます！',
+      disposed_subtitle: 'みんなで街をきれいに保つ取り組みに、ご協力いただきありがとうございます。',
       feedback_label: 'このごみ箱はどうでしたか？',
-      feedback_available: '空いていた',
-      feedback_normal: 'ふつう',
-      feedback_crowded: '混んでいた',
+      feedback_available: '空き',
+      feedback_normal: 'やや多い',
+      feedback_crowded: '多い',
+      feedback_full: '満杯',
       feedback_thanks: 'ご協力ありがとうございます。',
       reviews_title: 'みんなのクチコミ',
       review_bin1_1_meta: '観光客A・2日前',
@@ -1159,14 +1191,24 @@
       status_full: 'Full',
       bin_cta: 'Get Directions',
       accepted_label: 'Accepted Items',
+      nav_cta: 'Start Navigation',
+      nav_in_progress: 'Navigating…',
       disposed_cta: 'I disposed here',
       gmaps_label: 'Open in Google Maps',
-      disposed_title: 'Well done!',
-      disposed_subtitle: 'You disposed of it correctly.',
+      map_eta_template: '{min} min walk',
+      map_activity_template: '{count} people used this {min} min ago',
+      status_note_label: "Based on visitors' recent reports",
+      status_level_empty: 'Available',
+      status_level_somewhat: 'Somewhat Full',
+      status_level_much: 'Nearly Full',
+      status_level_full: 'Full',
+      disposed_title: 'Thanks for your help!',
+      disposed_subtitle: 'Thank you for helping keep our city clean.',
       feedback_label: 'How was this bin?',
-      feedback_available: 'Not crowded',
-      feedback_normal: 'Normal',
-      feedback_crowded: 'Crowded',
+      feedback_available: 'Available',
+      feedback_normal: 'Somewhat Full',
+      feedback_crowded: 'Nearly Full',
+      feedback_full: 'Full',
       feedback_thanks: 'Thanks for your feedback!',
       reviews_title: 'Reviews from others',
       review_bin1_1_meta: 'Tourist A · 2 days ago',
@@ -1250,14 +1292,24 @@
       status_full: '已满',
       bin_cta: '前往此处',
       accepted_label: '可回收垃圾种类',
+      nav_cta: '开始导航前往这里',
+      nav_in_progress: '导航中…',
       disposed_cta: '我已丢弃在这里',
       gmaps_label: '在 Google 地图中打开',
-      disposed_title: '辛苦了！',
-      disposed_subtitle: '您已正确丢弃垃圾。',
+      map_eta_template: '步行{min}分钟',
+      map_activity_template: '{min}分钟前有{count}人使用过',
+      status_note_label: '根据大家的回报显示目前状况',
+      status_level_empty: '空闲',
+      status_level_somewhat: '较多',
+      status_level_much: '很多',
+      status_level_full: '已满',
+      disposed_title: '感谢您的协助！',
+      disposed_subtitle: '感谢您一起为维持城市整洁出一份力。',
       feedback_label: '这个垃圾桶怎么样？',
       feedback_available: '空闲',
-      feedback_normal: '一般',
-      feedback_crowded: '拥挤',
+      feedback_normal: '较多',
+      feedback_crowded: '很多',
+      feedback_full: '已满',
       feedback_thanks: '感谢您的反馈。',
       reviews_title: '大家的评价',
       review_bin1_1_meta: '游客A・2天前',
@@ -1341,14 +1393,24 @@
       status_full: '已滿',
       bin_cta: '前往此處',
       accepted_label: '可回收垃圾種類',
+      nav_cta: '開始導航前往這裡',
+      nav_in_progress: '導航中…',
       disposed_cta: '我已丟棄在這裡',
       gmaps_label: '在 Google 地圖中開啟',
-      disposed_title: '辛苦了！',
-      disposed_subtitle: '您已正確丟棄垃圾。',
+      map_eta_template: '步行{min}分鐘',
+      map_activity_template: '{min}分鐘前有{count}人使用過',
+      status_note_label: '根據大家的回報顯示目前狀況',
+      status_level_empty: '空閒',
+      status_level_somewhat: '較多',
+      status_level_much: '很多',
+      status_level_full: '已滿',
+      disposed_title: '感謝您的協助！',
+      disposed_subtitle: '感謝您一起為維持城市整潔出一份力。',
       feedback_label: '這個垃圾桶怎麼樣？',
       feedback_available: '空閒',
-      feedback_normal: '一般',
-      feedback_crowded: '擁擠',
+      feedback_normal: '較多',
+      feedback_crowded: '很多',
+      feedback_full: '已滿',
       feedback_thanks: '感謝您的回饋。',
       reviews_title: '大家的評價',
       review_bin1_1_meta: '遊客A・2天前',
@@ -1432,14 +1494,24 @@
       status_full: '가득 참',
       bin_cta: '길찾기',
       accepted_label: '수거 가능 품목',
+      nav_cta: '길찾기 시작',
+      nav_in_progress: '길안내 중…',
       disposed_cta: '여기에 버렸어요',
       gmaps_label: 'Google 지도에서 열기',
-      disposed_title: '수고하셨습니다!',
-      disposed_subtitle: '쓰레기를 올바르게 버리셨습니다.',
+      map_eta_template: '도보 {min}분',
+      map_activity_template: '{min}분 전에 {count}명이 이용했습니다',
+      status_note_label: '이용자들의 제보를 바탕으로 한 현재 상태',
+      status_level_empty: '여유 있음',
+      status_level_somewhat: '다소 많음',
+      status_level_much: '많음',
+      status_level_full: '가득 참',
+      disposed_title: '협조해 주셔서 감사합니다!',
+      disposed_subtitle: '다 함께 도시를 깨끗하게 유지하는 데 협력해 주셔서 감사합니다.',
       feedback_label: '이 쓰레기통은 어땠나요?',
       feedback_available: '여유 있음',
-      feedback_normal: '보통',
-      feedback_crowded: '혼잡함',
+      feedback_normal: '다소 많음',
+      feedback_crowded: '많음',
+      feedback_full: '가득 참',
       feedback_thanks: '소중한 의견 감사합니다.',
       reviews_title: '다른 이용자 후기',
       review_bin1_1_meta: '관광객 A · 2일 전',
@@ -1662,6 +1734,15 @@
 
   var binOrder = ['bin1', 'bin2', 'bin3'];
   var binDistances = { bin1: '150m', bin2: '320m', bin3: '480m' };
+  var binDistanceMeters = { bin1: 150, bin2: 320, bin3: 480 };
+  var binActivity = {
+    bin1: { min: 5, count: 8 },
+    bin2: { min: 18, count: 3 },
+    bin3: { min: 2, count: 1 }
+  };
+  var binStatusLevel = { bin1: 'empty', bin2: 'somewhat', bin3: 'full' };
+  var binCoords = { bin1: { x: 100, y: 260 }, bin2: { x: 220, y: 130 }, bin3: { x: 300, y: 40 } };
+  var youCoords = { x: 100, y: 380 };
   var binAccepted = {
     bin1: ['chip_pet', 'chip_can', 'chip_bottle'],
     bin2: ['chip_pet', 'chip_can'],
@@ -1669,6 +1750,10 @@
   };
   var currentBinKey = 'bin1';
   var chipIcons = { chip_pet: 'assets/Bottle_Icon_s.png', chip_can: 'assets/Can_Icon_s.png', chip_bottle: 'assets/Recyclables_Icon_s.png', chip_paper: 'assets/Paper_Icon_s.png' };
+
+  function walkMinutes(meters){
+    return Math.max(1, Math.round(meters / 80));
+  }
 
   function renderBinChips(key){
     var dict = translations[currentLang] || translations.ja;
@@ -1722,6 +1807,22 @@
     });
   }
 
+  var navBtn = document.getElementById('btn-navigate');
+  var navBtnLabel = navBtn ? navBtn.querySelector('span') : null;
+  var disposedBtn = document.getElementById('btn-disposed');
+  var navTimer = null;
+
+  function resetNavState(){
+    if(navTimer){ clearTimeout(navTimer); navTimer = null; }
+    var dict = translations[currentLang] || translations.ja;
+    if(navBtn){
+      navBtn.style.display = '';
+      navBtn.disabled = false;
+      if(navBtnLabel) navBtnLabel.textContent = dict.nav_cta;
+    }
+    if(disposedBtn) disposedBtn.style.display = 'none';
+  }
+
   function selectBin(key){
     currentBinKey = key;
     var dict = translations[currentLang] || translations.ja;
@@ -1729,6 +1830,22 @@
     nameEl.setAttribute('data-i18n', key + '_name');
     nameEl.textContent = dict[key + '_name'];
     document.getElementById('map-distance-value').textContent = binDistances[key];
+
+    var mins = walkMinutes(binDistanceMeters[key]);
+    document.getElementById('map-eta-value').textContent = (dict.map_eta_template || '{min}min').replace('{min}', mins);
+
+    var act = binActivity[key];
+    var actEl = document.getElementById('map-activity-text');
+    if(actEl && act){
+      actEl.textContent = (dict.map_activity_template || '').replace('{min}', act.min).replace('{count}', act.count);
+    }
+
+    var level = binStatusLevel[key] || 'empty';
+    var statusIcon = document.getElementById('map-status-icon');
+    if(statusIcon) statusIcon.className = 'map-status-icon level-' + level;
+    var statusLabel = document.getElementById('map-status-label');
+    if(statusLabel) statusLabel.textContent = dict['status_level_' + level];
+
     renderBinChips(key);
     renderReviews(key);
 
@@ -1742,28 +1859,27 @@
 
     document.querySelectorAll('.map-route-group').forEach(function(g){ g.classList.remove('active'); });
     document.querySelectorAll('.map-pin-group').forEach(function(g){ g.classList.remove('active'); });
-    document.querySelectorAll('.map-status-group').forEach(function(g){ g.classList.remove('active'); });
     var route = document.getElementById('route-' + key);
     var pin = document.getElementById('pin-' + key);
-    var status = document.getElementById('status-' + key);
     if(route) route.classList.add('active');
     if(pin) pin.classList.add('active');
-    if(status) status.classList.add('active');
 
-    centerMap();
+    resetNavState();
+    centerMapOn(key);
   }
 
-  renderBinChips(currentBinKey);
-  renderReviews(currentBinKey);
-  (function(){
-    var gmapsLink = document.getElementById('gmaps-link');
-    if(gmapsLink){
+  if(navBtn){
+    navBtn.addEventListener('click', function(){
       var dict = translations[currentLang] || translations.ja;
-      gmapsLink.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(dict[currentBinKey + '_name']);
-    }
-  })();
+      navBtn.disabled = true;
+      if(navBtnLabel) navBtnLabel.textContent = dict.nav_in_progress;
+      navTimer = setTimeout(function(){
+        navBtn.style.display = 'none';
+        if(disposedBtn) disposedBtn.style.display = '';
+      }, 1600);
+    });
+  }
 
-  var disposedBtn = document.getElementById('btn-disposed');
   if(disposedBtn){
     disposedBtn.addEventListener('click', function(){ showScreen('disposed'); });
   }
@@ -1801,7 +1917,7 @@
 
   /* ---------- draggable map ---------- */
   var mapSvg = document.getElementById('map-svg');
-  var mapView = { x:-20, y:160, w:240, h:440, minX:-60, maxX:180, minY:-60, maxY:180 };
+  var mapView = { x:-20, y:160, w:240, h:440, minX:-400, maxX:600, minY:-400, maxY:800 };
   var dragging = false;
   var dragStartPointer = { x:0, y:0 };
   var dragStartView = { x:0, y:0 };
@@ -1810,11 +1926,30 @@
     mapSvg.setAttribute('viewBox', mapView.x + ' ' + mapView.y + ' ' + mapView.w + ' ' + mapView.h);
   }
 
-  function centerMap(){
-    mapView.x = -20;
-    mapView.y = 160;
+  function centerMapOn(key){
+    var target = binCoords[key] || binCoords.bin1;
+    var marginX = 40, marginY = 70;
+    var baseHalfW = 120, baseHalfH = 220;
+    var ratio = baseHalfW / baseHalfH;
+    var wrap = mapSvg && mapSvg.parentElement;
+    if(wrap && wrap.clientWidth && wrap.clientHeight){
+      ratio = wrap.clientWidth / wrap.clientHeight;
+    }
+    var halfW = Math.max(baseHalfW, Math.abs(target.x - youCoords.x) + marginX);
+    var halfH = Math.max(baseHalfH, Math.abs(target.y - youCoords.y) + marginY);
+    if(halfW / halfH > ratio){
+      halfH = halfW / ratio;
+    } else {
+      halfW = halfH * ratio;
+    }
+    mapView.w = halfW * 2;
+    mapView.h = halfH * 2;
+    mapView.x = target.x - halfW;
+    mapView.y = target.y - halfH;
     updateMapViewBox();
   }
+
+  selectBin(currentBinKey);
 
   if(mapSvg){
     mapSvg.addEventListener('pointerdown', function(e){
