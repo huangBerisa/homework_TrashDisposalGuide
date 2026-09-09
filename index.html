@@ -365,8 +365,8 @@
   .map-you-ring{fill:var(--color-bg); stroke:var(--color-primary); stroke-width:2;}
   .map-you-dot{fill:var(--color-primary);}
   .map-you-label{fill:var(--color-text); font-size:10px; font-weight:700; text-anchor:middle;}
-  .map-pin-group{display:none;}
-  .map-pin-group.active{display:inline;}
+  .map-pin-group{opacity:0.4;}
+  .map-pin-group.active{opacity:1;}
   .map-pin{fill:var(--color-primary);}
   .map-pin-badge{fill:var(--color-primary-light);}
   .map-pin-badge-icon{color:var(--color-primary);}
@@ -378,26 +378,12 @@
     border-top:1px solid var(--color-divider);
     background:var(--color-bg);
   }
-  .map-pager{display:flex; align-items:center; gap:8px;}
-  .map-pager-info{flex:1 1 auto; min-width:0;}
-  .pager-btn{
-    width:44px; height:44px; flex:0 0 auto;
-    display:flex; align-items:center; justify-content:center;
-    background:var(--color-surface);
-    border:none;
-    border-radius:var(--radius);
-    color:var(--color-text);
-    cursor:pointer;
-    padding:0;
-  }
-  .pager-btn svg{width:18px; height:18px;}
   .map-eta{
     display:flex; align-items:center; gap:6px; margin:8px 0 0;
     font-size:var(--fs-3); color:var(--color-text); font-weight:500;
   }
   .map-eta svg{width:16px; height:16px; color:var(--color-text-muted); flex:0 0 auto;}
   .map-eta .dot{color:var(--color-text-muted);}
-  .map-activity{font-size:var(--fs-5); color:var(--color-text-muted); margin:4px 0 0;}
   .map-status-visual{
     display:flex; align-items:center; gap:8px;
     margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);
@@ -407,14 +393,6 @@
   .map-status-text .label{font-size:var(--fs-3); font-weight:700; color:var(--color-text);}
   .map-status-text .note{font-size:var(--fs-5); color:var(--color-text-muted);}
   .map-accepted{margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);}
-
-  /* ---------- external / source links ---------- */
-  .source-link{
-    display:inline-flex; align-items:center; gap:4px;
-    font-size:var(--fs-4); color:var(--color-primary); font-weight:500;
-    text-decoration:none; margin-top:8px;
-  }
-  .source-link svg{width:14px; height:14px;}
 
   /* ---------- multi-item detection ---------- */
   .detect-list{display:flex; flex-direction:column; gap:8px; list-style:none; margin:0; padding:0;}
@@ -462,12 +440,6 @@
   .header-title{display:flex; align-items:center; gap:0;}
   .header-title span{font-family:'Noto Sans JP', sans-serif; font-weight:700; font-size:24px; color:var(--color-primary); line-height:normal;}
   .header-icon{width:28px; height:28px; flex:0 0 auto;}
-  .next-btn{
-    position:absolute; right:0; top:50%; transform:translateY(-50%);
-    width:28px; height:28px; display:flex; align-items:center; justify-content:center;
-    color:var(--color-primary);
-  }
-  .next-btn img{width:28px; height:28px; display:block;}
 
   /* ---------- onboarding ---------- */
   .onboarding-screen{
@@ -571,7 +543,6 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="onboarding3"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body lang-select-body">
           <div class="section stack-16">
@@ -594,7 +565,6 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="lang"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
           <div class="section stack-16">
@@ -626,7 +596,6 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
           <div class="section stack-16">
@@ -661,7 +630,6 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="state-screen">
           <div class="state-icon">
@@ -679,7 +647,6 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="notrash"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
           <div class="section stack-16">
@@ -713,7 +680,6 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
 
@@ -827,20 +793,27 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="result"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="map-wrap">
           <svg class="map-svg" id="map-svg" viewBox="-20 160 240 440" preserveAspectRatio="xMidYMid slice">
             <rect class="map-land" x="-400" y="-400" width="1200" height="1400"/>
 
             <!-- landmarks -->
-            <rect class="map-park" x="300" y="0" width="60" height="500"/>
+            <rect class="map-park" x="300" y="-260" width="60" height="1000"/>
             <text class="map-landmark-label" x="330" y="250" transform="rotate(-90 330 250)" data-i18n="landmark_river">鴨川</text>
             <rect class="map-landmark" x="6" y="392" width="88" height="100" rx="4"/>
             <text class="map-landmark-label" x="50" y="446" style="font-size:11px;" data-i18n="landmark_station">京都駅</text>
 
             <!-- generic city blocks -->
             <rect class="map-building" x="130" y="15" width="70" height="95" rx="3"/>
+            <rect class="map-building" x="15" y="15" width="70" height="95" rx="3"/>
+            <rect class="map-building" x="235" y="15" width="50" height="95" rx="3"/>
+            <rect class="map-building" x="15" y="-115" width="70" height="95" rx="3"/>
+            <rect class="map-building" x="130" y="-115" width="70" height="95" rx="3"/>
+            <rect class="map-building" x="235" y="-115" width="50" height="95" rx="3"/>
+            <rect class="map-building" x="15" y="410" width="70" height="70" rx="3"/>
+            <rect class="map-building" x="130" y="410" width="70" height="70" rx="3"/>
+            <rect class="map-building" x="235" y="410" width="50" height="70" rx="3"/>
             <rect class="map-building" x="15" y="150" width="70" height="95" rx="3"/>
             <rect class="map-building" x="130" y="150" width="70" height="95" rx="3"/>
             <rect class="map-building" x="235" y="150" width="50" height="95" rx="3"/>
@@ -848,18 +821,28 @@
             <rect class="map-building" x="235" y="280" width="50" height="85" rx="3"/>
 
             <!-- roads (grid) -->
-            <path class="map-road" d="M100 0v500"/>
-            <path class="map-road" d="M220 0v500"/>
-            <path class="map-road" d="M300 0v500"/>
-            <path class="map-road" d="M0 130h360"/>
-            <path class="map-road" d="M0 260h360"/>
-            <path class="map-road" d="M0 380h360"/>
-            <path class="map-road-line" d="M100 0v500"/>
-            <path class="map-road-line" d="M220 0v500"/>
-            <path class="map-road-line" d="M300 0v500"/>
-            <path class="map-road-line" d="M0 130h360"/>
-            <path class="map-road-line" d="M0 260h360"/>
-            <path class="map-road-line" d="M0 380h360"/>
+            <path class="map-road" d="M-20 -260v1000"/>
+            <path class="map-road" d="M100 -260v1000"/>
+            <path class="map-road" d="M220 -260v1000"/>
+            <path class="map-road" d="M300 -260v1000"/>
+            <path class="map-road" d="M420 -260v1000"/>
+            <path class="map-road" d="M-260 10 h800"/>
+            <path class="map-road" d="M-260 130 h800"/>
+            <path class="map-road" d="M-260 260 h800"/>
+            <path class="map-road" d="M-260 380 h800"/>
+            <path class="map-road" d="M-260 500 h800"/>
+            <path class="map-road" d="M-260 620 h800"/>
+            <path class="map-road-line" d="M-20 -260v1000"/>
+            <path class="map-road-line" d="M100 -260v1000"/>
+            <path class="map-road-line" d="M220 -260v1000"/>
+            <path class="map-road-line" d="M300 -260v1000"/>
+            <path class="map-road-line" d="M420 -260v1000"/>
+            <path class="map-road-line" d="M-260 10 h800"/>
+            <path class="map-road-line" d="M-260 130 h800"/>
+            <path class="map-road-line" d="M-260 260 h800"/>
+            <path class="map-road-line" d="M-260 380 h800"/>
+            <path class="map-road-line" d="M-260 500 h800"/>
+            <path class="map-road-line" d="M-260 620 h800"/>
 
             <!-- street name labels (real Kyoto street names) -->
             <text class="map-road-label" x="0" y="0" transform="translate(108 60) rotate(-90)" data-i18n="landmark_road1">烏丸通</text>
@@ -907,27 +890,20 @@
           </svg>
         </div>
         <div class="map-info">
-          <div class="map-pager">
-            <button class="pager-btn" id="map-prev" data-i18n-aria="prev_bin" aria-label="前のごみ箱"><img src="assets/left.png" alt=""></button>
-            <div class="map-pager-info">
-              <p class="title-2" id="map-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
-              <p class="map-eta">
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>
-                <span id="map-distance-value">150m</span>
-                <span class="dot">・</span>
-                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                <span id="map-eta-value">徒歩2分</span>
-              </p>
-              <p class="map-activity" id="map-activity-text">5分前に8人が利用しました</p>
-            </div>
-            <button class="pager-btn" id="map-next" data-i18n-aria="next_bin" aria-label="次のごみ箱"><img src="assets/right.png" alt=""></button>
-          </div>
+          <p class="title-2" id="map-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
+          <p class="map-eta">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>
+            <span id="map-distance-value">150m</span>
+            <span class="dot">・</span>
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span id="map-eta-value">徒歩2分</span>
+          </p>
 
           <div class="map-status-visual">
             <img class="map-status-icon" id="map-status-icon" src="assets/Empty.png" alt="">
             <span class="map-status-text">
               <span class="label" id="map-status-label">空き</span>
-              <span class="note" data-i18n="status_note_label">みんなの投稿による現在の状況</span>
+              <span class="note" id="map-activity-text">5分前に8人が利用しました</span>
             </span>
           </div>
 
@@ -938,10 +914,6 @@
           <div class="map-action">
             <button class="btn btn-primary" id="btn-navigate"><span data-i18n="nav_cta">ここまで道案内する</span></button>
             <button class="btn btn-primary" id="btn-disposed" style="display:none;"><span data-i18n="disposed_cta">ここに捨てました</span></button>
-            <a class="source-link" id="gmaps-link" href="#" target="_blank" rel="noopener noreferrer">
-              <span data-i18n="gmaps_label">Google マップで経路を開く</span>
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 9.5L14 2M9 2h5v5M13 8.5V13a1.5 1.5 0 0 1-1.5 1.5H3.5A1.5 1.5 0 0 1 2 13V5.5A1.5 1.5 0 0 1 3.5 4H8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
           </div>
         </div>
       </section>
@@ -951,7 +923,6 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="map"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="app-body">
           <div class="section stack-16" style="text-align:center;">
@@ -985,7 +956,6 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="state-screen">
           <div class="state-icon">
@@ -1002,7 +972,6 @@
         <header class="app-header">
           <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
           <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-          <span class="next-btn" aria-hidden="true"><img src="assets/right.png" alt=""></span>
         </header>
         <div class="state-screen">
           <div class="state-icon alert">
@@ -1083,10 +1052,8 @@
       nav_cta: 'ここまで道案内する',
       nav_in_progress: 'ナビ中…',
       disposed_cta: 'ここに捨てました',
-      gmaps_label: 'Google マップで経路を開く',
       map_eta_template: '徒歩{min}分',
       map_activity_template: '{min}分前に{count}人が利用しました',
-      status_note_label: 'みんなの投稿による現在の状況',
       status_level_empty: '空き',
       status_level_somewhat: 'やや多い',
       status_level_much: '多い',
@@ -1118,8 +1085,6 @@
       landmark_road1: '烏丸通',
       landmark_road2: '四条通',
       landmark_road3: '河原町通',
-      prev_bin: '前のごみ箱',
-      next_bin: '次のごみ箱',
       empty_title: '該当するごみが見つかりませんでした。',
       empty_subtitle: 'ごみの名前を変えて、もう一度お調べください。',
       retry: 'もう一度調べる',
@@ -1184,10 +1149,8 @@
       nav_cta: 'Start Navigation',
       nav_in_progress: 'Navigating…',
       disposed_cta: 'I disposed here',
-      gmaps_label: 'Open in Google Maps',
       map_eta_template: '{min} min walk',
       map_activity_template: '{count} people used this {min} min ago',
-      status_note_label: "Based on visitors' recent reports",
       status_level_empty: 'Available',
       status_level_somewhat: 'Somewhat Full',
       status_level_much: 'Nearly Full',
@@ -1219,8 +1182,6 @@
       landmark_road1: 'Karasuma-dori',
       landmark_road2: 'Shijo-dori',
       landmark_road3: 'Kawaramachi-dori',
-      prev_bin: 'Previous bin',
-      next_bin: 'Next bin',
       empty_title: 'No matching item was found.',
       empty_subtitle: 'Try changing the item name and search again.',
       retry: 'Search Again',
@@ -1285,10 +1246,8 @@
       nav_cta: '开始导航前往这里',
       nav_in_progress: '导航中…',
       disposed_cta: '我已丢弃在这里',
-      gmaps_label: '在 Google 地图中打开',
       map_eta_template: '步行{min}分钟',
       map_activity_template: '{min}分钟前有{count}人使用过',
-      status_note_label: '根据大家的回报显示目前状况',
       status_level_empty: '空闲',
       status_level_somewhat: '较多',
       status_level_much: '很多',
@@ -1320,8 +1279,6 @@
       landmark_road1: '乌丸通',
       landmark_road2: '四条通',
       landmark_road3: '河原町通',
-      prev_bin: '上一个垃圾桶',
-      next_bin: '下一个垃圾桶',
       empty_title: '未找到符合的垃圾项目。',
       empty_subtitle: '请更换垃圾名称后再次查询。',
       retry: '重新查询',
@@ -1386,10 +1343,8 @@
       nav_cta: '開始導航前往這裡',
       nav_in_progress: '導航中…',
       disposed_cta: '我已丟棄在這裡',
-      gmaps_label: '在 Google 地圖中開啟',
       map_eta_template: '步行{min}分鐘',
       map_activity_template: '{min}分鐘前有{count}人使用過',
-      status_note_label: '根據大家的回報顯示目前狀況',
       status_level_empty: '空閒',
       status_level_somewhat: '較多',
       status_level_much: '很多',
@@ -1421,8 +1376,6 @@
       landmark_road1: '烏丸通',
       landmark_road2: '四條通',
       landmark_road3: '河原町通',
-      prev_bin: '上一個垃圾桶',
-      next_bin: '下一個垃圾桶',
       empty_title: '未找到符合的垃圾項目。',
       empty_subtitle: '請更換垃圾名稱後再次查詢。',
       retry: '重新查詢',
@@ -1487,10 +1440,8 @@
       nav_cta: '길찾기 시작',
       nav_in_progress: '길안내 중…',
       disposed_cta: '여기에 버렸어요',
-      gmaps_label: 'Google 지도에서 열기',
       map_eta_template: '도보 {min}분',
       map_activity_template: '{min}분 전에 {count}명이 이용했습니다',
-      status_note_label: '이용자들의 제보를 바탕으로 한 현재 상태',
       status_level_empty: '여유 있음',
       status_level_somewhat: '다소 많음',
       status_level_much: '많음',
@@ -1522,8 +1473,6 @@
       landmark_road1: '가라스마도리',
       landmark_road2: '시조도리',
       landmark_road3: '가와라마치도리',
-      prev_bin: '이전 쓰레기통',
-      next_bin: '다음 쓰레기통',
       empty_title: '해당하는 쓰레기를 찾을 수 없습니다.',
       empty_subtitle: '쓰레기 이름을 바꿔서 다시 검색해 주세요.',
       retry: '다시 검색하기',
@@ -1742,8 +1691,16 @@
   var currentBinKey = 'bin1';
   var chipIcons = { chip_pet: 'assets/Bottle_Icon_s.png', chip_can: 'assets/Can_Icon_s.png', chip_bottle: 'assets/Recyclables_Icon_s.png', chip_paper: 'assets/Paper_Icon_s.png' };
 
+  var nearbyWalkLimitMinutes = 10;
+
   function walkMinutes(meters){
     return Math.max(1, Math.round(meters / 80));
+  }
+
+  function nearbyBinKeys(){
+    return binOrder.filter(function(k){
+      return walkMinutes(binDistanceMeters[k]) <= nearbyWalkLimitMinutes;
+    });
   }
 
   function renderBinChips(key){
@@ -1840,16 +1797,17 @@
     renderBinChips(key);
     renderReviews(key);
 
-    var gmapsLink = document.getElementById('gmaps-link');
-    if(gmapsLink){
-      gmapsLink.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(dict[key + '_name']);
-    }
     document.querySelectorAll('.feedback-btn').forEach(function(b){ b.classList.remove('selected'); });
     var thanks = document.getElementById('feedback-thanks');
     if(thanks) thanks.classList.remove('visible');
 
     document.querySelectorAll('.map-route-group').forEach(function(g){ g.classList.remove('active'); });
     document.querySelectorAll('.map-pin-group').forEach(function(g){ g.classList.remove('active'); });
+    var nearby = nearbyBinKeys();
+    binOrder.forEach(function(k){
+      var group = document.getElementById('pin-' + k);
+      if(group) group.style.display = nearby.indexOf(k) === -1 ? 'none' : '';
+    });
     var route = document.getElementById('route-' + key);
     var pin = document.getElementById('pin-' + key);
     if(route) route.classList.add('active');
@@ -1891,21 +1849,6 @@
     });
   });
 
-  var mapPrevBtn = document.getElementById('map-prev');
-  var mapNextBtn = document.getElementById('map-next');
-  if(mapPrevBtn){
-    mapPrevBtn.addEventListener('click', function(){
-      var idx = binOrder.indexOf(currentBinKey);
-      selectBin(binOrder[(idx - 1 + binOrder.length) % binOrder.length]);
-    });
-  }
-  if(mapNextBtn){
-    mapNextBtn.addEventListener('click', function(){
-      var idx = binOrder.indexOf(currentBinKey);
-      selectBin(binOrder[(idx + 1) % binOrder.length]);
-    });
-  }
-
   /* ---------- draggable map ---------- */
   var mapSvg = document.getElementById('map-svg');
   var mapView = { x:-20, y:160, w:240, h:440, minX:-400, maxX:600, minY:-400, maxY:800 };
@@ -1926,8 +1869,12 @@
     if(wrap && wrap.clientWidth && wrap.clientHeight){
       ratio = wrap.clientWidth / wrap.clientHeight;
     }
-    var halfW = Math.max(baseHalfW, Math.abs(target.x - youCoords.x) + marginX);
-    var halfH = Math.max(baseHalfH, Math.abs(target.y - youCoords.y) + marginY);
+    var halfW = baseHalfW, halfH = baseHalfH;
+    nearbyBinKeys().concat(['you']).forEach(function(k){
+      var p = k === 'you' ? youCoords : binCoords[k];
+      halfW = Math.max(halfW, Math.abs(p.x - target.x) + marginX);
+      halfH = Math.max(halfH, Math.abs(p.y - target.y) + marginY);
+    });
     if(halfW / halfH > ratio){
       halfH = halfW / ratio;
     } else {
