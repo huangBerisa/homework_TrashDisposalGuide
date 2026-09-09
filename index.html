@@ -367,6 +367,9 @@
   .map-you-ring{fill:var(--color-bg); stroke:var(--color-primary); stroke-width:2;}
   .map-you-dot{fill:var(--color-primary);}
   .map-you-label{fill:var(--color-text); font-size:10px; font-weight:700; text-anchor:middle;}
+  .map-you-arrow{fill:var(--color-primary); display:none;}
+  #you-marker.navigating .map-you-dot{display:none;}
+  #you-marker.navigating .map-you-arrow{display:block;}
   .map-pin-group{opacity:0.45; cursor:pointer;}
   .map-pin-group.active{opacity:1;}
   .map-pin{fill:var(--color-primary);}
@@ -404,6 +407,45 @@
   .map-status-text .label{font-size:var(--fs-3); font-weight:700; color:var(--color-text);}
   .map-status-text .note{font-size:var(--fs-5); color:var(--color-text-muted);}
   .map-accepted{margin-top:16px; padding-top:16px; border-top:1px solid var(--color-divider);}
+  .link-btn{
+    margin-left:auto; flex:0 0 auto;
+    padding:8px 0 8px 8px;
+    background:none; border:none;
+    font-size:var(--fs-4); font-weight:700; color:var(--color-primary);
+    cursor:pointer;
+  }
+
+  /* chip tooltip */
+  .chip{position:relative;}
+  .chip-tip{
+    position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%);
+    padding:4px 8px;
+    background:var(--color-text); color:var(--color-bg);
+    border-radius:var(--radius);
+    font-size:var(--fs-5); font-weight:500; white-space:nowrap;
+    pointer-events:none; z-index:2;
+  }
+  .chip-tip::after{
+    content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%);
+    border:4px solid transparent; border-top-color:var(--color-text);
+  }
+
+  /* bin state votes */
+  .vote-chart{margin-top:16px; display:flex; flex-direction:column; gap:8px;}
+  .vote-chart[hidden]{display:none;}
+  .vote-row{display:flex; align-items:center; gap:8px;}
+  .vote-row img{width:24px; height:24px; flex:0 0 auto;}
+  .vote-label{font-size:var(--fs-5); color:var(--color-text); width:56px; flex:0 0 auto;}
+  .vote-bar{
+    flex:1 1 auto; height:8px; border-radius:999px;
+    background:var(--color-surface); overflow:hidden;
+  }
+  .vote-bar span{display:block; height:100%; border-radius:999px;}
+  .vote-bar span.level-empty{background:var(--color-primary);}
+  .vote-bar span.level-somewhat{background:#2B6CB0;}
+  .vote-bar span.level-much{background:var(--color-warning);}
+  .vote-bar span.level-full{background:var(--color-alert);}
+  .vote-count{font-size:var(--fs-5); color:var(--color-text-muted); width:32px; text-align:right; flex:0 0 auto;}
 
   /* ---------- multi-item detection ---------- */
   .detect-list{display:flex; flex-direction:column; gap:8px; list-style:none; margin:0; padding:0;}
@@ -425,14 +467,22 @@
   .map-action .btn{margin-bottom:8px;}
 
   /* ---------- post-disposal / feedback ---------- */
+  .disposed-bin{display:flex; align-items:center; gap:8px;}
+  .disposed-bin .bin-thumb{width:48px; height:48px; flex:0 0 auto; object-fit:contain;}
+  .disposed-bin-main{flex:1 1 auto; min-width:0;}
+
   .feedback-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:8px;}
   .feedback-btn{
-    min-height:44px; padding:0 16px;
+    flex:1 1 0; min-width:64px;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+    min-height:44px; padding:8px;
     border:1px solid var(--color-divider);
     border-radius:var(--radius);
     background:var(--color-bg);
-    font-size:var(--fs-4); color:var(--color-text);
+    font-size:var(--fs-5); color:var(--color-text);
+    cursor:pointer;
   }
+  .feedback-btn img{width:32px; height:32px; display:block;}
   .feedback-btn.selected{
     background:var(--color-primary-light);
     border-color:var(--color-primary);
@@ -872,9 +922,12 @@
             </g>
 
             <!-- current location -->
-            <circle class="map-you-ring" cx="100" cy="380" r="13"/>
-            <circle class="map-you-dot" cx="100" cy="380" r="5"/>
-            <text class="map-you-label" x="100" y="362" data-i18n="you_are_here">現在地</text>
+            <g id="you-marker" transform="translate(100 380)">
+              <circle class="map-you-ring" cx="0" cy="0" r="13"/>
+              <circle class="map-you-dot" id="you-dot" cx="0" cy="0" r="5"/>
+              <path class="map-you-arrow" id="you-arrow" d="M0 -8L5.5 6L0 2.5L-5.5 6z" transform="rotate(0)"/>
+              <text class="map-you-label" id="you-label" x="0" y="-18" data-i18n="you_are_here">現在地</text>
+            </g>
 
             <!-- destination pins (one active per selected bin) -->
             <g class="map-pin-group active" id="pin-bin1">
@@ -917,7 +970,10 @@
               <span class="label" id="map-status-label">空き</span>
               <span class="note" id="map-activity-text">5分前に8人が利用しました</span>
             </span>
+            <button class="link-btn" id="btn-reviews" data-i18n="reviews_cta">口コミを見る</button>
           </div>
+
+          <div class="vote-chart" id="vote-chart" hidden></div>
 
           <div class="map-accepted">
             <p class="caption" data-i18n="accepted_label">対応ごみ</p>
@@ -941,17 +997,37 @@
             <div class="state-icon success" style="margin:0 auto;">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 12.5L9.5 17.5L19.5 6.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
-            <p class="title-2" data-i18n="disposed_title">ご協力ありがとうございます！</p>
+            <p class="title-2" data-i18n="disposed_title">ご協力ありがとうございました！</p>
             <p class="body-2" data-i18n="disposed_subtitle">みんなで街をきれいに保つ取り組みに、ご協力いただきありがとうございます。</p>
+          </div>
+
+          <div class="section disposed-bin">
+            <img class="bin-thumb" src="assets/TrashBin.png" alt="">
+            <div class="disposed-bin-main">
+              <p class="bin-name" id="disposed-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
+              <div class="chip-row" id="disposed-chip-row"></div>
+            </div>
           </div>
 
           <div class="section">
             <p class="caption" data-i18n="feedback_label">このごみ箱はどうでしたか？</p>
             <div class="feedback-row">
-              <button class="feedback-btn" data-feedback="empty" data-i18n="feedback_available">空き</button>
-              <button class="feedback-btn" data-feedback="somewhat" data-i18n="feedback_normal">やや多い</button>
-              <button class="feedback-btn" data-feedback="much" data-i18n="feedback_crowded">多い</button>
-              <button class="feedback-btn" data-feedback="full" data-i18n="feedback_full">満杯</button>
+              <button class="feedback-btn" data-feedback="empty">
+                <img src="assets/Empty.png" alt="">
+                <span data-i18n="feedback_available">空き</span>
+              </button>
+              <button class="feedback-btn" data-feedback="somewhat">
+                <img src="assets/PartiallyFilled.png" alt="">
+                <span data-i18n="feedback_normal">やや多い</span>
+              </button>
+              <button class="feedback-btn" data-feedback="much">
+                <img src="assets/NearlyFull.png" alt="">
+                <span data-i18n="feedback_crowded">多い</span>
+              </button>
+              <button class="feedback-btn" data-feedback="full">
+                <img src="assets/Full.png" alt="">
+                <span data-i18n="feedback_full">満杯</span>
+              </button>
             </div>
             <p class="feedback-thanks" id="feedback-thanks" data-i18n="feedback_thanks">ご協力ありがとうございます。</p>
           </div>
@@ -1063,6 +1139,10 @@
       accepted_label: '対応ごみ',
       nav_cta: 'ここまで道案内する',
       nav_in_progress: 'ナビ中…',
+      reviews_cta: '口コミを見る',
+      reviews_cta_close: '閉じる',
+      vote_count_template: '{count}件',
+      nav_guiding: '案内中',
       disposed_cta: 'ここに捨てました',
       map_eta_template: '徒歩{min}分',
       map_activity_template: '{min}分前に{count}人が利用しました',
@@ -1070,7 +1150,7 @@
       status_level_somewhat: 'やや多い',
       status_level_much: '多い',
       status_level_full: '満杯',
-      disposed_title: 'ご協力ありがとうございます！',
+      disposed_title: 'ご協力ありがとうございました！',
       disposed_subtitle: 'みんなで街をきれいに保つ取り組みに、ご協力いただきありがとうございます。',
       feedback_label: 'このごみ箱はどうでしたか？',
       feedback_available: '空き',
@@ -1160,6 +1240,10 @@
       accepted_label: 'Accepted Items',
       nav_cta: 'Start Navigation',
       nav_in_progress: 'Navigating…',
+      reviews_cta: 'See reports',
+      reviews_cta_close: 'Close',
+      vote_count_template: '{count}',
+      nav_guiding: 'Navigating',
       disposed_cta: 'I disposed here',
       map_eta_template: '{min} min walk',
       map_activity_template: '{count} people used this {min} min ago',
@@ -1257,6 +1341,10 @@
       accepted_label: '可回收垃圾种类',
       nav_cta: '开始导航前往这里',
       nav_in_progress: '导航中…',
+      reviews_cta: '查看回报',
+      reviews_cta_close: '收起',
+      vote_count_template: '{count}件',
+      nav_guiding: '导航中',
       disposed_cta: '我已丢弃在这里',
       map_eta_template: '步行{min}分钟',
       map_activity_template: '{min}分钟前有{count}人使用过',
@@ -1354,6 +1442,10 @@
       accepted_label: '可回收垃圾種類',
       nav_cta: '開始導航前往這裡',
       nav_in_progress: '導航中…',
+      reviews_cta: '查看回報',
+      reviews_cta_close: '收起',
+      vote_count_template: '{count}件',
+      nav_guiding: '導航中',
       disposed_cta: '我已丟棄在這裡',
       map_eta_template: '步行{min}分鐘',
       map_activity_template: '{min}分鐘前有{count}人使用過',
@@ -1451,6 +1543,10 @@
       accepted_label: '수거 가능 품목',
       nav_cta: '길찾기 시작',
       nav_in_progress: '길안내 중…',
+      reviews_cta: '제보 보기',
+      reviews_cta_close: '닫기',
+      vote_count_template: '{count}건',
+      nav_guiding: '길안내 중',
       disposed_cta: '여기에 버렸어요',
       map_eta_template: '도보 {min}분',
       map_activity_template: '{min}분 전에 {count}명이 이용했습니다',
@@ -1700,7 +1796,19 @@
     bin2: { min: 18, count: 3 },
     bin3: { min: 2, count: 1 }
   };
-  var binStatusLevel = { bin1: 'empty', bin2: 'somewhat', bin3: 'full' };
+  var statusLevels = ['empty', 'somewhat', 'much', 'full'];
+  var binStatusVotes = {
+    bin1: { empty: 12, somewhat: 4, much: 1, full: 0 },
+    bin2: { empty: 2, somewhat: 9, much: 4, full: 1 },
+    bin3: { empty: 0, somewhat: 1, much: 3, full: 11 }
+  };
+
+  function topStatusLevel(key){
+    var votes = binStatusVotes[key];
+    return statusLevels.reduce(function(best, level){
+      return votes[level] > votes[best] ? level : best;
+    }, statusLevels[0]);
+  }
   var statusIcons = { empty: 'assets/Empty.png', somewhat: 'assets/PartiallyFilled.png', much: 'assets/NearlyFull.png', full: 'assets/Full.png' };
   var binCoords = { bin1: { x: 100, y: 260 }, bin2: { x: 220, y: 130 }, bin3: { x: 300, y: 40 } };
   var youCoords = { x: 100, y: 380 };
@@ -1718,6 +1826,24 @@
     return Math.max(1, Math.round(meters / 80));
   }
 
+  function hideChipTips(){
+    document.querySelectorAll('.chip-tip').forEach(function(tip){ tip.remove(); });
+  }
+
+  document.addEventListener('click', function(e){
+    var chip = e.target.closest ? e.target.closest('.chip') : null;
+    var hadTip = chip && chip.querySelector('.chip-tip');
+    hideChipTips();
+    if(!chip || hadTip) return;
+    var dict = translations[currentLang] || translations.ja;
+    var label = dict[chip.getAttribute('data-chip-key')];
+    if(!label) return;
+    var tip = document.createElement('span');
+    tip.className = 'chip-tip';
+    tip.textContent = label;
+    chip.appendChild(tip);
+  });
+
   function renderBinCardEtas(){
     var dict = translations[currentLang] || translations.ja;
     document.querySelectorAll('[data-bin-eta]').forEach(function(el){
@@ -1732,7 +1858,7 @@
     });
   }
 
-  function renderBinChips(key){
+  function renderBinChips(key, row){
     var dict = translations[currentLang] || translations.ja;
     var scannedChipKey = 'chip_' + currentItemKey;
     var types = binAccepted[key].slice().sort(function(a, b){
@@ -1740,7 +1866,8 @@
       if(b === scannedChipKey) return 1;
       return 0;
     });
-    var row = document.getElementById('map-chip-row');
+    if(!row) row = document.getElementById('map-chip-row');
+    if(!row) return;
     row.innerHTML = '';
     types.forEach(function(t){
       var chip = document.createElement('span');
@@ -1784,13 +1911,73 @@
     });
   }
 
+  function renderVoteChart(key){
+    var dict = translations[currentLang] || translations.ja;
+    var chart = document.getElementById('vote-chart');
+    if(!chart) return;
+    var votes = binStatusVotes[key];
+    var max = Math.max.apply(null, statusLevels.map(function(l){ return votes[l]; })) || 1;
+    chart.innerHTML = '';
+    statusLevels.forEach(function(level){
+      var row = document.createElement('div');
+      row.className = 'vote-row';
+
+      var icon = document.createElement('img');
+      icon.src = statusIcons[level];
+      icon.alt = '';
+
+      var label = document.createElement('span');
+      label.className = 'vote-label';
+      label.textContent = dict['status_level_' + level];
+
+      var bar = document.createElement('span');
+      bar.className = 'vote-bar';
+      var fill = document.createElement('span');
+      fill.className = 'level-' + level;
+      fill.style.width = Math.round((votes[level] / max) * 100) + '%';
+      bar.appendChild(fill);
+
+      var count = document.createElement('span');
+      count.className = 'vote-count';
+      count.textContent = (dict.vote_count_template || '{count}').replace('{count}', votes[level]);
+
+      row.appendChild(icon);
+      row.appendChild(label);
+      row.appendChild(bar);
+      row.appendChild(count);
+      chart.appendChild(row);
+    });
+  }
+
+  var reviewsBtn = document.getElementById('btn-reviews');
+  if(reviewsBtn){
+    reviewsBtn.addEventListener('click', function(){
+      var chart = document.getElementById('vote-chart');
+      if(!chart) return;
+      var dict = translations[currentLang] || translations.ja;
+      chart.hidden = !chart.hidden;
+      reviewsBtn.textContent = chart.hidden ? dict.reviews_cta : dict.reviews_cta_close;
+      if(!chart.hidden) centerMapOn(currentBinKey);
+    });
+  }
+
   var navBtn = document.getElementById('btn-navigate');
   var navBtnLabel = navBtn ? navBtn.querySelector('span') : null;
   var disposedBtn = document.getElementById('btn-disposed');
   var navTimer = null;
 
+  var navRaf = null;
+
+  function setYouMarker(x, y, angle){
+    var marker = document.getElementById('you-marker');
+    if(marker) marker.setAttribute('transform', 'translate(' + x + ' ' + y + ')');
+    var arrow = document.getElementById('you-arrow');
+    if(arrow && angle !== undefined) arrow.setAttribute('transform', 'rotate(' + angle + ')');
+  }
+
   function resetNavState(){
     if(navTimer){ clearTimeout(navTimer); navTimer = null; }
+    if(navRaf){ cancelAnimationFrame(navRaf); navRaf = null; }
     var dict = translations[currentLang] || translations.ja;
     if(navBtn){
       navBtn.style.display = '';
@@ -1798,6 +1985,61 @@
       if(navBtnLabel) navBtnLabel.textContent = dict.nav_cta;
     }
     if(disposedBtn) disposedBtn.style.display = 'none';
+    var marker = document.getElementById('you-marker');
+    if(marker) marker.classList.remove('navigating');
+    var label = document.getElementById('you-label');
+    if(label) label.textContent = dict.you_are_here;
+    setYouMarker(youCoords.x, youCoords.y);
+  }
+
+  function arriveAtBin(){
+    var dict = translations[currentLang] || translations.ja;
+    var marker = document.getElementById('you-marker');
+    if(marker) marker.classList.remove('navigating');
+    var label = document.getElementById('you-label');
+    if(label) label.textContent = dict.you_are_here;
+    if(navBtn) navBtn.style.display = 'none';
+    if(disposedBtn) disposedBtn.style.display = '';
+  }
+
+  function startNavigation(){
+    var dict = translations[currentLang] || translations.ja;
+    var target = binCoords[currentBinKey];
+    var marker = document.getElementById('you-marker');
+    var label = document.getElementById('you-label');
+    var route = document.querySelector('#route-' + currentBinKey + ' .map-route');
+
+    if(navBtn){
+      navBtn.disabled = true;
+      if(navBtnLabel) navBtnLabel.textContent = dict.nav_in_progress;
+    }
+    if(marker) marker.classList.add('navigating');
+    if(label) label.textContent = dict.nav_guiding;
+
+    if(!route || reduceMotion || typeof route.getTotalLength !== 'function'){
+      setYouMarker(target.x, target.y);
+      navTimer = setTimeout(arriveAtBin, 1200);
+      return;
+    }
+
+    var total = route.getTotalLength();
+    var duration = 2600;
+    var startTime = null;
+    function step(now){
+      if(startTime === null) startTime = now;
+      var progress = Math.min(1, (now - startTime) / duration);
+      var here = route.getPointAtLength(total * progress);
+      var ahead = route.getPointAtLength(Math.min(total, total * progress + 1));
+      var angle = Math.atan2(ahead.y - here.y, ahead.x - here.x) * 180 / Math.PI + 90;
+      setYouMarker(here.x, here.y, angle);
+      if(progress < 1){
+        navRaf = requestAnimationFrame(step);
+      } else {
+        navRaf = null;
+        arriveAtBin();
+      }
+    }
+    navRaf = requestAnimationFrame(step);
   }
 
   function selectBin(key){
@@ -1817,7 +2059,7 @@
       actEl.textContent = (dict.map_activity_template || '').replace('{min}', act.min).replace('{count}', act.count);
     }
 
-    var level = binStatusLevel[key] || 'empty';
+    var level = topStatusLevel(key);
     var statusIcon = document.getElementById('map-status-icon');
     if(statusIcon) statusIcon.src = statusIcons[level];
     var statusLabel = document.getElementById('map-status-label');
@@ -1825,6 +2067,11 @@
 
     renderBinChips(key);
     renderReviews(key);
+    renderVoteChart(key);
+
+    var chart = document.getElementById('vote-chart');
+    if(chart) chart.hidden = true;
+    if(reviewsBtn) reviewsBtn.textContent = dict.reviews_cta;
 
     document.querySelectorAll('.feedback-btn').forEach(function(b){ b.classList.remove('selected'); });
     var thanks = document.getElementById('feedback-thanks');
@@ -1847,19 +2094,24 @@
   }
 
   if(navBtn){
-    navBtn.addEventListener('click', function(){
-      var dict = translations[currentLang] || translations.ja;
-      navBtn.disabled = true;
-      if(navBtnLabel) navBtnLabel.textContent = dict.nav_in_progress;
-      navTimer = setTimeout(function(){
-        navBtn.style.display = 'none';
-        if(disposedBtn) disposedBtn.style.display = '';
-      }, 1600);
-    });
+    navBtn.addEventListener('click', startNavigation);
+  }
+
+  function renderDisposedBin(){
+    var dict = translations[currentLang] || translations.ja;
+    var nameEl = document.getElementById('disposed-bin-name');
+    if(nameEl){
+      nameEl.setAttribute('data-i18n', currentBinKey + '_name');
+      nameEl.textContent = dict[currentBinKey + '_name'];
+    }
+    renderBinChips(currentBinKey, document.getElementById('disposed-chip-row'));
   }
 
   if(disposedBtn){
-    disposedBtn.addEventListener('click', function(){ showScreen('disposed'); });
+    disposedBtn.addEventListener('click', function(){
+      renderDisposedBin();
+      showScreen('disposed');
+    });
   }
 
   document.querySelectorAll('.feedback-btn').forEach(function(btn){
