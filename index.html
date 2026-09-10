@@ -210,6 +210,7 @@
     width:24px; height:24px;
     border:2px solid var(--color-text-muted);
   }
+  .capture-hint{font-size:var(--fs-4); color:var(--color-alert); margin:8px 0 0; line-height:1.6;}
   .viewfinder .tl{top:8px; left:8px; border-right:none; border-bottom:none;}
   .viewfinder .tr{top:8px; right:8px; border-left:none; border-bottom:none;}
   .viewfinder .bl{bottom:8px; left:8px; border-right:none; border-top:none;}
@@ -628,9 +629,12 @@
           </div>
         </div>
         <div class="section stack-8">
-          <button class="btn btn-primary" id="btn-shoot"><span data-i18n="capture_shoot">撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn btn-primary" id="btn-shoot">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 8h2l1.5-2h9L18 8h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.5"/></svg>
+            <span data-i18n="capture_shoot">撮影する</span>
+          </button>
           <button class="btn btn-secondary" id="btn-gallery" data-i18n="capture_gallery">写真を選ぶ</button>
-          <input type="file" accept="image/*" capture="environment" id="camera-input" style="display:none;">
+          <p class="capture-hint" id="camera-hint" hidden data-i18n="camera_unavailable">カメラを利用できません。「写真を選ぶ」からお選びください。</p>
           <input type="file" accept="image/*" id="gallery-input" style="display:none;">
         </div>
       </div>
@@ -1071,6 +1075,7 @@
       capture_subtitle: 'ごみ全体が写るように撮影してください。',
       capture_shoot: '撮影する',
       capture_gallery: '写真を選ぶ',
+      camera_unavailable: 'カメラを利用できません。「写真を選ぶ」からお選びください。',
       multi_title: '複数のごみを検出しました',
       multi_subtitle: '分類したいものを1つ選んでください。',
       notrash_title: 'ごみを検出できませんでした。',
@@ -1160,6 +1165,7 @@
       capture_subtitle: 'Frame the whole item in the shot.',
       capture_shoot: 'Take Photo',
       capture_gallery: 'Choose from Gallery',
+      camera_unavailable: 'The camera is unavailable. Please use "Choose from Gallery".',
       multi_title: 'Multiple items detected',
       multi_subtitle: 'Select one item to check its sorting.',
       notrash_title: 'No item was detected.',
@@ -1249,6 +1255,7 @@
       capture_subtitle: '请让垃圾完整入镜后拍摄。',
       capture_shoot: '拍摄',
       capture_gallery: '从相册选择',
+      camera_unavailable: '无法使用相机，请改用「从相册选择」。',
       multi_title: '检测到多个垃圾项目',
       multi_subtitle: '请选择一个想要查询分类的项目。',
       notrash_title: '未检测到垃圾。',
@@ -1338,6 +1345,7 @@
       capture_subtitle: '請讓垃圾完整入鏡後拍攝。',
       capture_shoot: '拍攝',
       capture_gallery: '從相簿選擇',
+      camera_unavailable: '無法使用相機，請改用「從相簿選擇」。',
       multi_title: '偵測到多個垃圾項目',
       multi_subtitle: '請選擇一個想要查詢分類的項目。',
       notrash_title: '未偵測到垃圾。',
@@ -1427,6 +1435,7 @@
       capture_subtitle: '쓰레기 전체가 보이도록 촬영해 주세요.',
       capture_shoot: '촬영하기',
       capture_gallery: '갤러리에서 선택',
+      camera_unavailable: '카메라를 사용할 수 없습니다. "갤러리에서 선택"을 이용해 주세요.',
       multi_title: '여러 개의 쓰레기가 감지되었습니다',
       multi_subtitle: '분류를 확인할 항목을 하나 선택해 주세요.',
       notrash_title: '쓰레기를 인식하지 못했습니다.',
@@ -1545,21 +1554,47 @@
   var cameraStream = null;
   var cameraStarting = false;
 
+  function setCameraHint(visible){
+    var hint = document.getElementById('camera-hint');
+    if(hint) hint.hidden = !visible;
+  }
+
   function startCamera(){
     loadFaceModel();
-    if(cameraStream || cameraStarting) return;
-    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return;
-    cameraStarting = true;
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then(function(stream){
-      cameraStarting = false;
+    if(cameraStream) return Promise.resolve(true);
+    if(cameraStarting) return cameraStarting;
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      setCameraHint(true);
+      return Promise.resolve(false);
+    }
+    cameraStarting = navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then(function(stream){
+      cameraStarting = null;
       cameraStream = stream;
       if(cameraVideoEl){
         cameraVideoEl.srcObject = stream;
         cameraVideoEl.style.display = 'block';
       }
       if(cameraPlaceholderIcon) cameraPlaceholderIcon.style.display = 'none';
+      setCameraHint(false);
+      return true;
     }).catch(function(){
-      cameraStarting = false;
+      cameraStarting = null;
+      setCameraHint(true);
+      return false;
+    });
+    return cameraStarting;
+  }
+
+  function whenCameraFrameReady(){
+    if(!cameraVideoEl) return Promise.resolve(false);
+    if(cameraVideoEl.videoWidth) return Promise.resolve(true);
+    return new Promise(function(resolve){
+      var settle = function(){
+        cameraVideoEl.removeEventListener('loadedmetadata', settle);
+        resolve(!!cameraVideoEl.videoWidth);
+      };
+      cameraVideoEl.addEventListener('loadedmetadata', settle);
+      setTimeout(settle, 2000);
     });
   }
 
@@ -1600,6 +1635,7 @@
       cameraVideoEl.style.display = 'none';
     }
     if(cameraPlaceholderIcon) cameraPlaceholderIcon.style.display = '';
+    setCameraHint(false);
   }
 
   document.querySelectorAll('.lang-card').forEach(function(card){
@@ -1618,30 +1654,32 @@
   }
 
   var shootBtn = document.getElementById('btn-shoot');
-  var cameraInput = document.getElementById('camera-input');
+
+  function captureFromCamera(){
+    var canvas = document.createElement('canvas');
+    canvas.width = cameraVideoEl.videoWidth;
+    canvas.height = cameraVideoEl.videoHeight;
+    canvas.getContext('2d').drawImage(cameraVideoEl, 0, 0, canvas.width, canvas.height);
+    shootBtn.disabled = true;
+    photoHasFace(canvas).then(function(isPerson){
+      shootBtn.disabled = false;
+      showScreen(isPerson ? 'notrash' : 'multi');
+    });
+  }
+
   if(shootBtn){
     shootBtn.addEventListener('click', function(){
       if(cameraStream && cameraVideoEl && cameraVideoEl.videoWidth){
-        var canvas = document.createElement('canvas');
-        canvas.width = cameraVideoEl.videoWidth;
-        canvas.height = cameraVideoEl.videoHeight;
-        canvas.getContext('2d').drawImage(cameraVideoEl, 0, 0, canvas.width, canvas.height);
-        shootBtn.disabled = true;
-        photoHasFace(canvas).then(function(isPerson){
-          shootBtn.disabled = false;
-          showScreen(isPerson ? 'notrash' : 'multi');
-        });
-      } else if(cameraInput){
-        cameraInput.click();
+        captureFromCamera();
+        return;
       }
-    });
-  }
-  if(cameraInput){
-    cameraInput.addEventListener('change', function(){
-      if(cameraInput.files && cameraInput.files.length > 0){
-        showScreen('multi');
-      }
-      cameraInput.value = '';
+      shootBtn.disabled = true;
+      startCamera().then(function(started){
+        return started ? whenCameraFrameReady() : false;
+      }).then(function(ready){
+        shootBtn.disabled = false;
+        if(ready) captureFromCamera();
+      });
     });
   }
 
