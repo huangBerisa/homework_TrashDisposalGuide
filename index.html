@@ -210,6 +210,7 @@
     width:24px; height:24px;
     border:2px solid var(--color-text-muted);
   }
+  .capture-hint{font-size:var(--fs-4); color:var(--color-alert); margin:8px 0 0; line-height:1.6;}
   .viewfinder .tl{top:8px; left:8px; border-right:none; border-bottom:none;}
   .viewfinder .tr{top:8px; right:8px; border-left:none; border-bottom:none;}
   .viewfinder .bl{bottom:8px; left:8px; border-right:none; border-top:none;}
@@ -634,6 +635,7 @@
             <span data-i18n="capture_shoot">撮影する</span>
           </button>
           <button class="btn btn-secondary" id="btn-gallery" data-i18n="capture_gallery">写真を選ぶ</button>
+          <p class="capture-hint" id="camera-hint" hidden></p>
           <input type="file" accept="image/*" id="gallery-input" style="display:none;">
         </div>
       </div>
@@ -666,8 +668,8 @@
         </div>
         <p class="title-2" data-i18n="notrash_title">ごみを検出できませんでした。</p>
         <p class="body-2" data-i18n="notrash_subtitle">一度に1つのごみだけを、画面いっぱいに写してください。背景が多く写っていると判別できないことがあります。</p>
-        <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry_shoot">もう一度撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-        <button class="btn btn-secondary" data-goto="howto" data-i18n="howto_link">正しい撮影方法を見る</button>
+        <button class="btn btn-primary" id="notrash-primary"><span data-i18n="retry_shoot">もう一度撮影する</span></button>
+        <button class="btn btn-secondary" id="notrash-secondary" data-i18n="howto_link">正しい撮影方法を見る</button>
       </div>
     </section>
 
@@ -969,6 +971,12 @@
       notrash_subtitle: '一度に1つのごみだけを、画面いっぱいに写してください。背景が多く写っていると判別できないことがあります。',
       retry_shoot: 'もう一度撮影する',
       howto_link: '正しい撮影方法を見る',
+      pick_another_photo: '別の写真を選ぶ',
+      camera_denied: 'カメラの使用が許可されていません。アドレスバーのカメラアイコンから許可してください。',
+      camera_notfound: 'カメラが見つかりません。カメラのある端末でお試しください。',
+      camera_busy: 'カメラを他のアプリが使用しています。そのアプリを閉じてからお試しください。',
+      camera_insecure: 'この環境ではカメラを使用できません。https のページでお試しください。',
+      camera_failed: 'カメラを起動できませんでした。もう一度お試しください。',
       howto_shoot_title: '正しい撮影方法',
       howto_shoot_subtitle: '以下のポイントを確認して、もう一度撮影してください。',
       howto_do_label: '撮影のポイント',
@@ -1091,6 +1099,12 @@
       notrash_subtitle: 'Please frame a single item so it fills the screen. Too much background can prevent recognition.',
       retry_shoot: 'Take Photo Again',
       howto_link: 'See the correct way to take a photo',
+      pick_another_photo: 'Choose another photo',
+      camera_denied: 'Camera access is blocked. Please allow it from the camera icon in the address bar.',
+      camera_notfound: 'No camera was found. Please try on a device that has one.',
+      camera_busy: 'Another app is using the camera. Please close it and try again.',
+      camera_insecure: 'The camera cannot be used here. Please open the https page.',
+      camera_failed: 'The camera could not be started. Please try again.',
       howto_shoot_title: 'How to Take a Good Photo',
       howto_shoot_subtitle: 'Check the points below and take the photo again.',
       howto_do_label: 'Tips for a good photo',
@@ -1213,6 +1227,12 @@
       notrash_subtitle: '请一次只拍摄一件垃圾，并让它占满画面。背景过多时可能无法辨识。',
       retry_shoot: '重新拍摄',
       howto_link: '查看正确拍摄方法',
+      pick_another_photo: '重新选择照片',
+      camera_denied: '相机权限被拒绝。请从网址列的相机图示允许使用。',
+      camera_notfound: '找不到相机。请改用有相机的装置。',
+      camera_busy: '相机正被其他应用程式使用，请关闭后再试。',
+      camera_insecure: '此环境无法使用相机，请开启 https 网页。',
+      camera_failed: '无法启动相机，请再试一次。',
       howto_shoot_title: '正确的拍摄方法',
       howto_shoot_subtitle: '请确认以下要点后重新拍摄。',
       howto_do_label: '拍摄要点',
@@ -1335,6 +1355,12 @@
       notrash_subtitle: '請一次只拍攝一件垃圾，並讓它佔滿畫面。背景過多時可能無法辨識。',
       retry_shoot: '重新拍攝',
       howto_link: '查看正確拍攝方法',
+      pick_another_photo: '重新選擇照片',
+      camera_denied: '相機權限被拒絕。請從網址列的相機圖示允許使用。',
+      camera_notfound: '找不到相機。請改用有相機的裝置。',
+      camera_busy: '相機正被其他應用程式使用，請關閉後再試。',
+      camera_insecure: '此環境無法使用相機，請開啟 https 網頁。',
+      camera_failed: '無法啟動相機，請再試一次。',
       howto_shoot_title: '正確的拍攝方法',
       howto_shoot_subtitle: '請確認以下要點後重新拍攝。',
       howto_do_label: '拍攝要點',
@@ -1457,6 +1483,12 @@
       notrash_subtitle: '한 번에 하나의 쓰레기만 화면 가득 담아 촬영해 주세요. 배경이 많이 담기면 인식하지 못할 수 있습니다.',
       retry_shoot: '다시 촬영하기',
       howto_link: '올바른 촬영 방법 보기',
+      pick_another_photo: '다른 사진 선택',
+      camera_denied: '카메라 사용이 차단되어 있습니다. 주소창의 카메라 아이콘에서 허용해 주세요.',
+      camera_notfound: '카메라를 찾을 수 없습니다. 카메라가 있는 기기에서 시도해 주세요.',
+      camera_busy: '다른 앱이 카메라를 사용 중입니다. 종료 후 다시 시도해 주세요.',
+      camera_insecure: '이 환경에서는 카메라를 사용할 수 없습니다. https 페이지에서 열어 주세요.',
+      camera_failed: '카메라를 시작하지 못했습니다. 다시 시도해 주세요.',
       howto_shoot_title: '올바른 촬영 방법',
       howto_shoot_subtitle: '아래 항목을 확인하고 다시 촬영해 주세요.',
       howto_do_label: '촬영 요령',
@@ -1601,23 +1633,55 @@
   var cameraStream = null;
   var cameraStarting = false;
 
+  // Which message to show when the camera will not start.
+  var cameraErrorKey = null;
+
+  function cameraErrorKeyFor(error){
+    var name = error && error.name;
+    if(name === 'NotAllowedError' || name === 'PermissionDeniedError' || name === 'SecurityError') return 'camera_denied';
+    if(name === 'NotFoundError' || name === 'DevicesNotFoundError' || name === 'OverconstrainedError') return 'camera_notfound';
+    if(name === 'NotReadableError' || name === 'TrackStartError') return 'camera_busy';
+    return 'camera_failed';
+  }
+
+  function showCameraError(){
+    var hint = document.getElementById('camera-hint');
+    if(!hint) return;
+    var dict = translations[currentLang] || translations.ja;
+    if(cameraErrorKey){
+      hint.textContent = dict[cameraErrorKey];
+      hint.setAttribute('data-i18n', cameraErrorKey);
+      hint.hidden = false;
+    } else {
+      hint.hidden = true;
+      hint.removeAttribute('data-i18n');
+    }
+  }
+
   function startCamera(){
     loadFaceModel();
     loadTrashModel();
     if(cameraStream) return Promise.resolve(true);
     if(cameraStarting) return cameraStarting;
-    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return Promise.resolve(false);
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+      // getUserMedia is only exposed on https pages and localhost.
+      cameraErrorKey = window.isSecureContext === false ? 'camera_insecure' : 'camera_failed';
+      return Promise.resolve(false);
+    }
     cameraStarting = navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then(function(stream){
       cameraStarting = null;
+      cameraErrorKey = null;
       cameraStream = stream;
       if(cameraVideoEl){
         cameraVideoEl.srcObject = stream;
         cameraVideoEl.style.display = 'block';
       }
       if(cameraPlaceholderIcon) cameraPlaceholderIcon.style.display = 'none';
+      showCameraError();
       return true;
-    }).catch(function(){
+    }).catch(function(error){
       cameraStarting = null;
+      cameraErrorKey = cameraErrorKeyFor(error);
       return false;
     });
     return cameraStarting;
@@ -1718,13 +1782,36 @@
     });
   }
 
+  var lastPhotoSource = 'camera';
+
+  function configureNotrashActions(){
+    var dict = translations[currentLang] || translations.ja;
+    var primary = document.getElementById('notrash-primary');
+    var secondary = document.getElementById('notrash-secondary');
+    var fromGallery = lastPhotoSource === 'gallery';
+
+    if(primary){
+      var primaryKey = fromGallery ? 'pick_another_photo' : 'retry_shoot';
+      var label = primary.querySelector('span');
+      label.setAttribute('data-i18n', primaryKey);
+      label.textContent = dict[primaryKey];
+    }
+    if(secondary){
+      var secondaryKey = fromGallery ? 'retry_shoot' : 'howto_link';
+      secondary.setAttribute('data-i18n', secondaryKey);
+      secondary.textContent = dict[secondaryKey];
+    }
+  }
+
   function routePhoto(source){
     return photoHasFace(source).then(function(isPerson){
       if(isPerson){
+        configureNotrashActions();
         showScreen('notrash');
         return;
       }
       return detectItemKeys(source).then(function(keys){
+        configureNotrashActions();
         if(keys === null){
           renderDetectList(['pet', 'can']);
           showScreen('multi');
@@ -1790,6 +1877,7 @@
   var shootBtn = document.getElementById('btn-shoot');
 
   function captureFromCamera(){
+    lastPhotoSource = 'camera';
     var canvas = toSquareCanvas(cameraVideoEl, cameraVideoEl.videoWidth, cameraVideoEl.videoHeight);
     setButtonBusy(shootBtn, true, 'capture_shoot');
     routePhoto(canvas).then(function(){
@@ -1808,19 +1896,42 @@
         return started ? whenCameraFrameReady() : false;
       }).then(function(ready){
         shootBtn.disabled = false;
-        if(ready) captureFromCamera();
+        if(ready){
+          captureFromCamera();
+        } else {
+          if(!cameraErrorKey) cameraErrorKey = 'camera_failed';
+          showCameraError();
+        }
       });
     });
   }
 
   var galleryBtn = document.getElementById('btn-gallery');
   var galleryInput = document.getElementById('gallery-input');
+  var notrashPrimary = document.getElementById('notrash-primary');
+  var notrashSecondary = document.getElementById('notrash-secondary');
+  if(notrashPrimary){
+    notrashPrimary.addEventListener('click', function(){
+      if(lastPhotoSource === 'gallery' && galleryInput){
+        galleryInput.click();
+      } else {
+        showScreen('capture');
+      }
+    });
+  }
+  if(notrashSecondary){
+    notrashSecondary.addEventListener('click', function(){
+      showScreen(lastPhotoSource === 'gallery' ? 'capture' : 'howto');
+    });
+  }
+
   if(galleryBtn && galleryInput){
     galleryBtn.addEventListener('click', function(){ galleryInput.click(); });
     galleryInput.addEventListener('change', function(){
       var file = galleryInput.files && galleryInput.files[0];
       galleryInput.value = '';
       if(!file) return;
+      lastPhotoSource = 'gallery';
       var url = URL.createObjectURL(file);
       var image = new Image();
       setButtonBusy(galleryBtn, true, 'capture_gallery');
