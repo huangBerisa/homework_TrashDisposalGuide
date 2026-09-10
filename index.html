@@ -651,26 +651,7 @@
           <h2 class="title-1" data-i18n="multi_title">複数のごみを検出しました</h2>
           <p class="body-2" data-i18n="multi_subtitle">分類したいものを1つ選んでください。</p>
         </div>
-        <ul class="detect-list">
-          <li>
-            <button class="detect-card" data-item-key="pet">
-              <div class="item-thumb icon-image">
-                <img src="assets/Bottle_Icon_7.png" alt="">
-              </div>
-              <span class="name" data-i18n="pet_item_name">ペットボトル</span>
-              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </li>
-          <li>
-            <button class="detect-card" data-item-key="can">
-              <div class="item-thumb icon-image">
-                <img src="assets/Can_Icon_4.png" alt="">
-              </div>
-              <span class="name" data-i18n="can_item_name">缶</span>
-              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </button>
-          </li>
-        </ul>
+        <ul class="detect-list" id="detect-list"></ul>
       </div>
     </section>
 
@@ -685,7 +666,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M4 17l4.5-4.5 3 3 4-4L20 17" stroke-linejoin="round"/></svg>
         </div>
         <p class="title-2" data-i18n="notrash_title">ごみを検出できませんでした。</p>
-        <p class="body-2" data-i18n="notrash_subtitle">人物が写っている、ピントが合っていないなど、判別できない写真の可能性があります。</p>
+        <p class="body-2" data-i18n="notrash_subtitle">一度に1つのごみだけを、画面いっぱいに写してください。背景が多く写っていると判別できないことがあります。</p>
         <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry_shoot">もう一度撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
         <button class="btn btn-secondary" data-goto="howto" data-i18n="howto_link">正しい撮影方法を見る</button>
       </div>
@@ -708,6 +689,7 @@
             <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do1">ごみ全体が画面いっぱいに写るようにしてください</span></li>
             <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do2">明るい場所で、影ができないように撮影してください</span></li>
             <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do3">なるべく無地の背景の上に置いて撮影してください</span></li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do4">一度に1つのごみだけを撮影してください</span></li>
           </ul>
         </div>
         <div class="section stack-8">
@@ -1081,7 +1063,7 @@
       multi_title: '複数のごみを検出しました',
       multi_subtitle: '分類したいものを1つ選んでください。',
       notrash_title: 'ごみを検出できませんでした。',
-      notrash_subtitle: '人物が写っている、ピントが合っていないなど、判別できない写真の可能性があります。',
+      notrash_subtitle: '一度に1つのごみだけを、画面いっぱいに写してください。背景が多く写っていると判別できないことがあります。',
       retry_shoot: 'もう一度撮影する',
       howto_link: '正しい撮影方法を見る',
       howto_shoot_title: '正しい撮影方法',
@@ -1090,6 +1072,7 @@
       howto_do1: 'ごみ全体が画面いっぱいに写るようにしてください',
       howto_do2: '明るい場所で、影ができないように撮影してください',
       howto_do3: 'なるべく無地の背景の上に置いて撮影してください',
+      howto_do4: '一度に1つのごみだけを撮影してください',
       howto_dont_label: 'こんな写真はNG',
       howto_dont1: '人物や顔が写り込んでいる',
       howto_dont2: 'ピントがぼやけている',
@@ -1108,6 +1091,30 @@
       can_howto1: '飲み口の部分は特に注意して洗います。',
       can_howto2: 'つぶすと収集がスムーズです。',
       can_caution: '中身が残ったままの缶は収集されない場合があります。',
+      food_item_name: '生ごみ',
+      food_class_name: '生ごみ',
+      food_class_note: '水気をよく切って、指定の袋に入れて出します。',
+      food_howto1: '水気をしっかり切ると、においが出にくくなります。',
+      food_howto2: '新聞紙などに包むと、袋が汚れにくくなります。',
+      food_caution: '分別のルールは地域によって異なります。お住まいの自治体の案内をご確認ください。',
+      bag_item_name: 'レジ袋・プラ製品',
+      bag_class_name: 'プラスチックごみ',
+      bag_class_note: '汚れを落として、指定の袋に入れて出します。',
+      bag_howto1: '食べ物の汚れが付いている場合は、軽く洗ってから出します。',
+      bag_howto2: '大きな袋は小さくたたむと、かさが減ります。',
+      bag_caution: '汚れが落ちない場合は、燃えるごみになることがあります。',
+      burnable_item_name: '燃えるごみ',
+      burnable_class_name: '燃えるごみ',
+      burnable_class_note: '指定のごみ袋に入れて出します。',
+      burnable_howto1: '水気のあるものは、よく切ってから入れます。',
+      burnable_howto2: '袋の口をしっかり結んで出します。',
+      burnable_caution: '分別できるものが混ざっていないか、もう一度ご確認ください。',
+      nonburnable_item_name: '燃えないごみ',
+      nonburnable_class_name: '燃えないごみ',
+      nonburnable_class_note: '決められた回収日に、指定の袋に入れて出します。',
+      nonburnable_howto1: '金属やガラス、陶器などが対象です。',
+      nonburnable_howto2: '割れたものは紙に包んでから入れます。',
+      nonburnable_caution: '刃物や割れ物は、けがを防ぐため包んで出してください。',
       class_label: '分類結果',
       howto_label: '捨て方',
       nearby_title: '周辺のごみ箱',
@@ -1172,7 +1179,7 @@
       multi_title: 'Multiple items detected',
       multi_subtitle: 'Select one item to check its sorting.',
       notrash_title: 'No item was detected.',
-      notrash_subtitle: 'The photo may include a person, be out of focus, or otherwise be unrecognizable.',
+      notrash_subtitle: 'Please frame a single item so it fills the screen. Too much background can prevent recognition.',
       retry_shoot: 'Take Photo Again',
       howto_link: 'See the correct way to take a photo',
       howto_shoot_title: 'How to Take a Good Photo',
@@ -1181,6 +1188,7 @@
       howto_do1: 'Fill the frame with the whole item',
       howto_do2: 'Shoot in a well-lit place without shadows',
       howto_do3: 'Place it on a plain background if possible',
+      howto_do4: 'Photograph one item at a time',
       howto_dont_label: 'Avoid photos like these',
       howto_dont1: 'A person or face is in the shot',
       howto_dont2: 'The photo is out of focus',
@@ -1199,6 +1207,30 @@
       can_howto1: 'Wash the opening carefully.',
       can_howto2: 'Crushing it makes collection smoother.',
       can_caution: 'Cans with leftover contents may not be collected.',
+      food_item_name: 'Food Waste',
+      food_class_name: 'Food Waste',
+      food_class_note: 'Drain it well and put it in the designated bag.',
+      food_howto1: 'Draining the water well keeps odours down.',
+      food_howto2: 'Wrapping it in newspaper helps keep the bag clean.',
+      food_caution: 'Sorting rules vary by area. Please check your local guidance.',
+      bag_item_name: 'Plastic Bag',
+      bag_class_name: 'Plastic Waste',
+      bag_class_note: 'Clean off any dirt and put it in the designated bag.',
+      bag_howto1: 'Rinse it lightly if food residue is stuck to it.',
+      bag_howto2: 'Folding large bags down saves space.',
+      bag_caution: 'If the dirt will not come off, it may count as burnable waste.',
+      burnable_item_name: 'Burnable Waste',
+      burnable_class_name: 'Burnable Waste',
+      burnable_class_note: 'Put it in the designated rubbish bag.',
+      burnable_howto1: 'Drain wet items well before putting them in.',
+      burnable_howto2: 'Tie the bag firmly closed.',
+      burnable_caution: 'Please check again that no separable items are mixed in.',
+      nonburnable_item_name: 'Non-burnable Waste',
+      nonburnable_class_name: 'Non-burnable Waste',
+      nonburnable_class_note: 'Put it in the designated bag on the collection day.',
+      nonburnable_howto1: 'Metal, glass and ceramics belong here.',
+      nonburnable_howto2: 'Wrap broken pieces in paper first.',
+      nonburnable_caution: 'Please wrap blades and broken items to prevent injury.',
       class_label: 'Category',
       howto_label: 'How to Dispose',
       nearby_title: 'Nearby Bins',
@@ -1263,7 +1295,7 @@
       multi_title: '检测到多个垃圾项目',
       multi_subtitle: '请选择一个想要查询分类的项目。',
       notrash_title: '未检测到垃圾。',
-      notrash_subtitle: '照片中可能有人物、对焦不清晰，或其他无法辨识的情况。',
+      notrash_subtitle: '请一次只拍摄一件垃圾，并让它占满画面。背景过多时可能无法辨识。',
       retry_shoot: '重新拍摄',
       howto_link: '查看正确拍摄方法',
       howto_shoot_title: '正确的拍摄方法',
@@ -1272,6 +1304,7 @@
       howto_do1: '请让垃圾完整占满画面',
       howto_do2: '请在光线充足、无阴影处拍摄',
       howto_do3: '请尽量放在纯色背景上拍摄',
+      howto_do4: '请一次只拍摄一件垃圾',
       howto_dont_label: '请避免以下情况',
       howto_dont1: '画面中出现人物或脸部',
       howto_dont2: '对焦模糊不清',
@@ -1290,6 +1323,30 @@
       can_howto1: '请特别清洗瓶口部分。',
       can_howto2: '压扁后有助于收集顺畅进行。',
       can_caution: '残留内容物的罐类可能不会被回收。',
+      food_item_name: '厨余垃圾',
+      food_class_name: '厨余垃圾',
+      food_class_note: '沥干水分后装入指定垃圾袋丢弃。',
+      food_howto1: '充分沥干水分可以减少异味。',
+      food_howto2: '用报纸包裹可以避免弄脏垃圾袋。',
+      food_caution: '分类规则因地区而异，请确认您所在地区的规定。',
+      bag_item_name: '塑料袋',
+      bag_class_name: '塑料垃圾',
+      bag_class_note: '清除污渍后装入指定垃圾袋丢弃。',
+      bag_howto1: '沾有食物污渍时请稍微冲洗后再丢弃。',
+      bag_howto2: '大袋子折小可以减少体积。',
+      bag_caution: '若污渍无法清除，可能会被归类为可燃垃圾。',
+      burnable_item_name: '可燃垃圾',
+      burnable_class_name: '可燃垃圾',
+      burnable_class_note: '装入指定垃圾袋丢弃。',
+      burnable_howto1: '含水分的物品请沥干后再放入。',
+      burnable_howto2: '请将袋口确实绑紧。',
+      burnable_caution: '请再次确认是否混入了可回收的物品。',
+      nonburnable_item_name: '不可燃垃圾',
+      nonburnable_class_name: '不可燃垃圾',
+      nonburnable_class_note: '请于规定回收日装入指定垃圾袋丢弃。',
+      nonburnable_howto1: '金属、玻璃、陶瓷等属于此类。',
+      nonburnable_howto2: '破碎的物品请先用纸包好。',
+      nonburnable_caution: '刀具与易碎物品请包好后再丢弃，以免造成受伤。',
       class_label: '分类结果',
       howto_label: '丢弃方法',
       nearby_title: '附近的垃圾桶',
@@ -1354,7 +1411,7 @@
       multi_title: '偵測到多個垃圾項目',
       multi_subtitle: '請選擇一個想要查詢分類的項目。',
       notrash_title: '未偵測到垃圾。',
-      notrash_subtitle: '照片中可能有人物、對焦不清晰，或其他無法辨識的情況。',
+      notrash_subtitle: '請一次只拍攝一件垃圾，並讓它佔滿畫面。背景過多時可能無法辨識。',
       retry_shoot: '重新拍攝',
       howto_link: '查看正確拍攝方法',
       howto_shoot_title: '正確的拍攝方法',
@@ -1363,6 +1420,7 @@
       howto_do1: '請讓垃圾完整佔滿畫面',
       howto_do2: '請在光線充足、無陰影處拍攝',
       howto_do3: '請盡量放在純色背景上拍攝',
+      howto_do4: '請一次只拍攝一件垃圾',
       howto_dont_label: '請避免以下情況',
       howto_dont1: '畫面中出現人物或臉部',
       howto_dont2: '對焦模糊不清',
@@ -1381,6 +1439,30 @@
       can_howto1: '請特別清洗瓶口部分。',
       can_howto2: '壓扁後有助於收集作業更順暢。',
       can_caution: '殘留內容物的罐類可能不會被收集。',
+      food_item_name: '廚餘',
+      food_class_name: '廚餘',
+      food_class_note: '瀝乾水分後裝入指定垃圾袋丟棄。',
+      food_howto1: '充分瀝乾水分可以減少異味。',
+      food_howto2: '用報紙包裹可以避免弄髒垃圾袋。',
+      food_caution: '分類規則因地區而異，請確認您所在地區的規定。',
+      bag_item_name: '塑膠袋',
+      bag_class_name: '塑膠垃圾',
+      bag_class_note: '清除污漬後裝入指定垃圾袋丟棄。',
+      bag_howto1: '沾有食物污漬時請稍微沖洗後再丟棄。',
+      bag_howto2: '大袋子摺小可以減少體積。',
+      bag_caution: '若污漬無法清除，可能會被歸類為可燃垃圾。',
+      burnable_item_name: '可燃垃圾',
+      burnable_class_name: '可燃垃圾',
+      burnable_class_note: '裝入指定垃圾袋丟棄。',
+      burnable_howto1: '含水分的物品請瀝乾後再放入。',
+      burnable_howto2: '請將袋口確實綁緊。',
+      burnable_caution: '請再次確認是否混入了可回收的物品。',
+      nonburnable_item_name: '不可燃垃圾',
+      nonburnable_class_name: '不可燃垃圾',
+      nonburnable_class_note: '請於規定回收日裝入指定垃圾袋丟棄。',
+      nonburnable_howto1: '金屬、玻璃、陶瓷等屬於此類。',
+      nonburnable_howto2: '破碎的物品請先用紙包好。',
+      nonburnable_caution: '刀具與易碎物品請包好後再丟棄，以免造成受傷。',
       class_label: '分類結果',
       howto_label: '丟棄方法',
       nearby_title: '附近的垃圾桶',
@@ -1445,7 +1527,7 @@
       multi_title: '여러 개의 쓰레기가 감지되었습니다',
       multi_subtitle: '분류를 확인할 항목을 하나 선택해 주세요.',
       notrash_title: '쓰레기를 인식하지 못했습니다.',
-      notrash_subtitle: '사진에 사람이 나오거나 초점이 맞지 않는 등 인식할 수 없는 경우일 수 있습니다.',
+      notrash_subtitle: '한 번에 하나의 쓰레기만 화면 가득 담아 촬영해 주세요. 배경이 많이 담기면 인식하지 못할 수 있습니다.',
       retry_shoot: '다시 촬영하기',
       howto_link: '올바른 촬영 방법 보기',
       howto_shoot_title: '올바른 촬영 방법',
@@ -1454,6 +1536,7 @@
       howto_do1: '쓰레기 전체가 화면에 가득 차도록 촬영해 주세요',
       howto_do2: '밝은 곳에서 그림자가 생기지 않도록 촬영해 주세요',
       howto_do3: '가능하면 무늬 없는 배경 위에 놓고 촬영해 주세요',
+      howto_do4: '한 번에 하나의 쓰레기만 촬영해 주세요',
       howto_dont_label: '이런 사진은 피해주세요',
       howto_dont1: '사람이나 얼굴이 함께 촬영됨',
       howto_dont2: '초점이 흐릿함',
@@ -1472,6 +1555,30 @@
       can_howto1: '입구 부분을 특히 꼼꼼히 씻어 주세요.',
       can_howto2: '찌그러뜨리면 수거가 원활해집니다.',
       can_caution: '내용물이 남아 있는 캔은 수거되지 않을 수 있습니다.',
+      food_item_name: '음식물 쓰레기',
+      food_class_name: '음식물 쓰레기',
+      food_class_note: '물기를 잘 빼고 지정 봉투에 담아 배출해 주세요.',
+      food_howto1: '물기를 충분히 빼면 냄새가 덜 납니다.',
+      food_howto2: '신문지 등으로 감싸면 봉투가 덜 더러워집니다.',
+      food_caution: '분리 규칙은 지역마다 다릅니다. 거주 지역의 안내를 확인해 주세요.',
+      bag_item_name: '비닐봉투',
+      bag_class_name: '플라스틱 쓰레기',
+      bag_class_note: '오염을 제거하고 지정 봉투에 담아 배출해 주세요.',
+      bag_howto1: '음식물이 묻어 있으면 가볍게 헹군 후 배출해 주세요.',
+      bag_howto2: '큰 봉투는 작게 접으면 부피가 줄어듭니다.',
+      bag_caution: '오염이 지워지지 않으면 타는 쓰레기로 분류될 수 있습니다.',
+      burnable_item_name: '타는 쓰레기',
+      burnable_class_name: '타는 쓰레기',
+      burnable_class_note: '지정 쓰레기봉투에 담아 배출해 주세요.',
+      burnable_howto1: '물기가 있는 것은 잘 빼고 넣어 주세요.',
+      burnable_howto2: '봉투 입구를 단단히 묶어 주세요.',
+      burnable_caution: '분리할 수 있는 것이 섞이지 않았는지 다시 확인해 주세요.',
+      nonburnable_item_name: '타지 않는 쓰레기',
+      nonburnable_class_name: '타지 않는 쓰레기',
+      nonburnable_class_note: '정해진 수거일에 지정 봉투에 담아 배출해 주세요.',
+      nonburnable_howto1: '금속, 유리, 도자기 등이 해당됩니다.',
+      nonburnable_howto2: '깨진 것은 종이에 싸서 넣어 주세요.',
+      nonburnable_caution: '칼날이나 깨진 물건은 부상 방지를 위해 감싸서 배출해 주세요.',
       class_label: '분류 결과',
       howto_label: '버리는 방법',
       nearby_title: '주변 쓰레기통',
@@ -1637,12 +1744,34 @@
     return trashModelLoading;
   }
 
+  // The viewfinder is square and crops to its centre, so classify the same
+  // square the user framed rather than the whole camera frame.
+  function toSquareCanvas(source, width, height){
+    var size = Math.min(width, height);
+    var canvas = document.createElement('canvas');
+    canvas.width = size;
+    canvas.height = size;
+    canvas.getContext('2d').drawImage(source, (width - size) / 2, (height - size) / 2, size, size, 0, 0, size, size);
+    return canvas;
+  }
+
   // MobileNet returns generic ImageNet labels, so map the ones that
-  // correspond to the waste types this guide covers.
+  // correspond to the waste types this guide covers. Ordered: the first
+  // rule that matches wins.
+  var itemRules = [
+    { key: 'can', test: /\b(tin can|beer can|soda can|milk can|canister)\b/ },
+    { key: 'pet', test: /\bbottle\b/ },
+    { key: 'bag', test: /\b(plastic bag|packet)\b/ },
+    { key: 'food', test: /\b(banana|orange|lemon|strawberry|pineapple|pomegranate|granny smith|fig|jackfruit|corn|cucumber|broccoli|cauliflower|cabbage|zucchini|artichoke|bell pepper|mushroom|pizza|cheeseburger|hotdog|hot dog|bagel|pretzel|ice cream|ice lolly|french loaf|croissant|guacamole|carbonara|meat loaf|burrito|potpie|mashed potato|trifle|dough|espresso)\b/ },
+    { key: 'nonburnable', test: /\b(beer glass|goblet|wine glass|coffee mug|cup|teapot|frying pan|wok|saucepan|vase|plate|lighter|screwdriver|hammer|scissors|can opener|corkscrew|spatula|ladle|strainer|padlock|buckle)\b/ },
+    { key: 'burnable', test: /\b(carton|envelope|paper towel|toilet tissue|tissue|napkin|menu|book jacket|comic book|notebook|binder|wooden spoon|handkerchief|rubber eraser|pencil box|broom|mop)\b/ }
+  ];
+
   function matchItemKey(label){
     var text = label.toLowerCase();
-    if(/\bbottle\b/.test(text)) return 'pet';
-    if(/\b(tin can|beer can|soda can|milk can|canister)\b/.test(text)) return 'can';
+    for(var i = 0; i < itemRules.length; i++){
+      if(itemRules[i].test.test(text)) return itemRules[i].key;
+    }
     return null;
   }
 
@@ -1673,6 +1802,7 @@
       }
       return detectItemKeys(source).then(function(keys){
         if(keys === null){
+          renderDetectList(['pet', 'can']);
           showScreen('multi');
         } else if(keys.length === 0){
           showScreen('notrash');
@@ -1680,6 +1810,7 @@
           selectItem(keys[0]);
           showScreen('result');
         } else {
+          renderDetectList(keys);
           showScreen('multi');
         }
       });
@@ -1736,10 +1867,7 @@
   var shootBtn = document.getElementById('btn-shoot');
 
   function captureFromCamera(){
-    var canvas = document.createElement('canvas');
-    canvas.width = cameraVideoEl.videoWidth;
-    canvas.height = cameraVideoEl.videoHeight;
-    canvas.getContext('2d').drawImage(cameraVideoEl, 0, 0, canvas.width, canvas.height);
+    var canvas = toSquareCanvas(cameraVideoEl, cameraVideoEl.videoWidth, cameraVideoEl.videoHeight);
     setButtonBusy(shootBtn, true, 'capture_shoot');
     routePhoto(canvas).then(function(){
       setButtonBusy(shootBtn, false, 'capture_shoot');
@@ -1774,7 +1902,7 @@
       var image = new Image();
       setButtonBusy(galleryBtn, true, 'capture_gallery');
       image.onload = function(){
-        routePhoto(image).then(function(){
+        routePhoto(toSquareCanvas(image, image.naturalWidth, image.naturalHeight)).then(function(){
           URL.revokeObjectURL(url);
           setButtonBusy(galleryBtn, false, 'capture_gallery');
         });
@@ -1808,7 +1936,14 @@
   });
 
   var currentItemKey = 'pet';
-  var itemIcons = { pet: 'assets/Bottle_Icon_7.png', can: 'assets/Can_Icon_4.png' };
+  var itemIcons = {
+    pet: 'assets/Bottle_Icon_7.png',
+    can: 'assets/Can_Icon_4.png',
+    food: 'assets/Food_Waste_Icon_8.png',
+    bag: 'assets/Plastic_Bag_Icon_5.png',
+    burnable: 'assets/Flammable_Icon_11.png',
+    nonburnable: 'assets/No_Fire_Icon_6.png'
+  };
 
   function selectItem(key){
     currentItemKey = key;
@@ -1832,12 +1967,53 @@
     });
   }
 
-  document.querySelectorAll('.detect-card').forEach(function(card){
-    card.addEventListener('click', function(){
-      selectItem(card.getAttribute('data-item-key'));
-      showScreen('result');
+  function renderDetectList(keys){
+    var dict = translations[currentLang] || translations.ja;
+    var list = document.getElementById('detect-list');
+    if(!list) return;
+    list.innerHTML = '';
+    keys.forEach(function(key){
+      var card = document.createElement('button');
+      card.className = 'detect-card';
+      card.setAttribute('data-item-key', key);
+
+      var thumb = document.createElement('div');
+      thumb.className = 'item-thumb icon-image';
+      var icon = document.createElement('img');
+      icon.src = itemIcons[key];
+      icon.alt = '';
+      thumb.appendChild(icon);
+
+      var name = document.createElement('span');
+      name.className = 'name';
+      name.setAttribute('data-i18n', key + '_item_name');
+      name.textContent = dict[key + '_item_name'];
+
+      var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      chevron.setAttribute('class', 'chevron');
+      chevron.setAttribute('viewBox', '0 0 24 24');
+      chevron.setAttribute('fill', 'none');
+      chevron.setAttribute('stroke', 'currentColor');
+      chevron.setAttribute('stroke-width', '2');
+      var chevronPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      chevronPath.setAttribute('d', 'M9 5l7 7-7 7');
+      chevronPath.setAttribute('stroke-linecap', 'round');
+      chevronPath.setAttribute('stroke-linejoin', 'round');
+      chevron.appendChild(chevronPath);
+
+      card.appendChild(thumb);
+      card.appendChild(name);
+      card.appendChild(chevron);
+      card.addEventListener('click', function(){
+        selectItem(key);
+        showScreen('result');
+      });
+
+      var li = document.createElement('li');
+      li.appendChild(card);
+      list.appendChild(li);
     });
-  });
+  }
 
   updateBinChipHighlights();
 
