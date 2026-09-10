@@ -210,7 +210,6 @@
     width:24px; height:24px;
     border:2px solid var(--color-text-muted);
   }
-  .capture-hint{font-size:var(--fs-4); color:var(--color-alert); margin:8px 0 0; line-height:1.6;}
   .viewfinder .tl{top:8px; left:8px; border-right:none; border-bottom:none;}
   .viewfinder .tr{top:8px; right:8px; border-left:none; border-bottom:none;}
   .viewfinder .bl{bottom:8px; left:8px; border-right:none; border-top:none;}
@@ -634,7 +633,6 @@
             <span data-i18n="capture_shoot">撮影する</span>
           </button>
           <button class="btn btn-secondary" id="btn-gallery" data-i18n="capture_gallery">写真を選ぶ</button>
-          <p class="capture-hint" id="camera-hint" hidden data-i18n="camera_unavailable">カメラを利用できません。「写真を選ぶ」からお選びください。</p>
           <input type="file" accept="image/*" id="gallery-input" style="display:none;">
         </div>
       </div>
@@ -756,11 +754,7 @@
                 </div>
                 <div class="bin-main">
                   <p class="bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
-                  <div class="chip-row">
-                    <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
-                    <span class="chip" data-chip-key="chip_can"><img class="chip-icon" src="assets/Can_Icon_s.png" data-i18n-aria="chip_can" alt="缶"></span>
-                    <span class="chip" data-chip-key="chip_bottle"><img class="chip-icon" src="assets/Recyclables_Icon_s.png" data-i18n-aria="chip_bottle" alt="びん"></span>
-                  </div>
+                  <div class="chip-row" data-bin-chips="bin1"></div>
                 </div>
               </div>
               <div class="bin-meta">
@@ -778,10 +772,7 @@
                 </div>
                 <div class="bin-main">
                   <p class="bin-name" data-i18n="bin2_name">四条通 ごみ箱</p>
-                  <div class="chip-row">
-                    <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
-                    <span class="chip" data-chip-key="chip_can"><img class="chip-icon" src="assets/Can_Icon_s.png" data-i18n-aria="chip_can" alt="缶"></span>
-                  </div>
+                  <div class="chip-row" data-bin-chips="bin2"></div>
                 </div>
               </div>
               <div class="bin-meta">
@@ -799,11 +790,7 @@
                 </div>
                 <div class="bin-main">
                   <p class="bin-name" data-i18n="bin3_name">河原町 リサイクルボックス</p>
-                  <div class="chip-row">
-                    <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
-                    <span class="chip" data-chip-key="chip_bottle"><img class="chip-icon" src="assets/Recyclables_Icon_s.png" data-i18n-aria="chip_bottle" alt="びん"></span>
-                    <span class="chip" data-chip-key="chip_paper"><img class="chip-icon" src="assets/Paper_Icon_s.png" data-i18n-aria="chip_paper" alt="古紙"></span>
-                  </div>
+                  <div class="chip-row" data-bin-chips="bin3"></div>
                 </div>
               </div>
               <div class="bin-meta">
@@ -1059,7 +1046,6 @@
       capture_shoot: '撮影する',
       analyzing: '解析中…',
       capture_gallery: '写真を選ぶ',
-      camera_unavailable: 'カメラを利用できません。「写真を選ぶ」からお選びください。',
       multi_title: '複数のごみを検出しました',
       multi_subtitle: '分類したいものを1つ選んでください。',
       notrash_title: 'ごみを検出できませんでした。',
@@ -1126,8 +1112,10 @@
       bin3_note: '収集後に空きが戻る場合があります。',
       chip_pet: 'ペットボトル',
       chip_can: '缶',
-      chip_bottle: 'びん',
-      chip_paper: '古紙',
+      chip_food: '生ごみ',
+      chip_bag: 'レジ袋・プラ',
+      chip_burnable: '燃えるごみ',
+      chip_nonburnable: '燃えないごみ',
       status_available: '空きあり',
       status_almost_full: '満杯に近づいています',
       status_full: '満杯です',
@@ -1175,7 +1163,6 @@
       capture_shoot: 'Take Photo',
       analyzing: 'Analyzing…',
       capture_gallery: 'Choose from Gallery',
-      camera_unavailable: 'The camera is unavailable. Please use "Choose from Gallery".',
       multi_title: 'Multiple items detected',
       multi_subtitle: 'Select one item to check its sorting.',
       notrash_title: 'No item was detected.',
@@ -1242,8 +1229,10 @@
       bin3_note: 'Space may open up again after collection.',
       chip_pet: 'PET Bottles',
       chip_can: 'Cans',
-      chip_bottle: 'Glass Bottles',
-      chip_paper: 'Paper',
+      chip_food: 'Food Waste',
+      chip_bag: 'Plastic Bags',
+      chip_burnable: 'Burnable',
+      chip_nonburnable: 'Non-burnable',
       status_available: 'Available',
       status_almost_full: 'Almost Full',
       status_full: 'Full',
@@ -1291,7 +1280,6 @@
       capture_shoot: '拍摄',
       analyzing: '辨识中…',
       capture_gallery: '从相册选择',
-      camera_unavailable: '无法使用相机，请改用「从相册选择」。',
       multi_title: '检测到多个垃圾项目',
       multi_subtitle: '请选择一个想要查询分类的项目。',
       notrash_title: '未检测到垃圾。',
@@ -1358,8 +1346,10 @@
       bin3_note: '收集后空间可能会恢复。',
       chip_pet: '宝特瓶',
       chip_can: '罐类',
-      chip_bottle: '玻璃瓶',
-      chip_paper: '废纸',
+      chip_food: '厨余垃圾',
+      chip_bag: '塑料袋',
+      chip_burnable: '可燃垃圾',
+      chip_nonburnable: '不可燃垃圾',
       status_available: '有空位',
       status_almost_full: '即将满出',
       status_full: '已满',
@@ -1407,7 +1397,6 @@
       capture_shoot: '拍攝',
       analyzing: '辨識中…',
       capture_gallery: '從相簿選擇',
-      camera_unavailable: '無法使用相機，請改用「從相簿選擇」。',
       multi_title: '偵測到多個垃圾項目',
       multi_subtitle: '請選擇一個想要查詢分類的項目。',
       notrash_title: '未偵測到垃圾。',
@@ -1474,8 +1463,10 @@
       bin3_note: '收集後空間可能會恢復。',
       chip_pet: '寶特瓶',
       chip_can: '罐類',
-      chip_bottle: '玻璃瓶',
-      chip_paper: '廢紙',
+      chip_food: '廚餘',
+      chip_bag: '塑膠袋',
+      chip_burnable: '可燃垃圾',
+      chip_nonburnable: '不可燃垃圾',
       status_available: '有空位',
       status_almost_full: '即將滿出',
       status_full: '已滿',
@@ -1523,7 +1514,6 @@
       capture_shoot: '촬영하기',
       analyzing: '분석 중…',
       capture_gallery: '갤러리에서 선택',
-      camera_unavailable: '카메라를 사용할 수 없습니다. "갤러리에서 선택"을 이용해 주세요.',
       multi_title: '여러 개의 쓰레기가 감지되었습니다',
       multi_subtitle: '분류를 확인할 항목을 하나 선택해 주세요.',
       notrash_title: '쓰레기를 인식하지 못했습니다.',
@@ -1590,8 +1580,10 @@
       bin3_note: '수거 후 다시 여유 공간이 생길 수 있습니다.',
       chip_pet: '페트병',
       chip_can: '캔',
-      chip_bottle: '유리병',
-      chip_paper: '폐지',
+      chip_food: '음식물 쓰레기',
+      chip_bag: '비닐봉투',
+      chip_burnable: '타는 쓰레기',
+      chip_nonburnable: '타지 않는 쓰레기',
       status_available: '여유 있음',
       status_almost_full: '거의 가득 참',
       status_full: '가득 참',
@@ -1667,20 +1659,12 @@
   var cameraStream = null;
   var cameraStarting = false;
 
-  function setCameraHint(visible){
-    var hint = document.getElementById('camera-hint');
-    if(hint) hint.hidden = !visible;
-  }
-
   function startCamera(){
     loadFaceModel();
     loadTrashModel();
     if(cameraStream) return Promise.resolve(true);
     if(cameraStarting) return cameraStarting;
-    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-      setCameraHint(true);
-      return Promise.resolve(false);
-    }
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return Promise.resolve(false);
     cameraStarting = navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }).then(function(stream){
       cameraStarting = null;
       cameraStream = stream;
@@ -1689,11 +1673,9 @@
         cameraVideoEl.style.display = 'block';
       }
       if(cameraPlaceholderIcon) cameraPlaceholderIcon.style.display = 'none';
-      setCameraHint(false);
       return true;
     }).catch(function(){
       cameraStarting = null;
-      setCameraHint(true);
       return false;
     });
     return cameraStarting;
@@ -1846,7 +1828,6 @@
       cameraVideoEl.style.display = 'none';
     }
     if(cameraPlaceholderIcon) cameraPlaceholderIcon.style.display = '';
-    setCameraHint(false);
   }
 
   document.querySelectorAll('.lang-card').forEach(function(card){
@@ -1957,13 +1938,12 @@
     });
     var iconEl = document.getElementById('item-icon-el');
     if(iconEl && itemIcons[key]) iconEl.src = itemIcons[key];
-    updateBinChipHighlights();
+    renderBinCardChips();
   }
 
-  function updateBinChipHighlights(){
-    var matchKey = 'chip_' + currentItemKey;
-    document.querySelectorAll('.bin-card .chip').forEach(function(c){
-      c.classList.toggle('chip-match', c.getAttribute('data-chip-key') === matchKey);
+  function renderBinCardChips(){
+    document.querySelectorAll('[data-bin-chips]').forEach(function(row){
+      renderBinChips(row.getAttribute('data-bin-chips'), row);
     });
   }
 
@@ -2015,8 +1995,6 @@
     });
   }
 
-  updateBinChipHighlights();
-
   var binOrder = ['bin1', 'bin2', 'bin3'];
   var binDistances = { bin1: '150m', bin2: '320m', bin3: '480m' };
   var binDistanceMeters = { bin1: 150, bin2: 320, bin3: 480 };
@@ -2042,12 +2020,19 @@
   var binCoords = { bin1: { x: 100, y: 260 }, bin2: { x: 220, y: 130 }, bin3: { x: 300, y: 40 } };
   var youCoords = { x: 100, y: 380 };
   var binAccepted = {
-    bin1: ['chip_pet', 'chip_can', 'chip_bottle'],
-    bin2: ['chip_pet', 'chip_can'],
-    bin3: ['chip_pet', 'chip_bottle', 'chip_paper']
+    bin1: ['chip_pet', 'chip_can', 'chip_bag', 'chip_burnable', 'chip_food', 'chip_nonburnable'],
+    bin2: ['chip_pet', 'chip_can', 'chip_burnable'],
+    bin3: ['chip_pet', 'chip_can', 'chip_bag']
   };
   var currentBinKey = 'bin1';
-  var chipIcons = { chip_pet: 'assets/Bottle_Icon_s.png', chip_can: 'assets/Can_Icon_s.png', chip_bottle: 'assets/Recyclables_Icon_s.png', chip_paper: 'assets/Paper_Icon_s.png' };
+  var chipIcons = {
+    chip_pet: 'assets/Bottle_Icon_s.png',
+    chip_can: 'assets/Can_Icon_s.png',
+    chip_food: 'assets/Food_Waste_Icon_s.png',
+    chip_bag: 'assets/Plastic_Bag_Icon_s.png',
+    chip_burnable: 'assets/Flammable_Icon_s.png',
+    chip_nonburnable: 'assets/No_Fire_Icon_s.png'
+  };
 
   var nearbyWalkLimitMinutes = 10;
 
@@ -2100,7 +2085,7 @@
     row.innerHTML = '';
     types.forEach(function(t){
       var chip = document.createElement('span');
-      chip.className = 'chip' + (t === scannedChipKey ? ' chip-match' : '');
+      chip.className = 'chip';
       chip.setAttribute('data-chip-key', t);
       var icon = document.createElement('img');
       icon.className = 'chip-icon';
@@ -2390,6 +2375,7 @@
     updateMapViewBox();
   }
 
+  renderBinCardChips();
   selectBin(currentBinKey);
 
   if(mapSvg){
