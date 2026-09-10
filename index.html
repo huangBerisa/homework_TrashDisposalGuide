@@ -1063,6 +1063,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.20.0/dist/tf.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface@0.1.0/dist/blazeface.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@2.1.1/dist/mobilenet.min.js"></script>
 <script>
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var currentLang = 'ja';
@@ -1074,6 +1075,7 @@
       capture_title: '捨てたいごみを撮影してください',
       capture_subtitle: 'ごみ全体が写るように撮影してください。',
       capture_shoot: '撮影する',
+      analyzing: '解析中…',
       capture_gallery: '写真を選ぶ',
       camera_unavailable: 'カメラを利用できません。「写真を選ぶ」からお選びください。',
       multi_title: '複数のごみを検出しました',
@@ -1164,6 +1166,7 @@
       capture_title: 'Take a photo of the item you want to throw away',
       capture_subtitle: 'Frame the whole item in the shot.',
       capture_shoot: 'Take Photo',
+      analyzing: 'Analyzing…',
       capture_gallery: 'Choose from Gallery',
       camera_unavailable: 'The camera is unavailable. Please use "Choose from Gallery".',
       multi_title: 'Multiple items detected',
@@ -1254,6 +1257,7 @@
       capture_title: '请拍摄想丢弃的垃圾',
       capture_subtitle: '请让垃圾完整入镜后拍摄。',
       capture_shoot: '拍摄',
+      analyzing: '辨识中…',
       capture_gallery: '从相册选择',
       camera_unavailable: '无法使用相机，请改用「从相册选择」。',
       multi_title: '检测到多个垃圾项目',
@@ -1344,6 +1348,7 @@
       capture_title: '請拍攝想丟棄的垃圾',
       capture_subtitle: '請讓垃圾完整入鏡後拍攝。',
       capture_shoot: '拍攝',
+      analyzing: '辨識中…',
       capture_gallery: '從相簿選擇',
       camera_unavailable: '無法使用相機，請改用「從相簿選擇」。',
       multi_title: '偵測到多個垃圾項目',
@@ -1434,6 +1439,7 @@
       capture_title: '버리고 싶은 쓰레기를 촬영해 주세요',
       capture_subtitle: '쓰레기 전체가 보이도록 촬영해 주세요.',
       capture_shoot: '촬영하기',
+      analyzing: '분석 중…',
       capture_gallery: '갤러리에서 선택',
       camera_unavailable: '카메라를 사용할 수 없습니다. "갤러리에서 선택"을 이용해 주세요.',
       multi_title: '여러 개의 쓰레기가 감지되었습니다',
@@ -1561,6 +1567,7 @@
 
   function startCamera(){
     loadFaceModel();
+    loadTrashModel();
     if(cameraStream) return Promise.resolve(true);
     if(cameraStarting) return cameraStarting;
     if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
@@ -1614,6 +1621,79 @@
     return faceModelLoading;
   }
 
+  var trashModel = null;
+  var trashModelLoading = null;
+
+  function loadTrashModel(){
+    if(trashModel) return Promise.resolve(trashModel);
+    if(trashModelLoading) return trashModelLoading;
+    if(typeof mobilenet === 'undefined') return Promise.resolve(null);
+    trashModelLoading = mobilenet.load().then(function(model){
+      trashModel = model;
+      return model;
+    }).catch(function(){
+      return null;
+    });
+    return trashModelLoading;
+  }
+
+  // MobileNet returns generic ImageNet labels, so map the ones that
+  // correspond to the waste types this guide covers.
+  function matchItemKey(label){
+    var text = label.toLowerCase();
+    if(/\bbottle\b/.test(text)) return 'pet';
+    if(/\b(tin can|beer can|soda can|milk can|canister)\b/.test(text)) return 'can';
+    return null;
+  }
+
+  // Resolves to null when the model is unavailable, or to the list of
+  // recognised waste types (possibly empty) when it actually ran.
+  function detectItemKeys(source){
+    return loadTrashModel().then(function(model){
+      if(!model) return null;
+      return model.classify(source, 5).then(function(predictions){
+        var keys = [];
+        predictions.forEach(function(prediction){
+          if(prediction.probability < 0.1) return;
+          var key = matchItemKey(prediction.className);
+          if(key && keys.indexOf(key) === -1) keys.push(key);
+        });
+        return keys;
+      }).catch(function(){
+        return null;
+      });
+    });
+  }
+
+  function routePhoto(source){
+    return photoHasFace(source).then(function(isPerson){
+      if(isPerson){
+        showScreen('notrash');
+        return;
+      }
+      return detectItemKeys(source).then(function(keys){
+        if(keys === null){
+          showScreen('multi');
+        } else if(keys.length === 0){
+          showScreen('notrash');
+        } else if(keys.length === 1){
+          selectItem(keys[0]);
+          showScreen('result');
+        } else {
+          showScreen('multi');
+        }
+      });
+    });
+  }
+
+  function setButtonBusy(button, busy, labelKey){
+    if(!button) return;
+    var dict = translations[currentLang] || translations.ja;
+    var labelEl = button.querySelector('span') || button;
+    button.disabled = busy;
+    labelEl.textContent = dict[busy ? 'analyzing' : labelKey];
+  }
+
   function photoHasFace(canvas){
     return loadFaceModel().then(function(model){
       if(!model) return false;
@@ -1660,10 +1740,9 @@
     canvas.width = cameraVideoEl.videoWidth;
     canvas.height = cameraVideoEl.videoHeight;
     canvas.getContext('2d').drawImage(cameraVideoEl, 0, 0, canvas.width, canvas.height);
-    shootBtn.disabled = true;
-    photoHasFace(canvas).then(function(isPerson){
-      shootBtn.disabled = false;
-      showScreen(isPerson ? 'notrash' : 'multi');
+    setButtonBusy(shootBtn, true, 'capture_shoot');
+    routePhoto(canvas).then(function(){
+      setButtonBusy(shootBtn, false, 'capture_shoot');
     });
   }
 
@@ -1688,10 +1767,24 @@
   if(galleryBtn && galleryInput){
     galleryBtn.addEventListener('click', function(){ galleryInput.click(); });
     galleryInput.addEventListener('change', function(){
-      if(galleryInput.files && galleryInput.files.length > 0){
-        showScreen('notrash');
-      }
+      var file = galleryInput.files && galleryInput.files[0];
       galleryInput.value = '';
+      if(!file) return;
+      var url = URL.createObjectURL(file);
+      var image = new Image();
+      setButtonBusy(galleryBtn, true, 'capture_gallery');
+      image.onload = function(){
+        routePhoto(image).then(function(){
+          URL.revokeObjectURL(url);
+          setButtonBusy(galleryBtn, false, 'capture_gallery');
+        });
+      };
+      image.onerror = function(){
+        URL.revokeObjectURL(url);
+        setButtonBusy(galleryBtn, false, 'capture_gallery');
+        showScreen('notrash');
+      };
+      image.src = url;
     });
   }
 
