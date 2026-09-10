@@ -28,7 +28,7 @@
     --fs-5:12px;
   }
   *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
+  html,body{margin:0; padding:0; height:100%;}
   body{
     background:var(--color-surface);
     color:var(--color-text);
@@ -38,27 +38,18 @@
   button{font-family:inherit;}
   :focus-visible{outline:2px solid var(--color-primary); outline-offset:2px;}
 
-  /* ---------- presenter shell (outside the app itself) ---------- */
+  /* ---------- app shell: fills the viewport, capped on wide screens ---------- */
   .page{
-    max-width:720px;
-    margin:0 auto;
-    padding:48px 16px;
-  }
-
-  .stage{
+    height:100vh;
+    height:100dvh;
     display:flex;
     justify-content:center;
   }
-
-  /* ---------- device frame (iPhone 17, 402x874pt) ---------- */
-  .device{
-    width:min(402px, 92vw);
-    aspect-ratio:402/874;
-    height:auto;
+  .app-shell{
+    width:100%;
+    max-width:480px;
+    height:100%;
     background:var(--color-bg);
-    border:1px solid var(--color-divider);
-    border-radius:44px;
-    padding:12px;
     display:flex;
     flex-direction:column;
     overflow:hidden;
@@ -68,7 +59,6 @@
     flex-direction:column;
     height:100%;
     background:var(--color-bg);
-    border-radius:24px;
     overflow:hidden;
   }
   .screen.active{display:flex;}
@@ -532,540 +522,538 @@
 </head>
 <body>
 <div class="page">
-  <div class="stage">
-    <div class="device">
+  <div class="app-shell">
 
-      <!-- 0a: オンボーディング 1 -->
-      <section class="screen active" id="screen-onboarding1">
-        <div class="onboarding-screen">
-          <div class="onboarding-illustration">
-            <img src="assets/onboarding1.png" alt="" style="width:100%; height:100%; object-fit:contain;">
-          </div>
-          <div class="onboarding-text">
-            <h2 class="title-1">ようこそ<br>ごみなびへ</h2>
-            <p class="body-2">ごみをかんたんに<br>捨て場所を探せるアプリです。</p>
-          </div>
-          <div class="onboarding-dots">
-            <button class="active" data-onboarding-dot="1" aria-label="1"></button>
-            <button data-onboarding-dot="2" aria-label="2"></button>
-            <button data-onboarding-dot="3" aria-label="3"></button>
-          </div>
-          <p class="onboarding-tap-hint">画面をタップして次へ</p>
+    <!-- 0a: オンボーディング 1 -->
+    <section class="screen active" id="screen-onboarding1">
+      <div class="onboarding-screen">
+        <div class="onboarding-illustration">
+          <img src="assets/onboarding1.png" alt="" style="width:100%; height:100%; object-fit:contain;">
         </div>
-      </section>
-
-      <!-- 0b: オンボーディング 2 -->
-      <section class="screen" id="screen-onboarding2">
-        <div class="onboarding-screen">
-          <div class="onboarding-illustration">
-            <img src="assets/onboarding2.png" alt="" style="width:100%; height:100%; object-fit:contain;">
-          </div>
-          <div class="onboarding-text">
-            <h2 class="title-1">写真を撮るだけで<br>ごみの捨て場所がわかる</h2>
-            <p class="body-2">ごみの写真を撮ると、<br>正しい分別方法と近くの<br>ごみ箱が見つかります。</p>
-          </div>
-          <div class="onboarding-dots">
-            <button data-onboarding-dot="1" aria-label="1"></button>
-            <button class="active" data-onboarding-dot="2" aria-label="2"></button>
-            <button data-onboarding-dot="3" aria-label="3"></button>
-          </div>
-          <p class="onboarding-tap-hint">画面をタップして次へ</p>
+        <div class="onboarding-text">
+          <h2 class="title-1">ようこそ<br>ごみなびへ</h2>
+          <p class="body-2">ごみをかんたんに<br>捨て場所を探せるアプリです。</p>
         </div>
-      </section>
-
-      <!-- 0c: オンボーディング 3 -->
-      <section class="screen" id="screen-onboarding3">
-        <div class="onboarding-screen">
-          <div class="onboarding-illustration">
-            <img src="assets/onboarding3.png" alt="" style="width:100%; height:100%; object-fit:contain;">
-          </div>
-          <div class="onboarding-text">
-            <h2 class="title-1">クチコミから<br>ごみの満タン状況が<br>把握できる。</h2>
-            <p class="body-2">みんなの投稿で、近くのごみ箱の<br>混み具合を確認できます。</p>
-          </div>
-          <div class="onboarding-dots">
-            <button data-onboarding-dot="1" aria-label="1"></button>
-            <button data-onboarding-dot="2" aria-label="2"></button>
-            <button class="active" data-onboarding-dot="3" aria-label="3"></button>
-          </div>
-          <div class="onboarding-footer" style="display:block;">
-            <button class="btn btn-primary" data-goto="lang"><span>ゴミナビをはじめる</span></button>
-          </div>
+        <div class="onboarding-dots">
+          <button class="active" data-onboarding-dot="1" aria-label="1"></button>
+          <button data-onboarding-dot="2" aria-label="2"></button>
+          <button data-onboarding-dot="3" aria-label="3"></button>
         </div>
-      </section>
+        <p class="onboarding-tap-hint">画面をタップして次へ</p>
+      </div>
+    </section>
 
-      <!-- 1: 言語選択 -->
-      <section class="screen" id="screen-lang">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="onboarding3"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="app-body lang-select-body">
-          <div class="section stack-16">
-            <h2 class="title-1">言語を選択してください</h2>
-            <p class="body-2">読める言語をお選びください。</p>
-          </div>
-          <ul class="lang-list">
-            <li><button class="lang-card" data-lang="ja"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#fff" stroke="#e3e3e3"/><circle cx="12" cy="9" r="5" fill="#BC002D"/></svg></span><span class="name">日本語</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
-            <li><button class="lang-card" data-lang="en"><span class="flag"><svg viewBox="0 0 24 18"><clipPath id="cp-us"><rect width="24" height="18" rx="2"/></clipPath><g clip-path="url(#cp-us)"><rect width="24" height="18" fill="#B22234"/><g fill="#fff"><rect y="1.4" width="24" height="1.4"/><rect y="4.2" width="24" height="1.4"/><rect y="7" width="24" height="1.4"/><rect y="9.8" width="24" height="1.4"/><rect y="12.6" width="24" height="1.4"/><rect y="15.4" width="24" height="1.4"/></g><rect width="10" height="9.8" fill="#3C3B6E"/></g></svg></span><span class="name">English</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
-            <li><button class="lang-card" data-lang="zh-Hans"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#DE2910"/><path d="M6 3.5l0.9 1.9 2 0.2-1.5 1.4 0.4 2-1.8-1-1.8 1 0.4-2-1.5-1.4 2-0.2z" fill="#FFDE00"/><circle cx="10.5" cy="3" r="0.6" fill="#FFDE00"/><circle cx="11.5" cy="5.5" r="0.6" fill="#FFDE00"/><circle cx="11" cy="8" r="0.6" fill="#FFDE00"/><circle cx="9.3" cy="9.3" r="0.6" fill="#FFDE00"/></svg></span><span class="name">中文（简体）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
-            <li><button class="lang-card" data-lang="zh-Hant"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#FE0000"/><rect width="12" height="9" fill="#000095"/><circle cx="6" cy="4.5" r="2.6" fill="#fff"/></svg></span><span class="name">中文（繁體）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
-            <li><button class="lang-card" data-lang="ko"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#fff" stroke="#e3e3e3"/><path d="M12 5a4 4 0 0 1 0 8 2 2 0 0 1 0-4 2 2 0 0 0 0-4z" fill="#CD2E3A"/><path d="M12 5a4 4 0 0 0 0 8 2 2 0 0 0 0-4 2 2 0 0 1 0-4z" fill="#0047A0"/></svg></span><span class="name">한국어</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
-          </ul>
-          <button class="btn btn-primary lang-confirm" id="btn-lang-confirm" data-i18n="lang_confirm" disabled>決定</button>
+    <!-- 0b: オンボーディング 2 -->
+    <section class="screen" id="screen-onboarding2">
+      <div class="onboarding-screen">
+        <div class="onboarding-illustration">
+          <img src="assets/onboarding2.png" alt="" style="width:100%; height:100%; object-fit:contain;">
         </div>
-      </section>
+        <div class="onboarding-text">
+          <h2 class="title-1">写真を撮るだけで<br>ごみの捨て場所がわかる</h2>
+          <p class="body-2">ごみの写真を撮ると、<br>正しい分別方法と近くの<br>ごみ箱が見つかります。</p>
+        </div>
+        <div class="onboarding-dots">
+          <button data-onboarding-dot="1" aria-label="1"></button>
+          <button class="active" data-onboarding-dot="2" aria-label="2"></button>
+          <button data-onboarding-dot="3" aria-label="3"></button>
+        </div>
+        <p class="onboarding-tap-hint">画面をタップして次へ</p>
+      </div>
+    </section>
 
-      <!-- 2: 撮影 -->
-      <section class="screen" id="screen-capture">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="lang"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="app-body">
-          <div class="section stack-16">
-            <h2 class="title-1" data-i18n="capture_title">捨てたいごみを撮影してください</h2>
-            <p class="body-2" data-i18n="capture_subtitle">ごみ全体が写るように撮影してください。</p>
-          </div>
-          <div class="section">
-            <div class="viewfinder">
-              <span class="corner tl"></span><span class="corner tr"></span>
-              <span class="corner bl"></span><span class="corner br"></span>
-              <video id="camera-video" autoplay playsinline muted></video>
-              <svg id="camera-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="1.5">
-                <path d="M4 8h2l1.5-2h9L18 8h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" stroke-linejoin="round"/>
-                <circle cx="12" cy="13" r="3.5"/>
-              </svg>
-            </div>
-          </div>
-          <div class="section stack-8">
-            <button class="btn btn-primary" id="btn-shoot"><span data-i18n="capture_shoot">撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-            <button class="btn btn-secondary" id="btn-gallery" data-i18n="capture_gallery">写真を選ぶ</button>
-            <input type="file" accept="image/*" capture="environment" id="camera-input" style="display:none;">
-            <input type="file" accept="image/*" id="gallery-input" style="display:none;">
+    <!-- 0c: オンボーディング 3 -->
+    <section class="screen" id="screen-onboarding3">
+      <div class="onboarding-screen">
+        <div class="onboarding-illustration">
+          <img src="assets/onboarding3.png" alt="" style="width:100%; height:100%; object-fit:contain;">
+        </div>
+        <div class="onboarding-text">
+          <h2 class="title-1">クチコミから<br>ごみの満タン状況が<br>把握できる。</h2>
+          <p class="body-2">みんなの投稿で、近くのごみ箱の<br>混み具合を確認できます。</p>
+        </div>
+        <div class="onboarding-dots">
+          <button data-onboarding-dot="1" aria-label="1"></button>
+          <button data-onboarding-dot="2" aria-label="2"></button>
+          <button class="active" data-onboarding-dot="3" aria-label="3"></button>
+        </div>
+        <div class="onboarding-footer" style="display:block;">
+          <button class="btn btn-primary" data-goto="lang"><span>ゴミナビをはじめる</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1: 言語選択 -->
+    <section class="screen" id="screen-lang">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="onboarding3"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="app-body lang-select-body">
+        <div class="section stack-16">
+          <h2 class="title-1">言語を選択してください</h2>
+          <p class="body-2">読める言語をお選びください。</p>
+        </div>
+        <ul class="lang-list">
+          <li><button class="lang-card" data-lang="ja"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#fff" stroke="#e3e3e3"/><circle cx="12" cy="9" r="5" fill="#BC002D"/></svg></span><span class="name">日本語</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+          <li><button class="lang-card" data-lang="en"><span class="flag"><svg viewBox="0 0 24 18"><clipPath id="cp-us"><rect width="24" height="18" rx="2"/></clipPath><g clip-path="url(#cp-us)"><rect width="24" height="18" fill="#B22234"/><g fill="#fff"><rect y="1.4" width="24" height="1.4"/><rect y="4.2" width="24" height="1.4"/><rect y="7" width="24" height="1.4"/><rect y="9.8" width="24" height="1.4"/><rect y="12.6" width="24" height="1.4"/><rect y="15.4" width="24" height="1.4"/></g><rect width="10" height="9.8" fill="#3C3B6E"/></g></svg></span><span class="name">English</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+          <li><button class="lang-card" data-lang="zh-Hans"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#DE2910"/><path d="M6 3.5l0.9 1.9 2 0.2-1.5 1.4 0.4 2-1.8-1-1.8 1 0.4-2-1.5-1.4 2-0.2z" fill="#FFDE00"/><circle cx="10.5" cy="3" r="0.6" fill="#FFDE00"/><circle cx="11.5" cy="5.5" r="0.6" fill="#FFDE00"/><circle cx="11" cy="8" r="0.6" fill="#FFDE00"/><circle cx="9.3" cy="9.3" r="0.6" fill="#FFDE00"/></svg></span><span class="name">中文（简体）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+          <li><button class="lang-card" data-lang="zh-Hant"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#FE0000"/><rect width="12" height="9" fill="#000095"/><circle cx="6" cy="4.5" r="2.6" fill="#fff"/></svg></span><span class="name">中文（繁體）</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+          <li><button class="lang-card" data-lang="ko"><span class="flag"><svg viewBox="0 0 24 18"><rect width="24" height="18" rx="2" fill="#fff" stroke="#e3e3e3"/><path d="M12 5a4 4 0 0 1 0 8 2 2 0 0 1 0-4 2 2 0 0 0 0-4z" fill="#CD2E3A"/><path d="M12 5a4 4 0 0 0 0 8 2 2 0 0 0 0-4 2 2 0 0 1 0-4z" fill="#0047A0"/></svg></span><span class="name">한국어</span><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="#55C900" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button></li>
+        </ul>
+        <button class="btn btn-primary lang-confirm" id="btn-lang-confirm" data-i18n="lang_confirm" disabled>決定</button>
+      </div>
+    </section>
+
+    <!-- 2: 撮影 -->
+    <section class="screen" id="screen-capture">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="lang"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="app-body">
+        <div class="section stack-16">
+          <h2 class="title-1" data-i18n="capture_title">捨てたいごみを撮影してください</h2>
+          <p class="body-2" data-i18n="capture_subtitle">ごみ全体が写るように撮影してください。</p>
+        </div>
+        <div class="section">
+          <div class="viewfinder">
+            <span class="corner tl"></span><span class="corner tr"></span>
+            <span class="corner bl"></span><span class="corner br"></span>
+            <video id="camera-video" autoplay playsinline muted></video>
+            <svg id="camera-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="#9A9A9A" stroke-width="1.5">
+              <path d="M4 8h2l1.5-2h9L18 8h2a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z" stroke-linejoin="round"/>
+              <circle cx="12" cy="13" r="3.5"/>
+            </svg>
           </div>
         </div>
-      </section>
-
-      <!-- 2b: 複数検出 -->
-      <section class="screen" id="screen-multi">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="app-body">
-          <div class="section stack-16">
-            <h2 class="title-1" data-i18n="multi_title">複数のごみを検出しました</h2>
-            <p class="body-2" data-i18n="multi_subtitle">分類したいものを1つ選んでください。</p>
-          </div>
-          <ul class="detect-list">
-            <li>
-              <button class="detect-card" data-item-key="pet">
-                <div class="item-thumb icon-image">
-                  <img src="assets/Bottle_Icon_7.png" alt="">
-                </div>
-                <span class="name" data-i18n="pet_item_name">ペットボトル</span>
-                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            </li>
-            <li>
-              <button class="detect-card" data-item-key="can">
-                <div class="item-thumb icon-image">
-                  <img src="assets/Can_Icon_4.png" alt="">
-                </div>
-                <span class="name" data-i18n="can_item_name">缶</span>
-                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </button>
-            </li>
-          </ul>
+        <div class="section stack-8">
+          <button class="btn btn-primary" id="btn-shoot"><span data-i18n="capture_shoot">撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <button class="btn btn-secondary" id="btn-gallery" data-i18n="capture_gallery">写真を選ぶ</button>
+          <input type="file" accept="image/*" capture="environment" id="camera-input" style="display:none;">
+          <input type="file" accept="image/*" id="gallery-input" style="display:none;">
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- 2c: ごみが検出できない場合 -->
-      <section class="screen" id="screen-notrash">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="state-screen">
-          <div class="state-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M4 17l4.5-4.5 3 3 4-4L20 17" stroke-linejoin="round"/></svg>
-          </div>
-          <p class="title-2" data-i18n="notrash_title">ごみを検出できませんでした。</p>
-          <p class="body-2" data-i18n="notrash_subtitle">人物が写っている、ピントが合っていないなど、判別できない写真の可能性があります。</p>
-          <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry_shoot">もう一度撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          <button class="btn btn-secondary" data-goto="howto" data-i18n="howto_link">正しい撮影方法を見る</button>
+    <!-- 2b: 複数検出 -->
+    <section class="screen" id="screen-multi">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="app-body">
+        <div class="section stack-16">
+          <h2 class="title-1" data-i18n="multi_title">複数のごみを検出しました</h2>
+          <p class="body-2" data-i18n="multi_subtitle">分類したいものを1つ選んでください。</p>
         </div>
-      </section>
-
-      <!-- 2d: 撮影のコツ -->
-      <section class="screen" id="screen-howto">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="notrash"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="app-body">
-          <div class="section stack-16">
-            <h2 class="title-1" data-i18n="howto_shoot_title">正しい撮影方法</h2>
-            <p class="body-2" data-i18n="howto_shoot_subtitle">以下のポイントを確認して、もう一度撮影してください。</p>
-          </div>
-          <div class="section stack-8">
-            <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_do_label">撮影のポイント</p>
-            <ul class="howto-list">
-              <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do1">ごみ全体が画面いっぱいに写るようにしてください</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do2">明るい場所で、影ができないように撮影してください</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do3">なるべく無地の背景の上に置いて撮影してください</span></li>
-            </ul>
-          </div>
-          <div class="section stack-8">
-            <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_dont_label">こんな写真はNG</p>
-            <ul class="dont-list">
-              <li><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="howto_dont1">人物や顔が写り込んでいる</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="howto_dont2">ピントがぼやけている</span></li>
-              <li><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="howto_dont3">遠すぎる、または暗すぎる</span></li>
-            </ul>
-          </div>
-          <div class="section stack-8">
-            <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry_shoot">もう一度撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
-          </div>
-        </div>
-      </section>
-
-      <!-- 3: 分別結果 + 周辺ごみ箱（コア画面） -->
-      <section class="screen" id="screen-result">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="app-body">
-
-          <div class="section stack-16">
-            <div class="item-row">
+        <ul class="detect-list">
+          <li>
+            <button class="detect-card" data-item-key="pet">
               <div class="item-thumb icon-image">
-                <img id="item-icon-el" src="assets/Bottle_Icon_7.png" alt="">
+                <img src="assets/Bottle_Icon_7.png" alt="">
               </div>
-              <div>
-                <p class="title-1" id="item-name-el" data-i18n="pet_item_name">ペットボトル</p>
+              <span class="name" data-i18n="pet_item_name">ペットボトル</span>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </li>
+          <li>
+            <button class="detect-card" data-item-key="can">
+              <div class="item-thumb icon-image">
+                <img src="assets/Can_Icon_4.png" alt="">
               </div>
+              <span class="name" data-i18n="can_item_name">缶</span>
+              <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 2c: ごみが検出できない場合 -->
+    <section class="screen" id="screen-notrash">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="state-screen">
+        <div class="state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2.5" y="4.5" width="19" height="15" rx="2"/><circle cx="8.5" cy="10" r="1.6"/><path d="M4 17l4.5-4.5 3 3 4-4L20 17" stroke-linejoin="round"/></svg>
+        </div>
+        <p class="title-2" data-i18n="notrash_title">ごみを検出できませんでした。</p>
+        <p class="body-2" data-i18n="notrash_subtitle">人物が写っている、ピントが合っていないなど、判別できない写真の可能性があります。</p>
+        <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry_shoot">もう一度撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <button class="btn btn-secondary" data-goto="howto" data-i18n="howto_link">正しい撮影方法を見る</button>
+      </div>
+    </section>
+
+    <!-- 2d: 撮影のコツ -->
+    <section class="screen" id="screen-howto">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="notrash"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="app-body">
+        <div class="section stack-16">
+          <h2 class="title-1" data-i18n="howto_shoot_title">正しい撮影方法</h2>
+          <p class="body-2" data-i18n="howto_shoot_subtitle">以下のポイントを確認して、もう一度撮影してください。</p>
+        </div>
+        <div class="section stack-8">
+          <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_do_label">撮影のポイント</p>
+          <ul class="howto-list">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do1">ごみ全体が画面いっぱいに写るようにしてください</span></li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do2">明るい場所で、影ができないように撮影してください</span></li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="howto_do3">なるべく無地の背景の上に置いて撮影してください</span></li>
+          </ul>
+        </div>
+        <div class="section stack-8">
+          <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_dont_label">こんな写真はNG</p>
+          <ul class="dont-list">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="howto_dont1">人物や顔が写り込んでいる</span></li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="howto_dont2">ピントがぼやけている</span></li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span data-i18n="howto_dont3">遠すぎる、または暗すぎる</span></li>
+          </ul>
+        </div>
+        <div class="section stack-8">
+          <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry_shoot">もう一度撮影する</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3: 分別結果 + 周辺ごみ箱（コア画面） -->
+    <section class="screen" id="screen-result">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="app-body">
+
+        <div class="section stack-16">
+          <div class="item-row">
+            <div class="item-thumb icon-image">
+              <img id="item-icon-el" src="assets/Bottle_Icon_7.png" alt="">
+            </div>
+            <div>
+              <p class="title-1" id="item-name-el" data-i18n="pet_item_name">ペットボトル</p>
             </div>
           </div>
+        </div>
 
-          <div class="section result-card stack-16">
-            <div class="stack-8">
-              <p class="title-1" id="class-name-el" data-i18n="pet_class_name">資源ごみ</p>
-              <p class="body-2" id="class-note-el" data-i18n="pet_class_note">決められた回収日に、透明な袋に入れて出します。</p>
-            </div>
-
-            <div class="stack-8">
-              <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_label">捨て方</p>
-              <ul class="howto-list">
-                <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="howto1-el" data-i18n="pet_howto1">キャップとラベルは外して「プラスチック」に分けます。</span></li>
-                <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="howto2-el" data-i18n="pet_howto2">つぶしてから出すと、収集がスムーズです。</span></li>
-              </ul>
-            </div>
-
-            <div class="caution">
-              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l7 12.5H1L8 1.5z" stroke-linejoin="round"/><path d="M8 6.5v3.5" stroke-linecap="round"/><circle cx="8" cy="11.7" r="0.9" fill="currentColor" stroke="none"/></svg>
-              <p id="caution-el" data-i18n="pet_caution">洗っていないペットボトルは収集されない場合があります。</p>
-            </div>
+        <div class="section result-card stack-16">
+          <div class="stack-8">
+            <p class="title-1" id="class-name-el" data-i18n="pet_class_name">資源ごみ</p>
+            <p class="body-2" id="class-note-el" data-i18n="pet_class_note">決められた回収日に、透明な袋に入れて出します。</p>
           </div>
 
-          <div class="section stack-16">
-            <p class="section-title" data-i18n="nearby_title">周辺のごみ箱</p>
+          <div class="stack-8">
+            <p class="title-2" style="font-size:var(--fs-3);" data-i18n="howto_label">捨て方</p>
+            <ul class="howto-list">
+              <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="howto1-el" data-i18n="pet_howto1">キャップとラベルは外して「プラスチック」に分けます。</span></li>
+              <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="howto2-el" data-i18n="pet_howto2">つぶしてから出すと、収集がスムーズです。</span></li>
+            </ul>
+          </div>
 
-            <div class="bin-list">
-              <div class="bin-card">
-                <div class="bin-card-top">
-                  <div class="bin-icon icon-image">
-                    <img src="assets/TrashBin.png" alt="">
-                  </div>
-                  <div class="bin-main">
-                    <p class="bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
-                    <div class="chip-row">
-                      <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
-                      <span class="chip" data-chip-key="chip_can"><img class="chip-icon" src="assets/Can_Icon_s.png" data-i18n-aria="chip_can" alt="缶"></span>
-                      <span class="chip" data-chip-key="chip_bottle"><img class="chip-icon" src="assets/Recyclables_Icon_s.png" data-i18n-aria="chip_bottle" alt="びん"></span>
-                    </div>
+          <div class="caution">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l7 12.5H1L8 1.5z" stroke-linejoin="round"/><path d="M8 6.5v3.5" stroke-linecap="round"/><circle cx="8" cy="11.7" r="0.9" fill="currentColor" stroke="none"/></svg>
+            <p id="caution-el" data-i18n="pet_caution">洗っていないペットボトルは収集されない場合があります。</p>
+          </div>
+        </div>
+
+        <div class="section stack-16">
+          <p class="section-title" data-i18n="nearby_title">周辺のごみ箱</p>
+
+          <div class="bin-list">
+            <div class="bin-card">
+              <div class="bin-card-top">
+                <div class="bin-icon icon-image">
+                  <img src="assets/TrashBin.png" alt="">
+                </div>
+                <div class="bin-main">
+                  <p class="bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
+                  <div class="chip-row">
+                    <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
+                    <span class="chip" data-chip-key="chip_can"><img class="chip-icon" src="assets/Can_Icon_s.png" data-i18n-aria="chip_can" alt="缶"></span>
+                    <span class="chip" data-chip-key="chip_bottle"><img class="chip-icon" src="assets/Recyclables_Icon_s.png" data-i18n-aria="chip_bottle" alt="びん"></span>
                   </div>
                 </div>
-                <div class="bin-meta">
-                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>150m<span class="dot">・</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-bin-eta="bin1">徒歩2分</span></span>
-                  <span class="pill positive"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L6.5 13L13 5" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="status_available">空きあり</span></span>
-                </div>
-                <p class="bin-note" data-i18n="bin1_note">ふたを閉めてから入れてください。</p>
-                <button class="btn btn-secondary btn-small" data-i18n="bin_cta" data-bin-key="bin1">ここへ行く</button>
               </div>
-
-              <div class="bin-card">
-                <div class="bin-card-top">
-                  <div class="bin-icon icon-image">
-                    <img src="assets/TrashBin.png" alt="">
-                  </div>
-                  <div class="bin-main">
-                    <p class="bin-name" data-i18n="bin2_name">四条通 ごみ箱</p>
-                    <div class="chip-row">
-                      <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
-                      <span class="chip" data-chip-key="chip_can"><img class="chip-icon" src="assets/Can_Icon_s.png" data-i18n-aria="chip_can" alt="缶"></span>
-                    </div>
-                  </div>
-                </div>
-                <div class="bin-meta">
-                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>320m<span class="dot">・</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-bin-eta="bin2">徒歩4分</span></span>
-                  <span class="pill almost-full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_almost_full">満杯に近づいています</span></span>
-                </div>
-                <p class="bin-note" data-i18n="bin2_note">紙ごみは入れられません。</p>
-                <button class="btn btn-secondary btn-small" data-i18n="bin_cta" data-bin-key="bin2">ここへ行く</button>
+              <div class="bin-meta">
+                <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>150m<span class="dot">・</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-bin-eta="bin1">徒歩2分</span></span>
+                <span class="pill positive"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9.5L6.5 13L13 5" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n="status_available">空きあり</span></span>
               </div>
+              <p class="bin-note" data-i18n="bin1_note">ふたを閉めてから入れてください。</p>
+              <button class="btn btn-secondary btn-small" data-i18n="bin_cta" data-bin-key="bin1">ここへ行く</button>
+            </div>
 
-              <div class="bin-card">
-                <div class="bin-card-top">
-                  <div class="bin-icon icon-image">
-                    <img src="assets/TrashBin.png" alt="">
-                  </div>
-                  <div class="bin-main">
-                    <p class="bin-name" data-i18n="bin3_name">河原町 リサイクルボックス</p>
-                    <div class="chip-row">
-                      <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
-                      <span class="chip" data-chip-key="chip_bottle"><img class="chip-icon" src="assets/Recyclables_Icon_s.png" data-i18n-aria="chip_bottle" alt="びん"></span>
-                      <span class="chip" data-chip-key="chip_paper"><img class="chip-icon" src="assets/Paper_Icon_s.png" data-i18n-aria="chip_paper" alt="古紙"></span>
-                    </div>
+            <div class="bin-card">
+              <div class="bin-card-top">
+                <div class="bin-icon icon-image">
+                  <img src="assets/TrashBin.png" alt="">
+                </div>
+                <div class="bin-main">
+                  <p class="bin-name" data-i18n="bin2_name">四条通 ごみ箱</p>
+                  <div class="chip-row">
+                    <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
+                    <span class="chip" data-chip-key="chip_can"><img class="chip-icon" src="assets/Can_Icon_s.png" data-i18n-aria="chip_can" alt="缶"></span>
                   </div>
                 </div>
-                <div class="bin-meta">
-                  <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>480m<span class="dot">・</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-bin-eta="bin3">徒歩6分</span></span>
-                  <span class="pill full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_full">満杯です</span></span>
-                </div>
-                <p class="bin-note" data-i18n="bin3_note">収集後に空きが戻る場合があります。</p>
-                <button class="btn btn-secondary btn-small" data-i18n="bin_cta" data-bin-key="bin3">ここへ行く</button>
               </div>
+              <div class="bin-meta">
+                <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>320m<span class="dot">・</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-bin-eta="bin2">徒歩4分</span></span>
+                <span class="pill almost-full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_almost_full">満杯に近づいています</span></span>
+              </div>
+              <p class="bin-note" data-i18n="bin2_note">紙ごみは入れられません。</p>
+              <button class="btn btn-secondary btn-small" data-i18n="bin_cta" data-bin-key="bin2">ここへ行く</button>
+            </div>
+
+            <div class="bin-card">
+              <div class="bin-card-top">
+                <div class="bin-icon icon-image">
+                  <img src="assets/TrashBin.png" alt="">
+                </div>
+                <div class="bin-main">
+                  <p class="bin-name" data-i18n="bin3_name">河原町 リサイクルボックス</p>
+                  <div class="chip-row">
+                    <span class="chip" data-chip-key="chip_pet"><img class="chip-icon" src="assets/Bottle_Icon_s.png" data-i18n-aria="chip_pet" alt="ペットボトル"></span>
+                    <span class="chip" data-chip-key="chip_bottle"><img class="chip-icon" src="assets/Recyclables_Icon_s.png" data-i18n-aria="chip_bottle" alt="びん"></span>
+                    <span class="chip" data-chip-key="chip_paper"><img class="chip-icon" src="assets/Paper_Icon_s.png" data-i18n-aria="chip_paper" alt="古紙"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="bin-meta">
+                <span class="bin-distance"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>480m<span class="dot">・</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-bin-eta="bin3">徒歩6分</span></span>
+                <span class="pill full"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.5l6.5 11.5H1.5L8 1.5z" stroke-linejoin="round"/><path d="M8 6.2v3" stroke-linecap="round"/><circle cx="8" cy="11" r="0.8" fill="currentColor" stroke="none"/></svg><span data-i18n="status_full">満杯です</span></span>
+              </div>
+              <p class="bin-note" data-i18n="bin3_note">収集後に空きが戻る場合があります。</p>
+              <button class="btn btn-secondary btn-small" data-i18n="bin_cta" data-bin-key="bin3">ここへ行く</button>
             </div>
           </div>
-
         </div>
-      </section>
 
-      <!-- 4: 地図案内 -->
-      <section class="screen" id="screen-map">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="result"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="map-wrap">
-          <svg class="map-svg" id="map-svg" viewBox="-20 160 240 440" preserveAspectRatio="xMidYMid slice">
-            <rect class="map-land" x="-400" y="-400" width="1200" height="1400"/>
+      </div>
+    </section>
 
-            <!-- landmarks -->
-            <rect class="map-park" x="300" y="-260" width="60" height="1000"/>
-            <text class="map-landmark-label" x="330" y="250" transform="rotate(-90 330 250)" data-i18n="landmark_river">鴨川</text>
-            <rect class="map-landmark" x="6" y="392" width="88" height="100" rx="4"/>
-            <text class="map-landmark-label" x="50" y="446" style="font-size:11px;" data-i18n="landmark_station">京都駅</text>
+    <!-- 4: 地図案内 -->
+    <section class="screen" id="screen-map">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="result"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="map-wrap">
+        <svg class="map-svg" id="map-svg" viewBox="-20 160 240 440" preserveAspectRatio="xMidYMid slice">
+          <rect class="map-land" x="-400" y="-400" width="1200" height="1400"/>
 
-            <!-- generic city blocks -->
-            <rect class="map-building" x="130" y="15" width="70" height="95" rx="3"/>
-            <rect class="map-building" x="15" y="15" width="70" height="95" rx="3"/>
-            <rect class="map-building" x="235" y="15" width="50" height="95" rx="3"/>
-            <rect class="map-building" x="15" y="-115" width="70" height="95" rx="3"/>
-            <rect class="map-building" x="130" y="-115" width="70" height="95" rx="3"/>
-            <rect class="map-building" x="235" y="-115" width="50" height="95" rx="3"/>
-            <rect class="map-building" x="15" y="410" width="70" height="70" rx="3"/>
-            <rect class="map-building" x="130" y="410" width="70" height="70" rx="3"/>
-            <rect class="map-building" x="235" y="410" width="50" height="70" rx="3"/>
-            <rect class="map-building" x="15" y="150" width="70" height="95" rx="3"/>
-            <rect class="map-building" x="130" y="150" width="70" height="95" rx="3"/>
-            <rect class="map-building" x="235" y="150" width="50" height="95" rx="3"/>
-            <rect class="map-building" x="130" y="280" width="70" height="85" rx="3"/>
-            <rect class="map-building" x="235" y="280" width="50" height="85" rx="3"/>
+          <!-- landmarks -->
+          <rect class="map-park" x="300" y="-260" width="60" height="1000"/>
+          <text class="map-landmark-label" x="330" y="250" transform="rotate(-90 330 250)" data-i18n="landmark_river">鴨川</text>
+          <rect class="map-landmark" x="6" y="392" width="88" height="100" rx="4"/>
+          <text class="map-landmark-label" x="50" y="446" style="font-size:11px;" data-i18n="landmark_station">京都駅</text>
 
-            <!-- roads (grid) -->
-            <path class="map-road" d="M-20 -260v1000"/>
-            <path class="map-road" d="M100 -260v1000"/>
-            <path class="map-road" d="M220 -260v1000"/>
-            <path class="map-road" d="M300 -260v1000"/>
-            <path class="map-road" d="M420 -260v1000"/>
-            <path class="map-road" d="M-260 10 h800"/>
-            <path class="map-road" d="M-260 130 h800"/>
-            <path class="map-road" d="M-260 260 h800"/>
-            <path class="map-road" d="M-260 380 h800"/>
-            <path class="map-road" d="M-260 500 h800"/>
-            <path class="map-road" d="M-260 620 h800"/>
-            <path class="map-road-line" d="M-20 -260v1000"/>
-            <path class="map-road-line" d="M100 -260v1000"/>
-            <path class="map-road-line" d="M220 -260v1000"/>
-            <path class="map-road-line" d="M300 -260v1000"/>
-            <path class="map-road-line" d="M420 -260v1000"/>
-            <path class="map-road-line" d="M-260 10 h800"/>
-            <path class="map-road-line" d="M-260 130 h800"/>
-            <path class="map-road-line" d="M-260 260 h800"/>
-            <path class="map-road-line" d="M-260 380 h800"/>
-            <path class="map-road-line" d="M-260 500 h800"/>
-            <path class="map-road-line" d="M-260 620 h800"/>
+          <!-- generic city blocks -->
+          <rect class="map-building" x="130" y="15" width="70" height="95" rx="3"/>
+          <rect class="map-building" x="15" y="15" width="70" height="95" rx="3"/>
+          <rect class="map-building" x="235" y="15" width="50" height="95" rx="3"/>
+          <rect class="map-building" x="15" y="-115" width="70" height="95" rx="3"/>
+          <rect class="map-building" x="130" y="-115" width="70" height="95" rx="3"/>
+          <rect class="map-building" x="235" y="-115" width="50" height="95" rx="3"/>
+          <rect class="map-building" x="15" y="410" width="70" height="70" rx="3"/>
+          <rect class="map-building" x="130" y="410" width="70" height="70" rx="3"/>
+          <rect class="map-building" x="235" y="410" width="50" height="70" rx="3"/>
+          <rect class="map-building" x="15" y="150" width="70" height="95" rx="3"/>
+          <rect class="map-building" x="130" y="150" width="70" height="95" rx="3"/>
+          <rect class="map-building" x="235" y="150" width="50" height="95" rx="3"/>
+          <rect class="map-building" x="130" y="280" width="70" height="85" rx="3"/>
+          <rect class="map-building" x="235" y="280" width="50" height="85" rx="3"/>
 
-            <!-- street name labels (real Kyoto street names) -->
-            <text class="map-road-label" x="0" y="0" transform="translate(108 60) rotate(-90)" data-i18n="landmark_road1">烏丸通</text>
-            <text class="map-road-label" x="30" y="122" data-i18n="landmark_road2">四条通</text>
-            <text class="map-road-label" x="0" y="0" transform="translate(308 300) rotate(-90)" data-i18n="landmark_road3">河原町通</text>
+          <!-- roads (grid) -->
+          <path class="map-road" d="M-20 -260v1000"/>
+          <path class="map-road" d="M100 -260v1000"/>
+          <path class="map-road" d="M220 -260v1000"/>
+          <path class="map-road" d="M300 -260v1000"/>
+          <path class="map-road" d="M420 -260v1000"/>
+          <path class="map-road" d="M-260 10 h800"/>
+          <path class="map-road" d="M-260 130 h800"/>
+          <path class="map-road" d="M-260 260 h800"/>
+          <path class="map-road" d="M-260 380 h800"/>
+          <path class="map-road" d="M-260 500 h800"/>
+          <path class="map-road" d="M-260 620 h800"/>
+          <path class="map-road-line" d="M-20 -260v1000"/>
+          <path class="map-road-line" d="M100 -260v1000"/>
+          <path class="map-road-line" d="M220 -260v1000"/>
+          <path class="map-road-line" d="M300 -260v1000"/>
+          <path class="map-road-line" d="M420 -260v1000"/>
+          <path class="map-road-line" d="M-260 10 h800"/>
+          <path class="map-road-line" d="M-260 130 h800"/>
+          <path class="map-road-line" d="M-260 260 h800"/>
+          <path class="map-road-line" d="M-260 380 h800"/>
+          <path class="map-road-line" d="M-260 500 h800"/>
+          <path class="map-road-line" d="M-260 620 h800"/>
 
-            <!-- walking routes (one active per selected bin) -->
-            <g class="map-route-group active" id="route-bin1">
-              <path class="map-route" d="M100 380 L100 260"/>
+          <!-- street name labels (real Kyoto street names) -->
+          <text class="map-road-label" x="0" y="0" transform="translate(108 60) rotate(-90)" data-i18n="landmark_road1">烏丸通</text>
+          <text class="map-road-label" x="30" y="122" data-i18n="landmark_road2">四条通</text>
+          <text class="map-road-label" x="0" y="0" transform="translate(308 300) rotate(-90)" data-i18n="landmark_road3">河原町通</text>
+
+          <!-- walking routes (one active per selected bin) -->
+          <g class="map-route-group active" id="route-bin1">
+            <path class="map-route" d="M100 380 L100 260"/>
+          </g>
+          <g class="map-route-group" id="route-bin2">
+            <path class="map-route" d="M100 380 L100 130 L220 130"/>
+          </g>
+          <g class="map-route-group" id="route-bin3">
+            <path class="map-route" d="M100 380 L100 130 L300 130 L300 40"/>
+          </g>
+
+          <!-- current location -->
+          <g id="you-marker" transform="translate(100 380)">
+            <circle class="map-you-ring" cx="0" cy="0" r="13"/>
+            <circle class="map-you-dot" id="you-dot" cx="0" cy="0" r="5"/>
+            <path class="map-you-arrow" id="you-arrow" d="M0 -8L5.5 6L0 2.5L-5.5 6z" transform="rotate(0)"/>
+            <text class="map-you-label" id="you-label" x="0" y="-18" data-i18n="you_are_here">現在地</text>
+          </g>
+
+          <!-- destination pins (one active per selected bin) -->
+          <g class="map-pin-group active" id="pin-bin1">
+            <g transform="translate(100 260)">
+              <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
+              <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
+              <image href="assets/TrashBin.png" x="-8" y="-14" width="16" height="16"/>
             </g>
-            <g class="map-route-group" id="route-bin2">
-              <path class="map-route" d="M100 380 L100 130 L220 130"/>
+          </g>
+          <g class="map-pin-group" id="pin-bin2">
+            <g transform="translate(220 130)">
+              <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
+              <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
+              <image href="assets/TrashBin.png" x="-8" y="-14" width="16" height="16"/>
             </g>
-            <g class="map-route-group" id="route-bin3">
-              <path class="map-route" d="M100 380 L100 130 L300 130 L300 40"/>
+          </g>
+          <g class="map-pin-group" id="pin-bin3">
+            <g transform="translate(300 40)">
+              <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
+              <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
+              <image href="assets/TrashBin.png" x="-8" y="-14" width="16" height="16"/>
             </g>
+          </g>
+        </svg>
+      </div>
+      <div class="map-info">
+        <div class="sheet-handle" aria-hidden="true"></div>
+        <p class="title-2" id="map-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
+        <p class="map-eta">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>
+          <span id="map-distance-value">150m</span>
+          <span class="dot">・</span>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="map-eta-value">徒歩2分</span>
+        </p>
 
-            <!-- current location -->
-            <g id="you-marker" transform="translate(100 380)">
-              <circle class="map-you-ring" cx="0" cy="0" r="13"/>
-              <circle class="map-you-dot" id="you-dot" cx="0" cy="0" r="5"/>
-              <path class="map-you-arrow" id="you-arrow" d="M0 -8L5.5 6L0 2.5L-5.5 6z" transform="rotate(0)"/>
-              <text class="map-you-label" id="you-label" x="0" y="-18" data-i18n="you_are_here">現在地</text>
-            </g>
-
-            <!-- destination pins (one active per selected bin) -->
-            <g class="map-pin-group active" id="pin-bin1">
-              <g transform="translate(100 260)">
-                <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
-                <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
-                <image href="assets/TrashBin.png" x="-8" y="-14" width="16" height="16"/>
-              </g>
-            </g>
-            <g class="map-pin-group" id="pin-bin2">
-              <g transform="translate(220 130)">
-                <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
-                <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
-                <image href="assets/TrashBin.png" x="-8" y="-14" width="16" height="16"/>
-              </g>
-            </g>
-            <g class="map-pin-group" id="pin-bin3">
-              <g transform="translate(300 40)">
-                <path class="map-pin" d="M0 30C0 30 -18 12 -18 -6a18 18 0 1 1 36 0C18 12 0 30 0 30z"/>
-                <circle class="map-pin-badge" cx="0" cy="-6" r="11"/>
-                <image href="assets/TrashBin.png" x="-8" y="-14" width="16" height="16"/>
-              </g>
-            </g>
-          </svg>
+        <div class="map-status-visual">
+          <img class="map-status-icon" id="map-status-icon" src="assets/Empty.png" alt="">
+          <span class="map-status-text">
+            <span class="label" id="map-status-label">空き</span>
+            <span class="note" id="map-activity-text">5分前に8人が利用しました</span>
+          </span>
+          <button class="link-btn" id="btn-reviews" data-i18n="reviews_cta">口コミを見る</button>
         </div>
-        <div class="map-info">
-          <div class="sheet-handle" aria-hidden="true"></div>
-          <p class="title-2" id="map-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
-          <p class="map-eta">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M8 14.5S13 9.8 13 6.3A5 5 0 0 0 3 6.3C3 9.8 8 14.5 8 14.5z"/><circle cx="8" cy="6.3" r="1.7"/></svg>
-            <span id="map-distance-value">150m</span>
-            <span class="dot">・</span>
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="9" cy="2.6" r="1.3" fill="currentColor" stroke="none"/><path d="M7 5l3 1 1.5 3M8 9l-2 2-1 3M8 9l2 1 1 3M6.5 6.5L5 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <span id="map-eta-value">徒歩2分</span>
-          </p>
 
-          <div class="map-status-visual">
-            <img class="map-status-icon" id="map-status-icon" src="assets/Empty.png" alt="">
-            <span class="map-status-text">
-              <span class="label" id="map-status-label">空き</span>
-              <span class="note" id="map-activity-text">5分前に8人が利用しました</span>
-            </span>
-            <button class="link-btn" id="btn-reviews" data-i18n="reviews_cta">口コミを見る</button>
-          </div>
+        <div class="vote-chart" id="vote-chart" hidden></div>
 
-          <div class="vote-chart" id="vote-chart" hidden></div>
-
-          <div class="map-accepted">
-            <p class="caption" data-i18n="accepted_label">対応ごみ</p>
-            <div class="chip-row" id="map-chip-row"></div>
-          </div>
-          <div class="map-action">
-            <button class="btn btn-primary" id="btn-navigate"><span data-i18n="nav_cta">ここまで道案内する</span></button>
-            <button class="btn btn-primary" id="btn-disposed" style="display:none;"><span data-i18n="disposed_cta">ここに捨てました</span></button>
-          </div>
+        <div class="map-accepted">
+          <p class="caption" data-i18n="accepted_label">対応ごみ</p>
+          <div class="chip-row" id="map-chip-row"></div>
         </div>
-      </section>
+        <div class="map-action">
+          <button class="btn btn-primary" id="btn-navigate"><span data-i18n="nav_cta">ここまで道案内する</span></button>
+          <button class="btn btn-primary" id="btn-disposed" style="display:none;"><span data-i18n="disposed_cta">ここに捨てました</span></button>
+        </div>
+      </div>
+    </section>
 
-      <!-- 4b: 捨てた後 -->
-      <section class="screen" id="screen-disposed">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="map"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="app-body">
-          <div class="section stack-16" style="text-align:center;">
-            <div class="state-icon success" style="margin:0 auto;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 12.5L9.5 17.5L19.5 6.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </div>
-            <p class="title-2" data-i18n="disposed_title">ご協力ありがとうございました！</p>
-            <p class="body-2" data-i18n="disposed_subtitle">みんなで街をきれいに保つ取り組みに、ご協力いただきありがとうございます。</p>
+    <!-- 4b: 捨てた後 -->
+    <section class="screen" id="screen-disposed">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="map"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="app-body">
+        <div class="section stack-16" style="text-align:center;">
+          <div class="state-icon success" style="margin:0 auto;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 12.5L9.5 17.5L19.5 6.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
+          <p class="title-2" data-i18n="disposed_title">ご協力ありがとうございました！</p>
+          <p class="body-2" data-i18n="disposed_subtitle">みんなで街をきれいに保つ取り組みに、ご協力いただきありがとうございます。</p>
+        </div>
 
-          <div class="section disposed-bin">
-            <img class="bin-thumb" src="assets/TrashBin.png" alt="">
-            <div class="disposed-bin-main">
-              <p class="bin-name" id="disposed-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
-              <div class="chip-row" id="disposed-chip-row"></div>
-            </div>
-          </div>
-
-          <div class="section">
-            <p class="caption" data-i18n="feedback_label">このごみ箱はどうでしたか？</p>
-            <div class="feedback-row">
-              <button class="feedback-btn" data-feedback="empty">
-                <img src="assets/Empty.png" alt="">
-                <span data-i18n="feedback_available">空き</span>
-              </button>
-              <button class="feedback-btn" data-feedback="somewhat">
-                <img src="assets/PartiallyFilled.png" alt="">
-                <span data-i18n="feedback_normal">やや多い</span>
-              </button>
-              <button class="feedback-btn" data-feedback="much">
-                <img src="assets/NearlyFull.png" alt="">
-                <span data-i18n="feedback_crowded">多い</span>
-              </button>
-              <button class="feedback-btn" data-feedback="full">
-                <img src="assets/Full.png" alt="">
-                <span data-i18n="feedback_full">満杯</span>
-              </button>
-            </div>
-            <p class="feedback-thanks" id="feedback-thanks" data-i18n="feedback_thanks">ご協力ありがとうございます。</p>
-          </div>
-
-          <div class="section">
-            <button class="btn btn-primary" data-goto="capture" data-i18n="next_item_cta">次のごみを捨てる</button>
+        <div class="section disposed-bin">
+          <img class="bin-thumb" src="assets/TrashBin.png" alt="">
+          <div class="disposed-bin-main">
+            <p class="bin-name" id="disposed-bin-name" data-i18n="bin1_name">京都駅前 分別ステーション</p>
+            <div class="chip-row" id="disposed-chip-row"></div>
           </div>
         </div>
-      </section>
 
-      <!-- 5: Empty State -->
-      <section class="screen" id="screen-empty">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="state-screen">
-          <div class="state-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21" stroke-linecap="round"/></svg>
+        <div class="section">
+          <p class="caption" data-i18n="feedback_label">このごみ箱はどうでしたか？</p>
+          <div class="feedback-row">
+            <button class="feedback-btn" data-feedback="empty">
+              <img src="assets/Empty.png" alt="">
+              <span data-i18n="feedback_available">空き</span>
+            </button>
+            <button class="feedback-btn" data-feedback="somewhat">
+              <img src="assets/PartiallyFilled.png" alt="">
+              <span data-i18n="feedback_normal">やや多い</span>
+            </button>
+            <button class="feedback-btn" data-feedback="much">
+              <img src="assets/NearlyFull.png" alt="">
+              <span data-i18n="feedback_crowded">多い</span>
+            </button>
+            <button class="feedback-btn" data-feedback="full">
+              <img src="assets/Full.png" alt="">
+              <span data-i18n="feedback_full">満杯</span>
+            </button>
           </div>
-          <p class="title-2" data-i18n="empty_title">該当するごみが見つかりませんでした。</p>
-          <p class="body-2" data-i18n="empty_subtitle">ごみの名前を変えて、もう一度お調べください。</p>
-          <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry">もう一度調べる</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <p class="feedback-thanks" id="feedback-thanks" data-i18n="feedback_thanks">ご協力ありがとうございます。</p>
         </div>
-      </section>
 
-      <!-- 6: Error State -->
-      <section class="screen" id="screen-error">
-        <header class="app-header">
-          <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
-          <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
-        </header>
-        <div class="state-screen">
-          <div class="state-icon alert">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5l10 17.5H2L12 2.5z" stroke-linejoin="round"/><path d="M12 9.5v5" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg>
-          </div>
-          <p class="title-2" data-i18n="error_title">分類情報を取得できませんでした。</p>
-          <p class="body-2" data-i18n="error_subtitle">もう一度お試しください。</p>
-          <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry">もう一度調べる</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="section">
+          <button class="btn btn-primary" data-goto="capture" data-i18n="next_item_cta">次のごみを捨てる</button>
         </div>
-      </section>
+      </div>
+    </section>
 
-    </div>
+    <!-- 5: Empty State -->
+    <section class="screen" id="screen-empty">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="state-screen">
+        <div class="state-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21" stroke-linecap="round"/></svg>
+        </div>
+        <p class="title-2" data-i18n="empty_title">該当するごみが見つかりませんでした。</p>
+        <p class="body-2" data-i18n="empty_subtitle">ごみの名前を変えて、もう一度お調べください。</p>
+        <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry">もう一度調べる</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </section>
+
+    <!-- 6: Error State -->
+    <section class="screen" id="screen-error">
+      <header class="app-header">
+        <button class="back-btn" data-i18n-aria="back" aria-label="戻る" data-goto="capture"><img src="assets/left.png" alt=""></button>
+        <div class="header-title"><img class="header-icon" src="assets/app-icon.png" alt=""><span>ゴミナビ</span></div>
+      </header>
+      <div class="state-screen">
+        <div class="state-icon alert">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2.5l10 17.5H2L12 2.5z" stroke-linejoin="round"/><path d="M12 9.5v5" stroke-linecap="round"/><circle cx="12" cy="17" r="1" fill="currentColor" stroke="none"/></svg>
+        </div>
+        <p class="title-2" data-i18n="error_title">分類情報を取得できませんでした。</p>
+        <p class="body-2" data-i18n="error_subtitle">もう一度お試しください。</p>
+        <button class="btn btn-primary" data-goto="capture"><span data-i18n="retry">もう一度調べる</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      </div>
+    </section>
+
   </div>
 </div>
 
