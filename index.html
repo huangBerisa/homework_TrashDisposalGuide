@@ -648,8 +648,8 @@
       </header>
       <div class="app-body">
         <div class="section stack-16">
-          <h2 class="title-1" data-i18n="multi_title">複数のごみを検出しました</h2>
-          <p class="body-2" data-i18n="multi_subtitle">分類したいものを1つ選んでください。</p>
+          <h2 class="title-1" id="multi-title" data-i18n="multi_title">複数のごみを検出しました</h2>
+          <p class="body-2" id="multi-subtitle" data-i18n="multi_subtitle">分類したいものを1つ選んでください。</p>
         </div>
         <ul class="detect-list" id="detect-list"></ul>
       </div>
@@ -721,6 +721,7 @@
             </div>
             <div>
               <p class="title-1" id="item-name-el" data-i18n="pet_item_name">ペットボトル</p>
+              <button class="link-btn" id="btn-pick-item" data-i18n="pick_item_cta">種類を選び直す</button>
             </div>
           </div>
         </div>
@@ -1062,6 +1063,9 @@
       camera_unavailable: 'カメラを利用できません。「写真を選ぶ」からお選びください。',
       multi_title: '複数のごみを検出しました',
       multi_subtitle: '分類したいものを1つ選んでください。',
+      pick_item_cta: '種類を選び直す',
+      pick_item_title: 'ごみの種類を選んでください',
+      pick_item_subtitle: '写真と違う場合は、正しい種類をお選びください。',
       notrash_title: 'ごみを検出できませんでした。',
       notrash_subtitle: '一度に1つのごみだけを、画面いっぱいに写してください。背景が多く写っていると判別できないことがあります。',
       retry_shoot: 'もう一度撮影する',
@@ -1178,6 +1182,9 @@
       camera_unavailable: 'The camera is unavailable. Please use "Choose from Gallery".',
       multi_title: 'Multiple items detected',
       multi_subtitle: 'Select one item to check its sorting.',
+      pick_item_cta: 'Choose a different type',
+      pick_item_title: 'Choose the type of waste',
+      pick_item_subtitle: 'If the guess was wrong, please pick the correct type.',
       notrash_title: 'No item was detected.',
       notrash_subtitle: 'Please frame a single item so it fills the screen. Too much background can prevent recognition.',
       retry_shoot: 'Take Photo Again',
@@ -1294,6 +1301,9 @@
       camera_unavailable: '无法使用相机，请改用「从相册选择」。',
       multi_title: '检测到多个垃圾项目',
       multi_subtitle: '请选择一个想要查询分类的项目。',
+      pick_item_cta: '重新选择种类',
+      pick_item_title: '请选择垃圾的种类',
+      pick_item_subtitle: '若辨识结果有误，请选择正确的种类。',
       notrash_title: '未检测到垃圾。',
       notrash_subtitle: '请一次只拍摄一件垃圾，并让它占满画面。背景过多时可能无法辨识。',
       retry_shoot: '重新拍摄',
@@ -1410,6 +1420,9 @@
       camera_unavailable: '無法使用相機，請改用「從相簿選擇」。',
       multi_title: '偵測到多個垃圾項目',
       multi_subtitle: '請選擇一個想要查詢分類的項目。',
+      pick_item_cta: '重新選擇種類',
+      pick_item_title: '請選擇垃圾的種類',
+      pick_item_subtitle: '若辨識結果有誤，請選擇正確的種類。',
       notrash_title: '未偵測到垃圾。',
       notrash_subtitle: '請一次只拍攝一件垃圾，並讓它佔滿畫面。背景過多時可能無法辨識。',
       retry_shoot: '重新拍攝',
@@ -1526,6 +1539,9 @@
       camera_unavailable: '카메라를 사용할 수 없습니다. "갤러리에서 선택"을 이용해 주세요.',
       multi_title: '여러 개의 쓰레기가 감지되었습니다',
       multi_subtitle: '분류를 확인할 항목을 하나 선택해 주세요.',
+      pick_item_cta: '종류 다시 선택',
+      pick_item_title: '쓰레기 종류를 선택해 주세요',
+      pick_item_subtitle: '인식 결과가 다르면 올바른 종류를 선택해 주세요.',
       notrash_title: '쓰레기를 인식하지 못했습니다.',
       notrash_subtitle: '한 번에 하나의 쓰레기만 화면 가득 담아 촬영해 주세요. 배경이 많이 담기면 인식하지 못할 수 있습니다.',
       retry_shoot: '다시 촬영하기',
@@ -1916,6 +1932,14 @@
     });
   }
 
+  var pickItemBtn = document.getElementById('btn-pick-item');
+  if(pickItemBtn){
+    pickItemBtn.addEventListener('click', function(){
+      renderDetectList(itemOrder, true);
+      showScreen('multi');
+    });
+  }
+
   document.querySelectorAll('[data-goto]').forEach(function(btn){
     btn.addEventListener('click', function(){ showScreen(btn.getAttribute('data-goto')); });
   });
@@ -1967,10 +1991,28 @@
     });
   }
 
-  function renderDetectList(keys){
+  var itemOrder = ['pet', 'can', 'food', 'bag', 'burnable', 'nonburnable'];
+
+  // Also used as a manual picker, since recognition cannot tell some
+  // materials apart (a paper carton and a PET bottle look alike to it).
+  function renderDetectList(keys, manual){
     var dict = translations[currentLang] || translations.ja;
     var list = document.getElementById('detect-list');
     if(!list) return;
+
+    var titleEl = document.getElementById('multi-title');
+    var subtitleEl = document.getElementById('multi-subtitle');
+    var titleKey = manual ? 'pick_item_title' : 'multi_title';
+    var subtitleKey = manual ? 'pick_item_subtitle' : 'multi_subtitle';
+    if(titleEl){
+      titleEl.setAttribute('data-i18n', titleKey);
+      titleEl.textContent = dict[titleKey];
+    }
+    if(subtitleEl){
+      subtitleEl.setAttribute('data-i18n', subtitleKey);
+      subtitleEl.textContent = dict[subtitleKey];
+    }
+
     list.innerHTML = '';
     keys.forEach(function(key){
       var card = document.createElement('button');
